@@ -1,0 +1,121 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <script>
+        $('#nav_login').addClass("active");
+    </script>
+    <style>
+        a.button2{
+            display:inline-block;
+            padding:0.5em 3em;
+            border:0.16em solid #FFFFFF;
+            margin:0 0.3em 0.3em 0;
+            box-sizing: border-box;
+            text-decoration:none;
+            text-transform:uppercase;
+            font-family:'Roboto',sans-serif;
+            font-weight:400;
+            color:#FFFFFF;
+            text-align:center;
+            transition: all 0.15s;
+        }
+        a.button2:hover{
+            color:#DDDDDD;
+            border-color:#DDDDDD;
+        }
+        a.button2:active{
+            color:#BBBBBB;
+            border-color:#BBBBBB;
+        }
+        @media all and (max-width:30em){
+             a.button2{
+                display:block;
+                margin:0.4em auto;
+            }
+        }
+        .show_error{
+            color: #ff0000;
+            font-family: "Fira Code";
+        }
+    </style>
+    <section style="margin-top:150px">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="card card-fluid">
+                        <div class="card-header"><strong>Register</strong></div>
+                        <div class="card-body">
+                            <h4 class="card-title">Join the club.</h4>
+
+                            <form action="." method="POST">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    {{ form_register.email }}
+                                </div>
+                                {% if form_errors.email %}
+                                    <div class="form-group show_error">
+                                        {{ form_errors.email }}
+                                    </div>
+                                {% endif %}
+                                <div class="form-group">
+                                    {{ form_register.username }}
+                                </div>
+                                {%  if form_errors.username %}
+                                    <div class="form-group show_error">
+                                        {{ form_errors.username }}
+                                    </div>
+                                {% endif %}
+                                <div class="form-group">
+                                    {{ form_register.password1 }}
+                                </div>
+                                {%  if form_errors.password1 %}
+                                    <div class="form-group show_error">
+                                        {{ form_errors.password1 }}
+                                    </div>
+                                {% endif %}
+                                <div class="form-group">
+                                    {{ form_register.password2 }}
+                                </div>
+                                {%  if form_errors.password2 %}
+                                    <div class="form-group show_error">
+                                        {{ form_errors.password2 }}
+                                    </div>
+                                {% endif %}
+                                <input type="submit"  class="btn rounded-pill btn-block btn-dark" value="Register" name="register" >
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-1 col-sm-6 col-md-1">
+
+                </div>
+                <div class="col-lg-5 col-sm-6 col-md-5">
+                    <div class="form">
+                        <h4>Login</h4>
+                        <p>Already registered? Login here.</p>
+                        <form action="." method="POST" >
+                            {% csrf_token %}
+                            <div class="form-group">
+                                {{ form_login.username }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ form_login.password }}
+                            </div>
+                            {% if form_errors2 %}
+                                <div class="form-group show_error">
+                                    <p>Username and password do not match.</p>
+                                </div>
+                            {% endif %}
+                            <input class="btn rounded-pill btn-block btn-primary  " type="submit" name="login" value="Login" >
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+
+    </section>
+{% endblock %}

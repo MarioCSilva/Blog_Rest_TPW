@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>BLOGWHERE</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicons -->
+    {% load static %}
+    <link href={% static "img/favicon.png" %} rel="icon">
+    <link href={% static "img/apple-touch-icon.png" %} rel="apple-touch-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,500,600,700,700i|Montserrat:300,400,500,600,700" rel="stylesheet">
+
+    <!-- W3css -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <!-- Bootstrap CSS File -->
+    <link href={% static "lib/bootstrap/css/bootstrap.min.css" %} rel="stylesheet">
+
+    <!-- Libraries CSS Files -->
+    <link href={% static "lib/font-awesome/css/font-awesome.min.css" %} rel="stylesheet">
+    <link href={% static "lib/ionicons/css/ionicons.min.css" %} rel="stylesheet">
+    <link href={% static "lib/owlcarousel/assets/owl.carousel.min.css" %} rel="stylesheet">
+    <link href={% static "lib/lightbox/css/lightbox.min.css" %} rel="stylesheet">
+
+    <!-- Main Stylesheet File -->
+    <link href={% static "css/style.css" %} rel="stylesheet">
+
+    <!-- =======================================================
+      Theme Name: Rapid
+      Theme URL: https://bootstrapmade.com/rapid-multipurpose-bootstrap-business-template/
+      Author: BootstrapMade.com
+      License: https://bootstrapmade.com/license/
+    ======================================================= -->
+
+    <style>
+        .myButton {
+            background-color:#ffffff;
+            cursor:pointer;
+            color:black;
+            font-family:Verdana;
+            font-weight:bold;
+            text-decoration:none;
+            border:0px;
+        }
+        .myButton:hover {
+            background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+            background-color:#f6f6f6;
+        }
+        .myButton:active {
+            position:relative;
+            top:1px;
+        }
+
+        #follow-button {
+            color: #3399FF;
+            font-family: "Helvetica";
+            font-size: 12pt;
+            background-color: #FFFFFF;
+            border: 1px solid;
+            border-color: #3399FF;
+            border-radius: 3px;
+            width: 95px;
+            height: 40px;
+            cursor: hand;
+        }
+         #following {
+            color: #FFFFFF;
+            font-family: "Helvetica";
+            font-size: 12pt;
+            background-color: #3399FF;
+            border: 1px solid;
+            border-color: #3399FF;
+            border-radius: 3px;
+            width: 110px;
+            height: 40px;
+            cursor: hand;
+        }
+        a.button3{
+            display:inline-block;
+            padding:0.3em 1.2em;
+            margin:0 0.3em 0.3em 0;
+            border-radius:2em;
+            box-sizing: border-box;
+            text-decoration:none;
+            font-family:'Roboto',sans-serif;
+            font-weight:300;
+            color:#FFFFFF;
+            background-color:#4eb5f1;
+            text-align:center;
+            transition: all 0.2s;
+            font-size: 1.5em;
+        }
+        .searches{
+            display:inline-block;
+            margin:0 0.3em 0.3em 0;
+            border-radius:2em;
+            box-sizing: border-box;
+            text-decoration:none;
+            font-family:'Roboto',sans-serif;
+            font-weight:300;
+            color:#4eb5f1;
+            text-align:right;
+            transition: all 0.2s;
+            font-size: 2em;
+        }
+        a.button3:hover{
+            background-color:#4095c6;
+        }
+        @media all and (max-width:30em){
+             a.button3{
+                display:block;
+                margin:0.2em auto;
+            }
+        }
+
+select{
+  color: white;
+  background-color: transparent;
+}
+
+.modal-content{
+    background-color: rgb(21, 32, 43);
+    color:white;
+}
+.modal-content span{
+    color:white;
+}
+.modal-content textarea, input{
+    color:white;
+    background-color: transparent;
+}
+
+    </style>
+
+    <script src={% static "lib/jquery/jquery.min.js" %}></script>
+    <script src={% static "lib/jquery/jquery-migrate.min.js" %}></script>
+</head>
+
+<body style="background-color: rgb(21, 32, 43);">
+<!--==========================
+Header
+============================-->
+<header id="header">
+
+    <div id="topbar">
+        <div class="container">
+            <div class="social-links">
+                <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+                <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+                <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
+                <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="logo float-left">
+            <!-- Uncomment below if you prefer to use an image logo -->
+            <h1 class="text-light"><a href="{% url 'home' %}" class="scrollto"><span>BLOGWHERE</span></a></h1>
+            <!-- <a href="#header" class="scrollto"><img src="img/logo.png" alt="" class="img-fluid"></a> -->
+        </div>
+
+        <nav class="main-nav float-right d-none d-lg-block">
+            <ul>
+                <li>
+                    {% include "login_partial.html" %}
+                </li>
+            </ul>
+        </nav><!-- .main-nav -->
+
+    </div>
+</header><!-- #header -->
+
+{% block content %}
+
+{% endblock %}
+
+
+<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+<!-- Uncomment below i you want to use a preloader -->
+<!-- <div id="preloader"></div> -->
+
+<!-- JavaScript Libraries -->
+
+<script src={% static "lib/bootstrap/js/bootstrap.bundle.min.js" %}></script>
+<script src={% static "lib/easing/easing.min.js" %}></script>
+<script src={% static "lib/mobile-nav/mobile-nav.js" %}></script>
+<script src={% static "lib/wow/wow.min.js" %}></script>
+<script src={% static "lib/waypoints/waypoints.min.js" %}></script>
+<script src={% static "lib/counterup/counterup.min.js" %}></script>
+<script src={% static "lib/owlcarousel/owl.carousel.min.js" %}></script>
+<script src={% static "lib/isotope/isotope.pkgd.min.js" %}></script>
+<script src={% static "lib/lightbox/js/lightbox.min.js" %}></script>
+<!-- Contact Form JavaScript File -->
+<script src={% static "contactform/contactform.js" %}></script>
+<!-- Template Main Javascript File -->
+<script src={% static "js/main.js" %}></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <script>
+        $('#nav_profile').addClass("active");
+    </script>
+    <section>
+        <form action="" method="POST" name="edit_profile" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                {% if client.profile_pic %}
+                                    <img id="profile_pic" style="border:1px solid white;border-radius: 50%" class="profile_img" src="../media/{{ client.profile_pic }}" />
+                                {% else %}
+                                    <img class="profile_img" style="width: 100%;height: 250px;border:1px solid white;border-radius: 50%" src="../media/default/default_profile.jpg" />
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row edit_input" style="display: none">
+                            <div class="col-lg-12">{{ form_edit.profile_pic }}</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-9">
+                        <div class="card card-fluid" style="background-color: rgb(21, 32, 43);border:1px solid gray">
+                            <div class="card-body">
+                                {% if form_errors %}
+                                    <div class="row alert alert-danger">
+                                        {{ form_errors }}
+                                    </div>
+                                {% endif %}
+                                <div class="container">
+                                    <div  class="row">
+                                        <div  class="col-lg-12">
+                                            <div class="display_profile" id="display_name">
+                                                {% if client.name %}
+                                                    {{ client.name }}
+                                                {% else %}
+                                                    {{ client.user.username }}
+                                                {% endif %}
+                                            </div>
+                                            <div class="edit_input" style="display: none">
+                                                {{ form_edit.name }}
+                                            </div>
+                                            <div class="row sub_head">
+                                                <div class="col-lg-11">@{{ client.user.username }}</div>
+                                                {% if owner %}
+                                                <div class="col-lg-1">
+                                                    <button type="button" id="edit_button" class="btn btn-primary"><i class="fa fa-edit"></i></button>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row sub_head">
+                                        <div class="col-lg-4">
+                                            <div class="display_profile" id="display_sex">
+                                                <i class="fa fa-venus-mars"></i>
+                                                {{ client.sex }}
+                                            </div>
+                                            <div class="edit_input" style="display: none">
+                                                <i class="fa fa-venus-mars"></i>{{ form_edit.sex }}
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <div class="display_profile" id="display_birthdate" ><i class="fa fa-birthday-cake"></i> {{ client.birthdate }}</div>
+
+                                            <div class="edit_input" style="display: none">
+                                                <i class="fa fa-birthday-cake"></i>{{ form_edit.birthdate }}
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <hr style="background-color: white">
+
+                                <div id="profile_body" class="row">
+                                    <div class="col-lg-12">
+                                        <div class="display_profile" id="display_description">
+                                            {% if client.description %}
+                                                {{ client.description }}
+                                            {% else %}
+                                                No available description...
+                                            {% endif %}
+                                        </div>
+                                        <div class="edit_input" style="display: none">
+
+                                            {{ form_edit.description }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="profile_footer" style="display: none" class="row">
+                                    <div class="col-lg-12" ><input type="submit" class="btn btn-success" value="Save" name="Save" /></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+        </form>
+    </section>
+
+    {% load static %}
+    <link href="{% static "css/profile.css" %}" rel="stylesheet">
+    <script src="{% static  "/js/profile_page.js" %}"></script>
+
+{% endblock %}
