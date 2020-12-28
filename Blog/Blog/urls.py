@@ -42,6 +42,27 @@ urlpatterns = [
     path('post_comment/', views.post_comment),
     path('post_like/', views.post_like),
     path('blog_pic/', views.blog_pic),
+
+    path('ws/', views.main_page, name="home"),
+    path('ws/profile/<str:name>', views.profile_page, name="profile"),
+    path('ws/my_profile', views.my_profile),
+    path('ws/login/', views.entry_page, name='login'),
+    path('ws/blog/<int:num>', views.blog_page, name='blog'),
+    path('ws/logout', auth_views.LogoutView.as_view(next_page='login/'), name='logout'),
+    path('ws/my_blog/', views.my_blog),
+    path('ws/blog_owners/', views.blog_owners),
+    path('ws/blog_topics/', views.blog_topics),
+    path('ws/blog_edit/', views.blog_edit),
+    path('ws/blog_subs/', views.blog_subs),
+    path('ws/blog_follow/', views.blog_follow),
+    path('ws/blog_delete/', views.blog_delete),
+    path('ws/blog_visibility/', views.blog_visibility),
+    path('ws/blog_invites/', views.blog_invites),
+    path('ws/blog_post/', views.blog_post),
+    path('ws/settings/', views.settings, name="settings"),
+    path('ws/post_comment/', views.post_comment),
+    path('ws/post_like/', views.post_like),
+    path('ws/blog_pic/', views.blog_pic),
 ]
 
 
