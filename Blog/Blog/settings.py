@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app.apps.AppConfig',
+    'corsheaders',
     'rest_framework',
-    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -82,7 +82,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication'
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permission.AllowAny',
+        'rest_framework.permissions.AllowAny',
         'rest_framework.permissions.IsAuthenticatedOrReadOnly'
     )
 }
@@ -93,6 +93,13 @@ JWT_AUTH = {
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:4200',
+] # If this is used, then not need to use `CORS_ORIGIN_ALLOW_ALL = True`
+CORS_ORIGIN_REGEX_WHITELIST = [
+    'http://localhost:4200',
+]
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
