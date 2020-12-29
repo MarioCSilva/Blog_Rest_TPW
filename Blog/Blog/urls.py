@@ -19,7 +19,7 @@ from app import views
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
-from rest_framework.authtoken import views as view_auth
+from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -65,7 +65,8 @@ urlpatterns = [
     path('ws/post_like/', views.post_like),
     path('ws/blog_pic/', views.blog_pic),
 
-    path('ws/token_auth/', view_auth.obtain_auth_token, name='token_auth')
+    path('ws/token_auth/', obtain_jwt_token),
+    path('ws/token_refresh/', refresh_jwt_token)
 ]
 
 
