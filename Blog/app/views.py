@@ -8,12 +8,12 @@ from django.db.models.functions import Length
 from django.db.models import Count
 from django.contrib import messages
 from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from app.serializers import ClientSerializer, TopicSerializer, BlogSerializer, PostSerializer, CommentSerializer
 
 
 # Create your views here.
+
+
 
 def main_page(request):
     if not request.user.is_authenticated:
