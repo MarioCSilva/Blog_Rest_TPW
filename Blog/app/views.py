@@ -13,30 +13,31 @@ from django.db.models.functions import Length
 from django.db.models import Count
 from django.contrib import messages
 from rest_framework import status
-from app.serializers import ClientSerializer, TopicSerializer, BlogSerializer, PostSerializer, CommentSerializer
+from app.serializers import UserSerializer, ClientSerializer, TopicSerializer, BlogSerializer, PostSerializer, CommentSerializer
 
 # Create your views here.
 ## PARA TESTAR:
-## REGISTER: curl -d '{"email":"qqlcoisa24@gmail.com", "username":"olasounovoaqui24", "password1": "randomquerty", "password2": "randomquerty","name":"joaozinho"}' -H "Content-Type: application/json" -X POST http://localhost:8000/ws/register
-## LOGIN: curl -d '{"username":"olasounovoaqui24", "password": "randomquerty"}' -H "Content-Type: application/json" -X POST http://localhost:8000/ws/login
+## REGISTER: curl -d '{"email":"qqlcoisa32@gmail.com", "username":"olasounovoaqui32", "password": "randomquerty", "password2": "randomquerty", "name":"joaozinho"}' -H "Content-Type: application/json" -X POST http://localhost:8000/ws/register
+## LOGIN: curl -d '{"username":"olasounovoaqui32", "password": "randomquerty"}' -H "Content-Type: application/json" -X POST http://localhost:8000/ws/login
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register(request):
-    if "email" not in request.data or "username" not in request.data or "password1" not in request.data or "password2" not in request.data:
-        return Response({"state": "Error", "message": "Missing parameters"}, status=HTTP_400_BAD_REQUEST)
-    user = User.objects.create(username=request.data['username'], email=request.data['email'])
-    user.refresh_from_db()
-    user.save()
-    request.data['user'] = user.id
-    serializer = ClientSerializer(data=request.data)
+    user_serializer = UserSerializer(data=request.data)
+    if user_serializer.is_valid():
+        user = user_serializer.save()
+        request.data['user'] = user.id
+    else:
+        return Response(user_serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+    client_serializer = ClientSerializer(data=request.data)
     data = {}
-    if serializer.is_valid():
-        client = serializer.save()
+    if client_serializer.is_valid():
+        client = client_serializer.save()
         data['response'] = 'successfully registered a new client'
         data['token'] = Token.objects.get(user=client.user).key
     else:
-        data = serializer.errors
+        return Response(client_serializer.errors, status=HTTP_400_BAD_REQUEST)
     return Response(data)
 
 
