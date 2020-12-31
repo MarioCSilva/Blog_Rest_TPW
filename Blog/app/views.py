@@ -1,4 +1,9 @@
 from django.shortcuts import render, redirect, HttpResponse, HttpResponseRedirect
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.status import HTTP_400_BAD_REQUEST
+
 from app.forms import *
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -10,9 +15,29 @@ from django.contrib import messages
 from rest_framework import status
 from app.serializers import ClientSerializer, TopicSerializer, BlogSerializer, PostSerializer, CommentSerializer
 
-
 # Create your views here.
+## PARA TESTAR:
+## REGISTER: curl -d '{"email":"qqlcoisa24@gmail.com", "username":"olasounovoaqui24", "password1": "randomquerty", "password2": "randomquerty","name":"joaozinho"}' -H "Content-Type: application/json" -X POST http://localhost:8000/ws/register
+## LOGIN: curl -d '{"username":"olasounovoaqui24", "password": "randomquerty"}' -H "Content-Type: application/json" -X POST http://localhost:8000/ws/login
 
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def register(request):
+    if "email" not in request.data or "username" not in request.data or "password1" not in request.data or "password2" not in request.data:
+        return Response({"state": "Error", "message": "Missing parameters"}, status=HTTP_400_BAD_REQUEST)
+    user = User.objects.create(username=request.data['username'], email=request.data['email'])
+    user.refresh_from_db()
+    user.save()
+    request.data['user'] = user.id
+    serializer = ClientSerializer(data=request.data)
+    data = {}
+    if serializer.is_valid():
+        client = serializer.save()
+        data['response'] = 'successfully registered a new client'
+        data['token'] = Token.objects.get(user=client.user).key
+    else:
+        data = serializer.errors
+    return Response(data)
 
 
 def main_page(request):
@@ -93,7 +118,6 @@ def main_page(request):
             elif choice == "comments":
                 posts = posts.annotate(count=Count("comment")).order_by(order + "count")
 
-
         if "search_blog_type" in request.GET:
             search = request.GET.get("search_blog")
             topics = request.GET.getlist("topic_choice_blog")
@@ -101,7 +125,8 @@ def main_page(request):
             order = request.GET.get("order_by_blog")
 
             # searches for pages with that name or owner name
-            blogs = (Blog.objects.filter(name__contains=search).distinct())  # | Blog.objects.filter(owner__user__name__in=search))
+            blogs = (Blog.objects.filter(
+                name__contains=search).distinct())  # | Blog.objects.filter(owner__user__name__in=search))
             if topics:
                 blogs = blogs & (Blog.objects.filter(topic__id__in=topics).distinct())
 
