@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect, HttpResponse, HttpResponseRedirect
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.status import HTTP_400_BAD_REQUEST
+from rest_framework.views import APIView
 
 from app.forms import *
 from django.contrib.auth import login, authenticate, logout
@@ -13,7 +15,9 @@ from django.db.models.functions import Length
 from django.db.models import Count
 from django.contrib import messages
 from rest_framework import status
-from app.serializers import UserSerializer, ClientSerializer, TopicSerializer, BlogSerializer, PostSerializer, CommentSerializer
+from app.serializers import UserSerializer, ClientSerializer, TopicSerializer, BlogSerializer, PostSerializer, \
+    CommentSerializer
+
 
 # Create your views here.
 ## PARA TESTAR:
@@ -39,6 +43,47 @@ def register(request):
     else:
         return Response(client_serializer.errors, status=HTTP_400_BAD_REQUEST)
     return Response(data)
+
+
+# token: e26f7aca6dd0661469c62016562949106c822b66
+# get: curl -H "Authorization:Token e26f7aca6dd0661469c62016562949106c822b66"  http://localhost:8000/ws/profile/olasounovoaqui32
+# post: curl -H "Authorization:Token e26f7aca6dd0661469c62016562949106c822b66" -d '{}' -H "Content-Type: application/json" http://localhost:8000/ws/profile/olasounovoaqui32
+@permission_classes([IsAuthenticated])
+class Profile(APIView):
+    def get(self, request, name):
+        client = Client.objects.get(user__username=name)
+        owner = request.user.username == name
+
+        client_serializer = ClientSerializer(data=client.__dict__)
+
+        if client_serializer.is_valid():
+            data = {"client": client_serializer.data, "owner": owner}
+        else:
+            data = client_serializer.errors
+
+        return Response(data)
+
+    # Ver dps o update
+    def put(self, request, name):
+        client = Client.objects.get(user_id=request.user.id)
+        client_serializer = ClientSerializer(data=client.__dict__)
+
+        if client_serializer.is_valid():
+            client = client_serializer.update()
+            data = {"client": client_serializer.data}
+        else:
+            data = client_serializer.errors
+
+        return Response(data)
+
+
+#def my_blog(request):
+ #   if not request.user.is_authenticated:
+  #      return redirect('/login')
+   # client = Client.objects.get(user=request.user.id)
+    #topic = Topic.objects.get(name="Personal")
+    #blog = Blog.objects.get(owner__in=[client], topic=topic.id)
+    #return redirect("/blog/" + str(blog.id))
 
 
 def main_page(request):

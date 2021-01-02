@@ -29,9 +29,12 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ClientSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+    user_id = serializers.IntegerField()
+    # PROFILE PIC
     class Meta:
         model = Client
-        fields = ['name', 'user', 'description', 'profile_pic', 'birthdate', 'sex']
+        fields = ['id', 'name', 'user_id', 'description', 'birthdate', 'sex']
 
 
 class TopicSerializer(serializers.ModelSerializer):

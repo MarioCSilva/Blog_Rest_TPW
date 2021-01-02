@@ -45,7 +45,6 @@ urlpatterns = [
     path('blog_pic/', views.blog_pic),
 
     path('ws/', views.main_page, name="home"),
-    path('ws/profile/<str:name>', views.profile_page, name="profile"),
     path('ws/my_profile', views.my_profile),
     path('ws/login/', views.entry_page, name='login'),
     path('ws/blog/<int:num>', views.blog_page, name='blog'),
@@ -67,6 +66,7 @@ urlpatterns = [
 
     path('ws/register', views.register, name='register'),
     path('ws/login', obtain_auth_token, name='login'),
+    path('ws/profile/<str:name>', views.Profile.as_view(), name='profile'),
 ]
 
 
