@@ -12,6 +12,9 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "es2020",
+    "paths": {
+      "@models/*": ["../src/app/models/*"]
+    },
     "lib": [
       "es2018",
       "dom"

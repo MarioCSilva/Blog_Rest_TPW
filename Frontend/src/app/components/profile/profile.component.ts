@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Client} from '../../model/Client';
+import {Client} from '../../models/Client';
 
 @Component({
   selector: 'app-profile',
@@ -13,6 +13,21 @@ export class ProfileComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.owner = true;
+    this.client = {
+      id: 1,
+      name: 'test',
+      description: 'test',
+      birthdate: new Date(2020, 11, 31),
+      sex: 'Male',
+      user: {
+        id: 1,
+        username: 'Test User',
+        email: 'test@email.com',
+        password: 'randomquerty'
+      },
+      profile_pic: null
+    };
   }
 
 }

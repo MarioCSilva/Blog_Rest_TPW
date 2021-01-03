@@ -1,0 +1,13 @@
+.likeNumber{
+  padding-left: 3px;
+}
+
+
+.liked {
+  color:#007bff
+}
+
+
+.disliked {
+  color:grey;
+}
