@@ -22,12 +22,17 @@ jobs:
     - uses: actions/checkout@v2
       with:
         path: Frontend
-        repo-token: ${{ secrets.SECRET_GITHUB }}
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm ci
-           npm run build --if-present
-           npm test
+    - name: npm install, build, and test
+      run: |
+        npm ci
+        npm run build --if-present
+        npm test
       working-directory: Frontend
+      env:
+        CI: true
+        NODE_AUTH_TOKEN: ${{ secrets.SECRET_GITHUB }}
+
