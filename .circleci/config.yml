@@ -1,21 +1,21 @@
 version: 2.1
 
 orbs:
-  python: circleci/python@0.2.1
+  node: circleci/node@3.0.0
 
 jobs:
-  build-and-test:
-    executor: python/default
+  install-node-example:
+    docker:
+      - image: 'cimg/base:stable'
     steps:
       - checkout
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
-      - run:
-          command: python3 Blog/manage.py test
-          name: Test
+      - node/install:
+          install-yarn: true
+          node-version: latest
+      - run: cd ~/Frontend && npm ci
+      - run: cd ~/Frontend && npm test
 
 workflows:
-  main:
+  test_my_app:
     jobs:
-      - build-and-test
+      - install-node-example
