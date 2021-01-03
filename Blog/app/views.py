@@ -481,7 +481,6 @@ def blog_page(request, num):
         subbed = True
 
     if "search_post" in request.GET:
-
         search = request.GET.get("search_post")
         choice = request.GET.get("order_choice_post")
         order = request.GET.get("order_by_post")
