@@ -68,7 +68,6 @@ urlpatterns = [
     path('ws/my_blog', views.my_blog, name='my_blog'),
     path('ws/new_post', views.new_post, name='new_post'),
     path('ws/new_blog', views.new_blog, name='new_blog'),
-
 ]
 
 
