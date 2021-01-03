@@ -46,7 +46,6 @@ urlpatterns = [
 
     path('ws/', views.main_page_get, name="home"),
     path('ws/my_profile', views.my_profile2),
-    path('ws/login/', views.entry_page, name='login'),
     path('ws/blog/<int:num>', views.blog_page, name='blog'),
     path('ws/logout', auth_views.LogoutView.as_view(next_page='login/'), name='logout'),
     path('ws/blog_owners/', views.blog_owners),
@@ -63,10 +62,11 @@ urlpatterns = [
     path('ws/post_like/', views.post_like),
     path('ws/blog_pic/', views.blog_pic),
 
-    path('ws/register', views.register, name='register'),
-    path('ws/login', obtain_auth_token, name='login'),
+    path('ws/register/', views.register, name='register'),
+    path('ws/login/', obtain_auth_token, name='login'),
     path('ws/profile/<str:name>', views.Profile.as_view(), name='profile'),
     path('ws/my_blog/', views.my_blog, name='my_blog'),
+    path('ws/new_post/', views.new_post, name='new_post')
 
 ]
 

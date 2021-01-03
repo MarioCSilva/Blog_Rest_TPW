@@ -97,10 +97,10 @@ class Post(models.Model):
     title = models.CharField(max_length=70)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(null=True,upload_to=post_pic_path, height_field=None, width_field=None, max_length=None)
+    image = models.ImageField(null=True, upload_to=post_pic_path, height_field=None, width_field=None, max_length=None)
     text = models.CharField(max_length=500)
     blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
-    likes = models.ManyToManyField(Client, related_name='post_likes')
+    likes = models.ManyToManyField(Client, related_name='post_likes', blank=True)
 
     def __str__(self):
         return self.title

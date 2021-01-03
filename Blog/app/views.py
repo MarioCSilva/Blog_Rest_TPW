@@ -101,6 +101,7 @@ def post_comment(request):
     client = Client.objects.get(user=request.user).id
     comment = {"text": text, "client": client, "post": post}
     com_serializer = CommentSerializer(data=comment)
+
     if com_serializer.is_valid():
         com_serializer.save()
         data = {'success': 'successfully added a comment to post'}
@@ -207,25 +208,25 @@ def main_page_get(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def create_post():
+def new_post(request):
+    title = request.GET.get('title')
+    text = request.GET.get('text')
+    print(title)
+    user = request.user
+    client = Client.objects.get(user=user).id
+    topic = Topic.objects.get(name="Personal")
+    blog = Blog.objects.get(topic=topic, owner__in=[client]).id
+    data = {'title': title, 'text': text, 'client': client, 'blog': blog}
 
-    serializer = PostSerializer(data=request.POST)
-    if serializer.is_valid():
-        title = form.cleaned_data.get('title')
-        text = form.cleaned_data.get('text')
-        user = request.user
-        client = Client.objects.get(user=user)
-        topic = Topic.objects.get(name="Personal")
-        blog = Blog.objects.get(topic=topic, owner__in=[client])
-        post = Post(title=title, text=text, client=client, blog=blog)
-        image = form.cleaned_data.get("image")
-        if image:
-            post.image = image
-        post.save()
+    post_serializer = PostSerializer(data=data)
 
-        return Response({'success': 'successfully created a post'})
+    if post_serializer.is_valid():
+        post_serializer.save()
+        data = {'success': 'successfully created a post'}
+    else:
+        data = post_serializer.errors
 
-    return Response(serializer.errors)
+    return Response(data)
 
 
 
