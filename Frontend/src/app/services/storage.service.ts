@@ -7,13 +7,13 @@ export class StorageService {
 
   constructor() { }
 
-  static getAuthToken(): string {
+  getAuthToken(): string {
     return localStorage.getItem('auth');
   }
-  static removeAuthToken(): void {
+  removeAuthToken(): void {
     localStorage.removeItem('auth');
   }
-  static setAuthToken(token: string): void {
+  setAuthToken(token: string): void {
     localStorage.setItem('auth', token);
   }
 }
