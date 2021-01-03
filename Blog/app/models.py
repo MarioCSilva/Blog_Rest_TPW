@@ -49,6 +49,22 @@ class Client(models.Model):
         return self.user.username
 
 
+# Automaticante criar um Blog ao ser criado um Client
+@receiver(post_save, sender=Client)
+def create_blog(sender, instance=None, created=False, **kwargs):
+    if created:
+        user = instance.user
+        name = user.username
+        topic = Topic.objects.get(name="Personal")
+        is_public = True
+        blog = Blog(name=name, isPublic=is_public)
+        blog.save()
+        blog.owner.add(instance.id)
+        blog.subs.add(instance.id)
+        blog.topic.add(topic.id)
+        blog.save()
+
+
 # Automaticante gerar um token ao ser criado um USER
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):

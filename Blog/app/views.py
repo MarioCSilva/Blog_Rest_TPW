@@ -21,16 +21,16 @@ from app.serializers import UserSerializer, ClientSerializer, TopicSerializer, B
 
 # Create your views here.
 ## PARA TESTAR:
-## REGISTER: curl -d '{"email":"qqlcoisa32@gmail.com", "username":"olasounovoaqui32", "password": "randomquerty", "password2": "randomquerty", "name":"joaozinho"}' -H "Content-Type: application/json" -X POST http://localhost:8000/ws/register
-## LOGIN: curl -d '{"username":"olasounovoaqui32", "password": "randomquerty"}' -H "Content-Type: application/json" -X POST http://localhost:8000/ws/login
-
+## REGISTER: curl -d '{"email":"qqlcoisa40@gmail.com", "username":"olasounovoaqui40", "password": "randomquerty", "password2": "randomquerty", "name":"joaozinho"}' -H "Content-Type: application/json" -X POST http://localhost:8000/ws/register
+## LOGIN: curl -d '{"username":"olasounovoaqui40", "password": "randomquerty"}' -H "Content-Type: application/json" -X POST http://localhost:8000/ws/login
+## Token f4114c4538d869943f5369efa4b7b6c941097186
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register(request):
     user_serializer = UserSerializer(data=request.data)
     if user_serializer.is_valid():
         user = user_serializer.save()
-        request.data['user'] = user.id
+        request.data['user_id'] = user.id
     else:
         return Response(user_serializer.errors, status=HTTP_400_BAD_REQUEST)
 
@@ -46,8 +46,8 @@ def register(request):
 
 
 # token: e26f7aca6dd0661469c62016562949106c822b66
-# get: curl -H "Authorization:Token e26f7aca6dd0661469c62016562949106c822b66"  http://localhost:8000/ws/profile/olasounovoaqui32
-# post: curl -H "Authorization:Token e26f7aca6dd0661469c62016562949106c822b66" -d '{}' -H "Content-Type: application/json" http://localhost:8000/ws/profile/olasounovoaqui32
+# get: curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186"  http://localhost:8000/ws/profile/olasounovoaqui40
+# post: curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186" -d '{}' -H "Content-Type: application/json" http://localhost:8000/ws/profile/olasounovoaqui40
 @permission_classes([IsAuthenticated])
 class Profile(APIView):
     def get(self, request, name):
@@ -77,13 +77,30 @@ class Profile(APIView):
         return Response(data)
 
 
-#def my_blog(request):
- #   if not request.user.is_authenticated:
-  #      return redirect('/login')
-   # client = Client.objects.get(user=request.user.id)
-    #topic = Topic.objects.get(name="Personal")
-    #blog = Blog.objects.get(owner__in=[client], topic=topic.id)
-    #return redirect("/blog/" + str(blog.id))
+# curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186"  http://localhost:8000/ws/my_blog
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def my_blog(request):
+    client = Client.objects.get(user=request.user.id)
+    topic = Topic.objects.get(name="Personal")
+    blog = Blog.objects.get(owner__in=[client], topic=topic.id)
+    return Response("/blog/" + str(blog.id))
+
+
+# curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186" -X POST "http://localhost:8000/ws/post_comment/?post_id=5&com_text='hello'"
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def post_comment(request):
+    post_id = request.GET.get('post_id')
+    print(post_id)
+    post = Post.objects.get(id=post_id)
+    text = request.GET.get('com_text')
+    client = Client.objects.get(user=request.user)
+
+    comment = Comment(text=text, client=client, post=post)
+    comment.save()
+
+    return Response({'success': 'successfully added a comment to post'})
 
 
 def main_page(request):
@@ -208,7 +225,6 @@ def main_page(request):
             posts_more_det.append(posts_detail)
         if "search_query" in request.GET:
             search_query = "blog"
-            print("pls")
         else:
             search_query = "post"
 
@@ -295,7 +311,7 @@ def profile_page(request, name):
         return render(request, "profile_page.html", {"client": user, "form_edit": form, "form_errors": form.errors})
 
 
-def my_profile(request):
+def my_profile2(request):
     if not request.user.is_authenticated:
         return redirect('/login')
     return redirect("/profile/" + str(request.user.username))
@@ -382,7 +398,7 @@ def blog_page(request, num):
     })
 
 
-def my_blog(request):
+def my_blog2(request):
     if not request.user.is_authenticated:
         return redirect('/login')
     client = Client.objects.get(user=request.user.id)
@@ -537,7 +553,7 @@ def blog_invites(request):
         return redirect('/blog/' + blog_id)
 
 
-def blog_post(request):
+def blog_post2(request):
     if not request.user.is_authenticated:
         return redirect('/login')
     blog_id = request.POST.get('blog_id')
@@ -592,7 +608,7 @@ def settings(request):
             return redirect("/login")
 
 
-def post_comment(request):
+def post_comment2(request):
     if not request.user.is_authenticated:
         return redirect('/login')
 

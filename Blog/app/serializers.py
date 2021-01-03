@@ -29,12 +29,13 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ClientSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField()
+    id = serializers.IntegerField(required=False)
     user_id = serializers.IntegerField()
     # PROFILE PIC
     class Meta:
         model = Client
         fields = ['id', 'name', 'user_id', 'description', 'birthdate', 'sex']
+        extra_kwargs = {"id": {"required": False, "allow_null": True}}
 
 
 class TopicSerializer(serializers.ModelSerializer):
