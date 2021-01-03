@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';    // add this
 import { FormsModule } from '@angular/forms';    // add this
-import { ModalModule } from 'ngb-modal';
 import { AppComponent } from './app.component';
 import { UserService } from './user.service';
 import { AppRoutingModule } from './app-routing.module';
@@ -15,7 +14,7 @@ import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegisterComponent, ProfileComponent, PostComponent],
-  imports: [BrowserModule, FormsModule, HttpClientModule, AppRoutingModule, ModalModule, NgbModule, MatIconModule],    // add this
+  imports: [BrowserModule, FormsModule, HttpClientModule, AppRoutingModule, NgbModule, MatIconModule],    // add this
   providers: [UserService],    // add this
   bootstrap: [AppComponent]
 })
