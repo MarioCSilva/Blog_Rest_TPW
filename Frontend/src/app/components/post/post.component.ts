@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ViewEncapsulation} from '@angular/core';
 import {Post} from '../../models/Post';
 import {User} from '../../models/User';
 import {Comment} from '../../models/Comment';
@@ -13,6 +13,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-post',
   templateUrl: './post.component.html',
+  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./post.component.css']
 })
 export class PostComponent implements OnInit {
@@ -55,11 +56,17 @@ export class PostComponent implements OnInit {
   }
   likePost(): void{
     // Check if the user has liked the post or not
-    console.log('ola');
+    this.isLiked = !this.isLiked;
+    console.log(this.isLiked);
   }
-
   openComments(content): void{
-    this.modalService.open(content, {backdropClass: 'light-blue-backdrop'});
+    // Adjust css
+    this.modalService.open(content, {
+      backdropClass: 'light-blue-backdrop',
+      windowClass: 'dark-modal',
+      size: 'md',
+      centered: true
+    });
   }
 
 }
