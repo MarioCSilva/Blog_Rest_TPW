@@ -66,7 +66,8 @@ urlpatterns = [
     path('ws/login/', obtain_auth_token, name='login'),
     path('ws/profile/<str:name>', views.Profile.as_view(), name='profile'),
     path('ws/my_blog/', views.my_blog, name='my_blog'),
-    path('ws/new_post/', views.new_post, name='new_post')
+    path('ws/new_post/', views.new_post, name='new_post'),
+    path('ws/new_blog/', views.new_blog, name='new_blog'),
 
 ]
 
