@@ -3,11 +3,11 @@
   <p>Already registered? Login here.</p>
   <form (ngSubmit)="login()">
     <div class="form-group">
-      <input type="text" placeholder="Username" class="form-control">
+      <input [(ngModel)]="username" name="username" type="text" placeholder="Username" class="form-control">
     </div>
 
     <div class="form-group">
-      <input type="password" placeholder="Password" class="form-control">
+      <input [(ngModel)]="password" name="password" type="password" placeholder="Password" class="form-control">
     </div>
     <div class="form-group show_error">
       <p>Username and password do not match.</p>

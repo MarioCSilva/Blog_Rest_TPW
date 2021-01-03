@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Blog} from '../models/Blog';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -15,11 +14,11 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient) { }
 
-  login(): Observable<any> {
+  login(username: string, password: string): Observable<any> {
     const url = this.baseURL + 'login';
     return this.http.post<string>(
       url,
-      '{"username":"olasounovoaqui40", "password": "randomquerty"}',
+      '{"username":"' + username + '", "password": "' + password + '" }',
       httpOptions
     );
   }

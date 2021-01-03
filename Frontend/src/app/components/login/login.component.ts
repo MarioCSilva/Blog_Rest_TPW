@@ -9,6 +9,8 @@ import {StorageService} from '../../services/storage.service';
 })
 export class LoginComponent implements OnInit {
 
+  public username;
+  public password;
   constructor(
     private authService: AuthenticationService,
     private storageService: StorageService
@@ -18,6 +20,6 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void{
-    this.authService.login().subscribe(token => {this.storageService.setAuthToken(token.token)});
+    this.authService.login(this.username, this.password).subscribe(token => {this.storageService.setAuthToken(token.token); });
   }
 }
