@@ -44,7 +44,7 @@ urlpatterns = [
     path('post_like/', views.post_like),
     path('blog_pic/', views.blog_pic),
 
-    path('ws/', views.main_page, name="home"),
+    path('ws/', views.main_page_get, name="home"),
     path('ws/my_profile', views.my_profile2),
     path('ws/login/', views.entry_page, name='login'),
     path('ws/blog/<int:num>', views.blog_page, name='blog'),

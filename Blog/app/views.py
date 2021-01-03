@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render, redirect, HttpResponse, HttpResponseRedirect
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.response import Response
@@ -15,6 +17,8 @@ from django.db.models.functions import Length
 from django.db.models import Count
 from django.contrib import messages
 from rest_framework import status
+from django.core.serializers import serialize
+
 from app.serializers import UserSerializer, ClientSerializer, TopicSerializer, BlogSerializer, PostSerializer, \
     CommentSerializer
 
@@ -101,6 +105,102 @@ def post_comment(request):
     comment.save()
 
     return Response({'success': 'successfully added a comment to post'})
+
+
+# curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186" http://localhost:8000/ws/
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def main_page_get(request):
+    comments = Comment.objects.all()
+    post_com = {}
+    for comment in comments:
+        com_list = post_com.get(comment.post.id, [])
+        com_list.append(comment)
+        post_com[comment.post.id] = com_list
+
+    client = Client.objects.get(user=request.user)
+    post_blogs = Blog.objects.filter(subs__in=[client])
+    # recent ones first
+    posts = Post.objects.filter(blog__in=post_blogs).order_by("-date")
+    # orders posts with more subs first
+    blogs = Blog.objects.all().order_by(Length("subs").desc())
+
+    if "search_post_type" in request.GET:
+        search = request.GET.get("search_post")
+        choice = request.GET.get("order_choice_post")
+        order = request.GET.get("order_by_post")
+        # searchs for posts by name or by client name
+        posts = (Post.objects.filter(title__contains=search, blog__in=post_blogs) \
+                 | Post.objects.filter(client__user__username__contains=search, blog__in=post_blogs))
+
+        if order == "asc":
+            order = ""
+        elif order == "desc":
+            order = "-"
+
+        if choice == "recent":
+            posts = posts.order_by(order + "date")
+        elif choice == "likes":
+            posts = posts.annotate(count=Count("likes")).order_by(order + "count")
+        elif choice == "comments":
+            posts = posts.annotate(count=Count("comment")).order_by(order + "count")
+
+    if "search_blog_type" in request.GET:
+        search = request.GET.get("search_blog")
+        topics = request.GET.getlist("topic_choice_blog")
+        choice = request.GET.get("order_choice_blog")
+        order = request.GET.get("order_by_blog")
+
+        # searches for pages with that name or owner name
+        blogs = (Blog.objects.filter(
+            name__contains=search).distinct())  # | Blog.objects.filter(owner__user__name__in=search))
+        if topics:
+            blogs = blogs & (Blog.objects.filter(topic__id__in=topics).distinct())
+
+        if order == "asc":
+            order = ""
+        elif order == "desc":
+            order = "-"
+
+        if choice == "subs":
+            blogs = blogs.annotate(count=Count("subs")).order_by(order + "count")
+        elif choice == "posts":
+            blogs = blogs.annotate(count=Count("post")).order_by(order + "count")
+
+        # blogs = blogs.order_by(Length("subs").desc())
+
+    posts_more_det = []
+    for post in posts:
+        posts_detail = {}
+        posts_detail["comments"] = post_com.get(post.id, [])
+        posts_detail["post"] = post
+        if post.likes.count() > 0:
+            if client in post.likes.all():
+                posts_detail["like"] = True
+            else:
+                posts_detail["like"] = False
+        else:
+            posts_detail["like"] = False
+
+        topic = Topic.objects.get(name="Personal")
+        blog = Blog.objects.get(owner__in=[post.client], topic=topic.id)
+        posts_detail["personal"] = blog.id
+
+        posts_more_det.append(posts_detail)
+    if "search_query" in request.GET:
+        search_query = "blog"
+    else:
+        search_query = "post"
+
+    blogs = blogs.annotate(count_post=Count("post"))
+    blogs = json.loads(serialize('json', blogs))
+
+    print(blogs)
+    return Response({
+       "blogs": blogs,
+       "posts_more_det": posts_more_det,
+       "search_query": search_query
+    })
 
 
 def main_page(request):
