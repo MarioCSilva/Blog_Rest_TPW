@@ -211,7 +211,6 @@ def main_page_get(request):
 def new_post(request):
     title = request.GET.get('title')
     text = request.GET.get('text')
-    print(title)
     user = request.user
     client = Client.objects.get(user=user).id
     topic = Topic.objects.get(name="Personal")
