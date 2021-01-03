@@ -96,15 +96,18 @@ def my_blog(request):
 @permission_classes([IsAuthenticated])
 def post_comment(request):
     post_id = request.GET.get('post_id')
-    print(post_id)
-    post = Post.objects.get(id=post_id)
+    post = Post.objects.get(id=post_id).id
     text = request.GET.get('com_text')
-    client = Client.objects.get(user=request.user)
+    client = Client.objects.get(user=request.user).id
+    comment = {"text": text, "client": client, "post": post}
+    com_serializer = CommentSerializer(data=comment)
 
-    comment = Comment(text=text, client=client, post=post)
-    comment.save()
-
-    return Response({'success': 'successfully added a comment to post'})
+    if com_serializer.is_valid():
+        com_serializer.save()
+        data = {'success': 'successfully added a comment to post'}
+    else:
+        data = com_serializer.errors
+    return Response(data)
 
 
 # curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186" http://localhost:8000/ws/
@@ -201,6 +204,34 @@ def main_page_get(request):
        "posts_more_det": posts_more_det,
        "search_query": search_query
     })
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def new_post(request):
+    title = request.GET.get('title')
+    text = request.GET.get('text')
+    user = request.user
+    client = Client.objects.get(user=user).id
+    topic = Topic.objects.get(name="Personal")
+    blog = Blog.objects.get(topic=topic, owner__in=[client]).id
+    data = {'title': title, 'text': text, 'client': client, 'blog': blog}
+
+    post_serializer = PostSerializer(data=data)
+
+    if post_serializer.is_valid():
+        post_serializer.save()
+        data = {'success': 'successfully created a post'}
+    else:
+        data = post_serializer.errors
+
+    return Response(data)
+
+
+
+
+
+
 
 
 def main_page(request):
