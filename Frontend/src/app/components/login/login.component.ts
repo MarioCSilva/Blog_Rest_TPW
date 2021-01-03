@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthenticationService} from '../../services/authentication.service';
+import {StorageService} from '../../services/storage.service';
 
 @Component({
   selector: 'app-login',
@@ -7,12 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private authService: AuthenticationService,
+    private storageService: StorageService
+  ) { }
 
   ngOnInit(): void {
   }
 
   login(): void{
-    console.log('login');
+    this.authService.login().subscribe(token => {this.storageService.setAuthToken(token.token)});
   }
 }
