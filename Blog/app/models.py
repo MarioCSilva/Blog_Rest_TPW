@@ -40,12 +40,29 @@ class Client(models.Model):
     name = models.CharField(max_length=50, blank=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     description = models.CharField(max_length=300, blank=True)
-    profile_pic = models.ImageField(null=True,upload_to=profile_pic_path,default="default/default_profile.jpg", height_field=None, width_field=None, max_length=None)
+    profile_pic = models.ImageField(null=True, upload_to=profile_pic_path, default="default/default_profile.jpg",
+                                    height_field=None, width_field=None, max_length=None)
     birthdate = models.DateField(null=True,auto_now=False, auto_now_add=False)
     sex = models.CharField(null=True, max_length=40)
 
     def __str__(self):
         return self.user.username
+
+
+# Automaticante criar um Blog ao ser criado um Client
+@receiver(post_save, sender=Client)
+def create_blog(sender, instance=None, created=False, **kwargs):
+    if created:
+        user = instance.user
+        name = user.username
+        topic = Topic.objects.get(name="Personal")
+        is_public = True
+        blog = Blog(name=name, isPublic=is_public)
+        blog.save()
+        blog.owner.add(instance.id)
+        blog.subs.add(instance.id)
+        blog.topic.add(topic.id)
+        blog.save()
 
 
 # Automaticante gerar um token ao ser criado um USER

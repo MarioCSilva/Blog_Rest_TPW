@@ -1,8 +1,12 @@
+import json
+
 from django.shortcuts import render, redirect, HttpResponse, HttpResponseRedirect
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.status import HTTP_400_BAD_REQUEST
+from rest_framework.views import APIView
 
 from app.forms import *
 from django.contrib.auth import login, authenticate, logout
@@ -13,20 +17,24 @@ from django.db.models.functions import Length
 from django.db.models import Count
 from django.contrib import messages
 from rest_framework import status
-from app.serializers import UserSerializer, ClientSerializer, TopicSerializer, BlogSerializer, PostSerializer, CommentSerializer
+from django.core.serializers import serialize
+
+from app.serializers import UserSerializer, ClientSerializer, TopicSerializer, BlogSerializer, PostSerializer, \
+    CommentSerializer
+
 
 # Create your views here.
 ## PARA TESTAR:
-## REGISTER: curl -d '{"email":"qqlcoisa32@gmail.com", "username":"olasounovoaqui32", "password": "randomquerty", "password2": "randomquerty", "name":"joaozinho"}' -H "Content-Type: application/json" -X POST http://localhost:8000/ws/register
-## LOGIN: curl -d '{"username":"olasounovoaqui32", "password": "randomquerty"}' -H "Content-Type: application/json" -X POST http://localhost:8000/ws/login
-
+## REGISTER: curl -d '{"email":"qqlcoisa40@gmail.com", "username":"olasounovoaqui40", "password": "randomquerty", "password2": "randomquerty", "name":"joaozinho"}' -H "Content-Type: application/json" -X POST http://localhost:8000/ws/register
+## LOGIN: curl -d '{"username":"olasounovoaqui40", "password": "randomquerty"}' -H "Content-Type: application/json" -X POST http://localhost:8000/ws/login
+## Token f4114c4538d869943f5369efa4b7b6c941097186
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register(request):
     user_serializer = UserSerializer(data=request.data)
     if user_serializer.is_valid():
         user = user_serializer.save()
-        request.data['user'] = user.id
+        request.data['user_id'] = user.id
     else:
         return Response(user_serializer.errors, status=HTTP_400_BAD_REQUEST)
 
@@ -39,6 +47,160 @@ def register(request):
     else:
         return Response(client_serializer.errors, status=HTTP_400_BAD_REQUEST)
     return Response(data)
+
+
+# token: e26f7aca6dd0661469c62016562949106c822b66
+# get: curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186"  http://localhost:8000/ws/profile/olasounovoaqui40
+# post: curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186" -d '{}' -H "Content-Type: application/json" http://localhost:8000/ws/profile/olasounovoaqui40
+@permission_classes([IsAuthenticated])
+class Profile(APIView):
+    def get(self, request, name):
+        client = Client.objects.get(user__username=name)
+        owner = request.user.username == name
+
+        client_serializer = ClientSerializer(data=client.__dict__)
+
+        if client_serializer.is_valid():
+            data = {"client": client_serializer.data, "owner": owner}
+        else:
+            data = client_serializer.errors
+
+        return Response(data)
+
+    # Ver dps o update
+    def put(self, request, name):
+        client = Client.objects.get(user_id=request.user.id)
+        client_serializer = ClientSerializer(data=client.__dict__)
+
+        if client_serializer.is_valid():
+            client = client_serializer.update()
+            data = {"client": client_serializer.data}
+        else:
+            data = client_serializer.errors
+
+        return Response(data)
+
+
+# curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186"  http://localhost:8000/ws/my_blog
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def my_blog(request):
+    client = Client.objects.get(user=request.user.id)
+    topic = Topic.objects.get(name="Personal")
+    blog = Blog.objects.get(owner__in=[client], topic=topic.id)
+    return Response("/blog/" + str(blog.id))
+
+
+# curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186" -X POST "http://localhost:8000/ws/post_comment/?post_id=5&com_text='hello'"
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def post_comment(request):
+    post_id = request.GET.get('post_id')
+    print(post_id)
+    post = Post.objects.get(id=post_id)
+    text = request.GET.get('com_text')
+    client = Client.objects.get(user=request.user)
+
+    comment = Comment(text=text, client=client, post=post)
+    comment.save()
+
+    return Response({'success': 'successfully added a comment to post'})
+
+
+# curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186" http://localhost:8000/ws/
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def main_page_get(request):
+    comments = Comment.objects.all()
+    post_com = {}
+    for comment in comments:
+        com_list = post_com.get(comment.post.id, [])
+        com_list.append(comment)
+        post_com[comment.post.id] = com_list
+
+    client = Client.objects.get(user=request.user)
+    post_blogs = Blog.objects.filter(subs__in=[client])
+    # recent ones first
+    posts = Post.objects.filter(blog__in=post_blogs).order_by("-date")
+    # orders posts with more subs first
+    blogs = Blog.objects.all().order_by(Length("subs").desc())
+
+    if "search_post_type" in request.GET:
+        search = request.GET.get("search_post")
+        choice = request.GET.get("order_choice_post")
+        order = request.GET.get("order_by_post")
+        # searchs for posts by name or by client name
+        posts = (Post.objects.filter(title__contains=search, blog__in=post_blogs) \
+                 | Post.objects.filter(client__user__username__contains=search, blog__in=post_blogs))
+
+        if order == "asc":
+            order = ""
+        elif order == "desc":
+            order = "-"
+
+        if choice == "recent":
+            posts = posts.order_by(order + "date")
+        elif choice == "likes":
+            posts = posts.annotate(count=Count("likes")).order_by(order + "count")
+        elif choice == "comments":
+            posts = posts.annotate(count=Count("comment")).order_by(order + "count")
+
+    if "search_blog_type" in request.GET:
+        search = request.GET.get("search_blog")
+        topics = request.GET.getlist("topic_choice_blog")
+        choice = request.GET.get("order_choice_blog")
+        order = request.GET.get("order_by_blog")
+
+        # searches for pages with that name or owner name
+        blogs = (Blog.objects.filter(
+            name__contains=search).distinct())  # | Blog.objects.filter(owner__user__name__in=search))
+        if topics:
+            blogs = blogs & (Blog.objects.filter(topic__id__in=topics).distinct())
+
+        if order == "asc":
+            order = ""
+        elif order == "desc":
+            order = "-"
+
+        if choice == "subs":
+            blogs = blogs.annotate(count=Count("subs")).order_by(order + "count")
+        elif choice == "posts":
+            blogs = blogs.annotate(count=Count("post")).order_by(order + "count")
+
+        # blogs = blogs.order_by(Length("subs").desc())
+
+    posts_more_det = []
+    for post in posts:
+        posts_detail = {}
+        posts_detail["comments"] = post_com.get(post.id, [])
+        posts_detail["post"] = post
+        if post.likes.count() > 0:
+            if client in post.likes.all():
+                posts_detail["like"] = True
+            else:
+                posts_detail["like"] = False
+        else:
+            posts_detail["like"] = False
+
+        topic = Topic.objects.get(name="Personal")
+        blog = Blog.objects.get(owner__in=[post.client], topic=topic.id)
+        posts_detail["personal"] = blog.id
+
+        posts_more_det.append(posts_detail)
+    if "search_query" in request.GET:
+        search_query = "blog"
+    else:
+        search_query = "post"
+
+    blogs = blogs.annotate(count_post=Count("post"))
+    blogs = json.loads(serialize('json', blogs))
+
+    print(blogs)
+    return Response({
+       "blogs": blogs,
+       "posts_more_det": posts_more_det,
+       "search_query": search_query
+    })
 
 
 def main_page(request):
@@ -163,7 +325,6 @@ def main_page(request):
             posts_more_det.append(posts_detail)
         if "search_query" in request.GET:
             search_query = "blog"
-            print("pls")
         else:
             search_query = "post"
 
@@ -250,7 +411,7 @@ def profile_page(request, name):
         return render(request, "profile_page.html", {"client": user, "form_edit": form, "form_errors": form.errors})
 
 
-def my_profile(request):
+def my_profile2(request):
     if not request.user.is_authenticated:
         return redirect('/login')
     return redirect("/profile/" + str(request.user.username))
@@ -337,7 +498,7 @@ def blog_page(request, num):
     })
 
 
-def my_blog(request):
+def my_blog2(request):
     if not request.user.is_authenticated:
         return redirect('/login')
     client = Client.objects.get(user=request.user.id)
@@ -492,7 +653,7 @@ def blog_invites(request):
         return redirect('/blog/' + blog_id)
 
 
-def blog_post(request):
+def blog_post2(request):
     if not request.user.is_authenticated:
         return redirect('/login')
     blog_id = request.POST.get('blog_id')
@@ -547,7 +708,7 @@ def settings(request):
             return redirect("/login")
 
 
-def post_comment(request):
+def post_comment2(request):
     if not request.user.is_authenticated:
         return redirect('/login')
 
