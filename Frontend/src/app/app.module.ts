@@ -12,9 +12,11 @@ import { PostComponent } from './components/post/post.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {MatIconModule} from '@angular/material/icon';
 import { CreatePostComponent } from './components/create-post/create-post.component';
+import { CommentsModalComponent } from './components/comments-modal/comments-modal.component';
+import { CommentComponent } from './components/comment/comment.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, RegisterComponent, ProfileComponent, PostComponent, CreatePostComponent],
+  declarations: [AppComponent, LoginComponent, RegisterComponent, ProfileComponent, PostComponent, CreatePostComponent, CommentsModalComponent, CommentComponent],
   imports: [BrowserModule, FormsModule, HttpClientModule, AppRoutingModule, NgbModule, MatIconModule],    // add this
   providers: [UserService],    // add this
   bootstrap: [AppComponent]
