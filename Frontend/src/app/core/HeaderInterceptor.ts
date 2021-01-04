@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
  */
 export class HeaderInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token =  StorageService.getAuthToken();
+    const token = StorageService.getAuthToken();
     if (token != null){
       const clonedRequest = req.clone({ headers: req.headers.append('Authorization', token) });
       return next.handle(clonedRequest);

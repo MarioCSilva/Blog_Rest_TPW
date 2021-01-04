@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthenticationService} from '../../services/authentication.service';
+import {User} from '../../models/User';
+import {StorageService} from '../../services/storage.service';
 
 @Component({
   selector: 'app-register',
@@ -7,13 +10,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegisterComponent implements OnInit {
 
-  constructor() { }
+  username: string;
+  password: string;
+  email: string;
+  cpassword: string;
+
+  constructor(private authservice: AuthenticationService) { }
 
   ngOnInit(): void {
   }
 
   register(): void{
-    console.log("register");
+    const user: User = {
+      username: this.username,
+      password: this.password,
+      password2: this.cpassword,
+      email: this.email
+    };
+    this.authservice.register(user).subscribe(token => {StorageService.setAuthToken(token); });
   }
 
 }

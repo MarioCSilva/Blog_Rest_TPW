@@ -6,31 +6,31 @@
 
     <form (ngSubmit)="register()">
       <div class="form-group ">
-        <input type="email" placeholder="Email" >
+        <input [(ngModel)]="email" name="email" type="email" placeholder="Email" >
       </div>
 
       <div class="form-group show_error">
         Email Errors
       </div>
       <div class="form-group">
-        <input type="text" placeholder="Username">
+        <input [(ngModel)]="username" name="username" type="text" placeholder="Username">
       </div>
       <div class="form-group show_error">
         Username Errors
       </div>
       <div class="form-group">
-        <input type="password" placeholder="Password">
+        <input [(ngModel)]="password" name="password" type="password" placeholder="Password">
       </div>
       <div class="form-group show_error">
         Password Errors
       </div>
       <div class="form-group">
-        <input type="password" placeholder="Confirm Password">
+        <input [(ngModel)]="cpassword" name="cpassword" type="password" placeholder="Confirm Password">
       </div>
       <div class="form-group show_error">
         Confirm Password
       </div>
-      <button (submit)="register()" type="submit"  class="btn rounded-pill btn-block btn-dark" value="Register" name="register">Register</button>
+      <button type="submit"  class="btn rounded-pill btn-block btn-dark" value="Register" name="register">Register</button>
     </form>
 
   </div>
