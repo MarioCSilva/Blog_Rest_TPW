@@ -55,6 +55,12 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ['title', 'client', 'date', 'image', 'text', 'blog', 'likes']
 
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        # add all comments to the post
+        ret['comments'] = CommentSerializer(Comment.objects.filter(post=instance.id), many=True).data
+        return ret
+
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:

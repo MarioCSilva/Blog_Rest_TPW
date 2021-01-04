@@ -92,7 +92,6 @@ def my_blog(request):
     return Response("/blog/" + str(blog.id))
 
 
-# curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186" -X POST "http://localhost:8000/ws/post_comment/?post_id=5&com_text='hello'"
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def post_comment(request):
@@ -212,6 +211,56 @@ def main_page(request):
        "posts_more_det": posts_more_det,
        "search_query": search_query
     })
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def blog_page(request, num):
+    data = request.data
+
+    request_client_id = get_object_or_404(Client, user=request.user).id
+    blog = Blog.objects.get(id=num)
+
+    # check if this blog is the client's personal
+    personal = len([topic for topic in blog.topic.all() if topic.name == "Personal"]) > 0
+
+    # check if the client has permission for this blog
+    permission = len([client for client in blog.owner.all() if request_client_id == client.id]) > 0
+
+    # check if the client is subbed to this blog
+    subbed = len([client for client in blog.subs.all() if request_client_id == client.id]) > 0
+
+    posts = Post.objects.filter(blog=blog.id)
+
+    if "search_post" in data:
+        search = data["search_post"]
+        choice = data["order_choice_post"]
+        order = data["order_by_post"]
+        # searchs for posts by name or by client name
+        posts = (Post.objects.filter(title__contains=search, blog=blog.id) \
+                 | Post.objects.filter(client__user__username__contains=search, blog=blog.id))
+
+        if order == "asc":
+            order = ""
+        elif order == "desc":
+            order = "-"
+
+        if choice == "recent":
+            posts = posts.order_by(order + "date")
+        elif choice == "likes":
+            posts = posts.order_by(order + "likes", "-date")
+        elif choice == "comments":
+            posts = posts.annotate(count=Count("comment")).order_by(order + "count")
+
+    data = {
+        "blog": BlogSerializer(blog).data,
+        "posts": PostSerializer(posts, many=True).data,
+        "permission": permission,
+        "personal": personal,
+        "subbed": subbed,
+    }
+
+    return Response(data)
 
 
 @api_view(['POST'])
