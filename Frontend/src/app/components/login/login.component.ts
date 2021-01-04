@@ -13,13 +13,12 @@ export class LoginComponent implements OnInit {
   public password;
   constructor(
     private authService: AuthenticationService,
-    private storageService: StorageService
   ) { }
 
   ngOnInit(): void {
   }
 
   login(): void{
-    this.authService.login(this.username, this.password).subscribe(token => {this.storageService.setAuthToken(token.token); });
+    this.authService.login(this.username, this.password).subscribe(token => {StorageService.setAuthToken(token.token); });
   }
 }

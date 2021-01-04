@@ -20,4 +20,9 @@ export class CommentService {
     const url = this.baseURL + 'post_comment/';
     return  this.http.post(url, comment, httpOptions);
   }
+  getComments(post: number): Observable<Comment> {
+    // TODO: Check api endpoint
+    const url = this.baseURL + 'comment';
+    return this.http.get<Comment>(url);
+  }
 }
