@@ -56,7 +56,7 @@ def register(request):
 @permission_classes([IsAuthenticated])
 class Profile(APIView):
     def get(self, request, name):
-        client = Client.objects.get(user__username=name)
+        client = get_object_or_404(Client, user__username=name)
         owner = request.user.username == name
 
         client_serializer = ClientSerializer(data=client.__dict__)
@@ -70,7 +70,7 @@ class Profile(APIView):
 
     # Ver dps o update
     def put(self, request, name):
-        client = Client.objects.get(user_id=request.user.id)
+        client = get_object_or_404(Client, user=request.user).id
         client_serializer = ClientSerializer(data=client.__dict__)
 
         if client_serializer.is_valid():
@@ -86,7 +86,7 @@ class Profile(APIView):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def my_blog(request):
-    client = Client.objects.get(user=request.user.id)
+    client = get_object_or_404(Client, user=request.user).id
     topic = Topic.objects.get(name="Personal")
     blog = Blog.objects.get(owner__in=[client], topic=topic.id)
     return Response("/blog/" + str(blog.id))
@@ -97,16 +97,24 @@ def my_blog(request):
 @permission_classes([IsAuthenticated])
 def post_comment(request):
     data = request.data
-    client = Client.objects.get(user=request.user).id
+    client = get_object_or_404(Client, user=request.user).id
     data['client'] = client
 
-    com_serializer = CommentSerializer(data=data)
+    # check permissions to create a comment on this post
+    post = get_object_or_404(Post, id=data['post'])
+    blog = Blog.objects.get(id=post.blog)
 
-    if com_serializer.is_valid():
-        com_serializer.save()
-        data = {'success': 'successfully added a comment to post'}
+    if not blog.isPublic and not client in blog.subs.all():
+        data = {'error': 'not enough permissions'}
     else:
-        data = com_serializer.errors
+        com_serializer = CommentSerializer(data=data)
+
+        if com_serializer.is_valid():
+            com_serializer.save()
+            data = {'success': 'successfully added a comment to post'}
+        else:
+            data = com_serializer.errors
+
     return Response(data)
 
 
@@ -121,7 +129,7 @@ def main_page(request):
         com_list.append(comment)
         post_com[comment.post.id] = com_list
 
-    client = Client.objects.get(user=request.user)
+    client = get_object_or_404(Client, user=request.user)
     post_blogs = Blog.objects.filter(subs__in=[client])
     # recent ones first
     posts = Post.objects.filter(blog__in=post_blogs).order_by("-date")
@@ -234,7 +242,7 @@ def new_post(request):
 @permission_classes([IsAuthenticated])
 def new_blog(request):
     data = request.data
-    client = Client.objects.get(user=request.user).id
+    client = get_object_or_404(Client, user=request.user).id
     data['client'] = client
     data['owner'] = [client]
     data['subs'] = [client]
