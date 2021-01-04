@@ -1,9 +1,8 @@
-import { Component, OnInit ,ViewEncapsulation} from '@angular/core';
+import { Component, OnInit , ViewEncapsulation} from '@angular/core';
 import {Post} from '../../models/Post';
 import {User} from '../../models/User';
 import {Comment} from '../../models/Comment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
 
 /*
   See tutorial

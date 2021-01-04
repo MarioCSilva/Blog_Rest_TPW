@@ -11,9 +11,10 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { PostComponent } from './components/post/post.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {MatIconModule} from '@angular/material/icon';
+import { CreatePostComponent } from './components/create-post/create-post.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, RegisterComponent, ProfileComponent, PostComponent],
+  declarations: [AppComponent, LoginComponent, RegisterComponent, ProfileComponent, PostComponent, CreatePostComponent],
   imports: [BrowserModule, FormsModule, HttpClientModule, AppRoutingModule, NgbModule, MatIconModule],    // add this
   providers: [UserService],    // add this
   bootstrap: [AppComponent]

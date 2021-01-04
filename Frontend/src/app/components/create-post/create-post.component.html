@@ -1,0 +1,29 @@
+<ng-template #template let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Modal title</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form (ngSubmit)="createPost()">
+      <!--<input name="blog_id" type="text" value="{{ blog.id }}" style="display: none" required> -->
+      <div class="form-group">
+        <label for="title-input" class="col-form-label">Title:</label>
+        <input id="title-input" type="text" placeholder="Title" name="title" [(ngModel)]="title">
+      </div>
+      <div class="form-group">
+        <label for="content-input" class="col-form-label">Message:</label>
+        <input id="content-input" type="text" placeholder="Content" name="content" [(ngModel)]="content">
+      </div>
+      <div class="form-group">
+        <input type="file" name="file" id="file-input">
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    <button type="submit" (submit)="createPost()" class="btn btn-primary" name="Create Post" value="Create Post">Create Post</button>
+  </div>
+</ng-template>
+
