@@ -13,7 +13,7 @@ jobs:
           install-yarn: true
           node-version: latest
       - run: cd Frontend && npm ci
-      - run: cd Frontend && npm test
+      - run: cd Frontend && CI=true npm run build
 
 workflows:
   test_my_app:
