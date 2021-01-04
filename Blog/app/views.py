@@ -7,6 +7,7 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.status import HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
+from django.shortcuts import get_object_or_404
 
 from app.forms import *
 from django.contrib.auth import login, authenticate, logout
@@ -112,7 +113,7 @@ def post_comment(request):
 # curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186" http://localhost:8000/ws/
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def main_page_get(request):
+def main_page(request):
     comments = Comment.objects.all()
     post_com = {}
     for comment in comments:
@@ -209,16 +210,22 @@ def main_page_get(request):
 @permission_classes([IsAuthenticated])
 def new_post(request):
     data = request.data
-    client = Client.objects.get(user=request.user).id
+    client = get_object_or_404(Client, user=request.user).id
     data['client'] = client
 
-    post_serializer = PostSerializer(data=data)
+    # check permissions to create new post on this blog
+    blog = get_object_or_404(Blog, id=data['blog'])
 
-    if post_serializer.is_valid():
-        post_serializer.save()
-        data = {'success': 'successfully created a new post'}
+    if not blog.isPublic and not client in blog.subs.all():
+        data = {'error': 'not enough permissions'}
     else:
-        data = post_serializer.errors
+        post_serializer = PostSerializer(data=data)
+
+        if post_serializer.is_valid():
+            post_serializer.save()
+            data = {'success': 'successfully created a new post'}
+        else:
+            data = post_serializer.errors
 
     return Response(data)
 
@@ -247,7 +254,7 @@ def new_blog(request):
 
 
 
-def main_page(request):
+def main_page2(request):
     if not request.user.is_authenticated:
         return redirect('/login')
 
@@ -382,7 +389,7 @@ def main_page(request):
                        "search_query": search_query})
 
 
-def entry_page(request):
+def entry_page2(request):
     if request.user.is_authenticated:
         return redirect("home")
 
@@ -433,7 +440,7 @@ def entry_page(request):
         return render(request, "entry_page.html", {"form_login": LoginForm(), "form_register": RegisterForm()})
 
 
-def profile_page(request, name):
+def profile_page2(request, name):
     if not request.user.is_authenticated or request.method not in ["GET", "POST"]:
         return redirect('/login')
 
@@ -461,7 +468,7 @@ def my_profile2(request):
     return redirect("/profile/" + str(request.user.username))
 
 
-def blog_page(request, num):
+def blog_page2(request, num):
     if not request.user.is_authenticated:
         return redirect('/login')
 
@@ -550,7 +557,7 @@ def my_blog2(request):
     return redirect("/blog/" + str(blog.id))
 
 
-def blog_owners(request):
+def blog_owners2(request):
     if not request.user.is_authenticated:
         return redirect('/login')
     form = EditBlogOwners(data=request.GET)
@@ -571,7 +578,7 @@ def blog_owners(request):
         return redirect('/blog/' + blog_id)
 
 
-def blog_topics(request):
+def blog_topics2(request):
     if not request.user.is_authenticated:
         return redirect('/login')
     blog_id = request.GET.get('blog_id')
@@ -594,7 +601,7 @@ def blog_topics(request):
         return redirect('/blog/' + blog_id)
 
 
-def blog_subs(request):
+def blog_subs2(request):
     if not request.user.is_authenticated:
         return redirect('/login')
     blog_id = request.GET.get('blog_id')
@@ -614,7 +621,7 @@ def blog_subs(request):
         return redirect('/blog/' + blog_id)
 
 
-def blog_edit(request):
+def blog_edit2(request):
     if not request.user.is_authenticated:
         return redirect('/login')
     blog_id = request.GET.get('blog_id')
@@ -632,7 +639,7 @@ def blog_edit(request):
         return redirect('/blog/' + blog_id)
 
 
-def blog_follow(request):
+def blog_follow2(request):
     if not request.user.is_authenticated:
         return redirect('/login')
     blog_id = request.GET.get('blog_id')
@@ -655,7 +662,7 @@ def blog_follow(request):
     return redirect('/blog/' + blog_id)
 
 
-def blog_delete(request):
+def blog_delete2(request):
     if not request.user.is_authenticated:
         return redirect('/login')
     blog_id = request.GET.get('blog_id')
@@ -665,7 +672,7 @@ def blog_delete(request):
     return redirect('/')
 
 
-def blog_visibility(request):
+def blog_visibility2(request):
     if not request.user.is_authenticated:
         return redirect('/login')
     blog_id = request.GET.get('blog_id')
@@ -677,7 +684,7 @@ def blog_visibility(request):
     return redirect('/blog/' + blog_id)
 
 
-def blog_invites(request):
+def blog_invites2(request):
     if not request.user.is_authenticated:
         return redirect('/login')
     blog_id = request.GET.get('blog_id')
@@ -718,7 +725,7 @@ def blog_post2(request):
         return redirect('/blog/' + blog_id)
 
 
-def settings(request):
+def settings2(request):
     if not request.user.is_authenticated:
         return redirect("/login")
 
@@ -766,7 +773,7 @@ def post_comment2(request):
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
-def post_like(request):
+def post_like2(request):
     if request.is_ajax():
         if not request.user.is_authenticated:
             return redirect('/login')
@@ -792,7 +799,7 @@ def post_like(request):
         return HttpResponse('sucess')
 
 
-def blog_pic(request):
+def blog_pic2(request):
     if not request.user.is_authenticated:
         return redirect('/login')
     blog_id = request.POST.get('blog_id')
