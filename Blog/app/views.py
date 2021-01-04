@@ -218,17 +218,17 @@ def main_page(request):
 def blog_page(request, num):
     data = request.data
 
-    request_client_id = get_object_or_404(Client, user=request.user).id
+    req_client_id = get_object_or_404(Client, user=request.user).id
     blog = Blog.objects.get(id=num)
 
     # check if this blog is the client's personal
     personal = len([topic for topic in blog.topic.all() if topic.name == "Personal"]) > 0
 
     # check if the client has permission for this blog
-    permission = len([client for client in blog.owner.all() if request_client_id == client.id]) > 0
+    permission = len([client for client in blog.owner.all() if req_client_id == client.id]) > 0
 
     # check if the client is subbed to this blog
-    subbed = len([client for client in blog.subs.all() if request_client_id == client.id]) > 0
+    subbed = len([client for client in blog.subs.all() if req_client_id == client.id]) > 0
 
     posts = Post.objects.filter(blog=blog.id)
 
@@ -252,9 +252,13 @@ def blog_page(request, num):
         elif choice == "comments":
             posts = posts.annotate(count=Count("comment")).order_by(order + "count")
 
+    posts = PostSerializer(posts, many=True).data
+    for post in posts:
+        post['req_client_like'] = len([client_id for client_id in post['likes'] if req_client_id == client_id]) > 0
+
     data = {
         "blog": BlogSerializer(blog).data,
-        "posts": PostSerializer(posts, many=True).data,
+        "posts": posts,
         "permission": permission,
         "personal": personal,
         "subbed": subbed,
@@ -333,7 +337,6 @@ def blog_follow(request):
         data = {'error': "Unsupported operation."}
 
     return Response(data)
-
 
 
 def main_page2(request):
