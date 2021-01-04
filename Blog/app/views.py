@@ -218,8 +218,7 @@ def main_page(request):
 @permission_classes([IsAuthenticated])
 def new_post(request):
     data = request.data
-    client = get_object_or_404(Client, user=request.user).id
-    data['client'] = client
+    client = get_object_or_404(Client, user=request.user)
 
     # check permissions to create new post on this blog
     blog = get_object_or_404(Blog, id=data['blog'])
@@ -258,7 +257,33 @@ def new_blog(request):
     return Response(data)
 
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def blog_follow(request):
+    client = get_object_or_404(Client, user=request.user)
 
+    data = request.data
+    option = data['option']
+    blog = get_object_or_404(Blog, id=data['blog'])
+
+    if client in blog.owner.all():
+        data = {'error': "Can't " + option + " a blog that you own."}
+    elif option == "follow":
+        if blog.isPublic:
+            data = {'success': 'Successfully followed this blog.'}
+            blog.subs.add(client)
+        else:
+            data = {'success': 'Request sent to follow this blog.'}
+            blog.invites.add(client)
+        blog.save()
+    elif option == "unfollow":
+        data = {'success': 'Successfully unfollowed this blog.'}
+        blog.subs.remove(client)
+        blog.save()
+    else:
+        data = {'error': "Unsupported operation."}
+
+    return Response(data)
 
 
 

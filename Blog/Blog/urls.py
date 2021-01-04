@@ -51,7 +51,6 @@ urlpatterns = [
     path('ws/blog_topics', views.blog_topics2),
     path('ws/blog_edit', views.blog_edit2),
     path('ws/blog_subs', views.blog_subs2),
-    path('ws/blog_follow', views.blog_follow2),
     path('ws/blog_delete', views.blog_delete2),
     path('ws/blog_visibility', views.blog_visibility2),
     path('ws/blog_invites', views.blog_invites2),
@@ -68,6 +67,7 @@ urlpatterns = [
     path('ws/new_post', views.new_post, name='new_post'),
     path('ws/new_blog', views.new_blog, name='new_blog'),
     path('ws/post_comment', views.post_comment),
+    path('ws/blog_follow', views.blog_follow),
 
 ]
 
