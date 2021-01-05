@@ -49,6 +49,12 @@ class BlogSerializer(serializers.ModelSerializer):
         model = Blog
         fields = ['name', 'owner', 'subs', 'blog_pic', 'isPublic', 'invites', 'description', 'topic']
 
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        # add all posts to the blog
+        ret['posts'] = PostSerializer(Post.objects.filter(blog=instance.id), many=True).data
+        return ret
+
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:

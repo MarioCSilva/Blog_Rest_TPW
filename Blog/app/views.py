@@ -89,7 +89,8 @@ def my_blog(request):
     client = get_object_or_404(Client, user=request.user).id
     topic = Topic.objects.get(name="Personal")
     blog = Blog.objects.get(owner__in=[client], topic=topic.id)
-    return Response("/blog/" + str(blog.id))
+    data = BlogSerializer(blog).data
+    return Response(data)
 
 
 @api_view(['POST'])
