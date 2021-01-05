@@ -5,7 +5,7 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 
-import { StorageService } from '../../services/storage.service';
+import { StorageService } from '../services/storage.service';
 import { Observable } from 'rxjs';
 
 
