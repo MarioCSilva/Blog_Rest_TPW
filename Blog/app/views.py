@@ -89,10 +89,10 @@ def my_blog(request):
     client = get_object_or_404(Client, user=request.user).id
     topic = Topic.objects.get(name="Personal")
     blog = Blog.objects.get(owner__in=[client], topic=topic.id)
-    return Response("/blog/" + str(blog.id))
+    data = BlogSerializer(blog).data
+    return Response(data)
 
 
-# curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186" -X POST "http://localhost:8000/ws/post_comment/?post_id=5&com_text='hello'"
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def post_comment(request):
@@ -214,6 +214,60 @@ def main_page(request):
     })
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def blog_page(request, num):
+    data = request.data
+
+    req_client_id = get_object_or_404(Client, user=request.user).id
+    blog = Blog.objects.get(id=num)
+
+    # check if this blog is the client's personal
+    personal = len([topic for topic in blog.topic.all() if topic.name == "Personal"]) > 0
+
+    # check if the client has permission for this blog
+    permission = len([client for client in blog.owner.all() if req_client_id == client.id]) > 0
+
+    # check if the client is subbed to this blog
+    subbed = len([client for client in blog.subs.all() if req_client_id == client.id]) > 0
+
+    posts = Post.objects.filter(blog=blog.id)
+
+    if "search_post" in data:
+        search = data["search_post"]
+        choice = data["order_choice_post"]
+        order = data["order_by_post"]
+        # searchs for posts by name or by client name
+        posts = (Post.objects.filter(title__contains=search, blog=blog.id) \
+                 | Post.objects.filter(client__user__username__contains=search, blog=blog.id))
+
+        if order == "asc":
+            order = ""
+        elif order == "desc":
+            order = "-"
+
+        if choice == "recent":
+            posts = posts.order_by(order + "date")
+        elif choice == "likes":
+            posts = posts.order_by(order + "likes", "-date")
+        elif choice == "comments":
+            posts = posts.annotate(count=Count("comment")).order_by(order + "count")
+
+    posts = PostSerializer(posts, many=True).data
+    for post in posts:
+        post['req_client_like'] = len([client_id for client_id in post['likes'] if req_client_id == client_id]) > 0
+
+    data = {
+        "blog": BlogSerializer(blog).data,
+        "posts": posts,
+        "permission": permission,
+        "personal": personal,
+        "subbed": subbed,
+    }
+
+    return Response(data)
+
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def new_post(request):
@@ -284,7 +338,6 @@ def blog_follow(request):
         data = {'error': "Unsupported operation."}
 
     return Response(data)
-
 
 
 def main_page2(request):

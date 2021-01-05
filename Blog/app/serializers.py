@@ -49,11 +49,23 @@ class BlogSerializer(serializers.ModelSerializer):
         model = Blog
         fields = ['name', 'owner', 'subs', 'blog_pic', 'isPublic', 'invites', 'description', 'topic']
 
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        # add all posts to the blog
+        ret['posts'] = PostSerializer(Post.objects.filter(blog=instance.id), many=True).data
+        return ret
+
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ['title', 'client', 'date', 'image', 'text', 'blog', 'likes']
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        # add all comments to the post
+        ret['comments'] = CommentSerializer(Comment.objects.filter(post=instance.id), many=True).data
+        return ret
 
 
 class CommentSerializer(serializers.ModelSerializer):

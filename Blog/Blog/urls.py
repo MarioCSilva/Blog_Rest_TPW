@@ -60,7 +60,6 @@ urlpatterns = [
     path('blog_pic/', views.blog_pic2),
 
     path('ws/my_profile', views.my_profile2),
-    path('ws/blog/<int:num>', views.blog_page2, name='blog'),
     path('ws/logout', auth_views.LogoutView.as_view(next_page='login/'), name='logout'),
     path('ws/blog_owners', views.blog_owners2),
     path('ws/blog_topics', views.blog_topics2),
@@ -83,6 +82,7 @@ urlpatterns = [
     path('ws/new_blog', views.new_blog, name='new_blog'),
     path('ws/post_comment', views.post_comment),
     path('ws/blog_follow', views.blog_follow),
+    path('ws/blog/<int:num>', views.blog_page, name='blog'),
 
     path('ws/schema/swagger', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('ws/schema/redoc', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
