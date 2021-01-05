@@ -5,15 +5,15 @@ import { FormsModule } from '@angular/forms';    // add this
 import { AppComponent } from './app.component';
 import { UserService } from './user.service';
 import { AppRoutingModule } from './app-routing.module';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './features/auth/components/login/login.component';
+import { RegisterComponent } from './features/auth/components/register/register.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { PostComponent } from './components/post/post.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {MatIconModule} from '@angular/material/icon';
-import { CreatePostComponent } from './components/create-post/create-post.component';
-import { CommentsModalComponent } from './components/comments-modal/comments-modal.component';
-import { CommentComponent } from './components/comment/comment.component';
+import { CreatePostComponent } from './shared/components/create-post/create-post.component';
+import { CommentsModalComponent } from './shared/components/comments-modal/comments-modal.component';
+import { CommentComponent } from './shared/components/comment/comment.component';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegisterComponent, ProfileComponent, PostComponent, CreatePostComponent, CommentsModalComponent, CommentComponent],

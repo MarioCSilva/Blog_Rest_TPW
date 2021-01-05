@@ -14,25 +14,7 @@ export class AppComponent implements OnInit {
    */
   public user: any;
 
-  constructor(public _userService: UserService) { }
+  constructor() { }
 
-  ngOnInit() {
-    this.user = {
-      username: '',
-      password: ''
-    };
-  }
-
-  login() {
-    this._userService.login({'username': this.user.username, 'password': this.user.password});
-  }
-
-  refreshToken() {
-    this._userService.refreshToken();
-  }
-
-  logout() {
-    this._userService.logout();
-  }
-
+  ngOnInit() {}
 }

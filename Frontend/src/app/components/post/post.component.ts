@@ -58,14 +58,5 @@ export class PostComponent implements OnInit {
     this.isLiked = !this.isLiked;
     console.log(this.isLiked);
   }
-  openComments(content): void{
-    // Adjust css
-    this.modalService.open(content, {
-      backdropClass: 'light-blue-backdrop',
-      windowClass: 'dark-modal',
-      size: 'md',
-      centered: true
-    });
-  }
 
 }

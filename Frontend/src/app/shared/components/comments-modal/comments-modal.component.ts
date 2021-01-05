@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewEncapsulation, ViewChild, ElementRef} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {Comment} from '../../models/Comment';
+import {Comment} from '../../../models/Comment';
 
 @Component({
   selector: 'app-comments-modal',
