@@ -4,8 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import {LoginComponent} from './features/auth/components/login/login.component';
 import {RegisterComponent} from './features/auth/components/register/register.component';
 import {ProfileComponent} from './components/profile/profile.component';
-import {PostComponent} from './components/post/post.component';
-import {BlogPageComponent} from './features/blog/pages/blog-page/blog-page.component';
+import {BlogPageComponent} from "./features/blog/pages/blog-page/blog-page.component";
+import {PostComponent} from "./shared/components/post/post.component";
 
 
 const routes: Routes = [
