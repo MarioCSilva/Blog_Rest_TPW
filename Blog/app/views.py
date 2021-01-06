@@ -222,18 +222,9 @@ def blog_page(request, num):
     req_client_id = get_object_or_404(Client, user=request.user).id
     blog = Blog.objects.get(id=num)
 
-    # check if this blog is the client's personal
-    personal = len([topic for topic in blog.topic.all() if topic.name == "Personal"]) > 0
-
-    # check if the client has permission for this blog
-    permission = len([client for client in blog.owner.all() if req_client_id == client.id]) > 0
-
-    # check if the client is subbed to this blog
-    subbed = len([client for client in blog.subs.all() if req_client_id == client.id]) > 0
-
-    posts = Post.objects.filter(blog=blog.id)
-
     if "search_post" in data:
+        posts = Post.objects.filter(blog=blog.id)
+
         search = data["search_post"]
         choice = data["order_choice_post"]
         order = data["order_by_post"]
@@ -253,19 +244,26 @@ def blog_page(request, num):
         elif choice == "comments":
             posts = posts.annotate(count=Count("comment")).order_by(order + "count")
 
-    posts = PostSerializer(posts, many=True).data
-    for post in posts:
-        post['req_client_like'] = len([client_id for client_id in post['likes'] if req_client_id == client_id]) > 0
+        posts = PostSerializer(posts, many=True).data
+        for post in posts:
+            post['req_client_like'] = len([client_id for client_id in post['likes'] if req_client_id == client_id]) > 0
 
-    data = {
-        "blog": BlogSerializer(blog).data,
-        "posts": posts,
-        "permission": permission,
-        "personal": personal,
-        "subbed": subbed,
-    }
+    # check if this blog is the client's personal
+    personal = len([topic for topic in blog.topic.all() if topic.name == "Personal"]) > 0
 
-    return Response(data)
+    # check if the client has permission for this blog
+    permission = len([client for client in blog.owner.all() if req_client_id == client.id]) > 0
+
+    # check if the client is subbed to this blog
+    subbed = len([client for client in blog.subs.all() if req_client_id == client.id]) > 0
+
+    blog_data = BlogSerializer(blog).data
+    blog_data.update({'personal': personal, 'permission': permission, 'subbed': subbed})
+
+    if posts is not None:
+        blog_data['update'] = posts
+
+    return Response(blog_data)
 
 
 @api_view(['POST'])
