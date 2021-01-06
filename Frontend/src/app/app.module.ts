@@ -1,24 +1,14 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';    // add this
-import { FormsModule } from '@angular/forms';    // add this
 import { AppComponent } from './app.component';
 import { UserService } from './user.service';
-import { AppRoutingModule } from './app-routing.module';
-import { LoginComponent } from './features/auth/components/login/login.component';
-import { RegisterComponent } from './features/auth/components/register/register.component';
-import { ProfileComponent } from './components/profile/profile.component';
-import { PostComponent } from './components/post/post.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import {MatIconModule} from '@angular/material/icon';
-import { CreatePostComponent } from './shared/components/create-post/create-post.component';
-import { CommentsModalComponent } from './shared/components/comments-modal/comments-modal.component';
-import { CommentComponent } from './shared/components/comment/comment.component';
+import {SharedModule} from './shared/shared.module';
+import {AppRoutingModule} from './app-routing.module';
+import {AuthModule} from './features/auth/auth.module';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, RegisterComponent, ProfileComponent, PostComponent, CreatePostComponent, CommentsModalComponent, CommentComponent],
-  imports: [BrowserModule, FormsModule, HttpClientModule, AppRoutingModule, NgbModule, MatIconModule],    // add this
-  providers: [UserService],    // add this
+  declarations: [AppComponent],
+  imports: [SharedModule, AppRoutingModule, AuthModule],
+  providers: [UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

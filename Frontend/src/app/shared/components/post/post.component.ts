@@ -1,8 +1,7 @@
 import { Component, OnInit , ViewEncapsulation} from '@angular/core';
-import {Post} from '../../core/models/Post';
-import {User} from '../../core/models/User';
-import {Comment} from '../../core/models/Comment';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {Post} from '../../../core/models/Post';
+import {User} from '../../../core/models/User';
+import {Comment} from '../../../core/models/Comment';
 
 /*
   See tutorial
@@ -22,7 +21,7 @@ export class PostComponent implements OnInit {
   comments: Comment[];
   likes: number;
   isLiked: boolean;
-  constructor(private modalService: NgbModal) { }
+  constructor() { }
 
   ngOnInit(): void {
     this.isLiked = true;

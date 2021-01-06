@@ -23,7 +23,7 @@ export class CommentsModalComponent implements OnInit {
     this.modalService.open(this.template, {
       backdropClass: 'light-blue-backdrop',
       windowClass: 'dark-modal',
-      size: 'md',
+      size: 'lg',
       centered: true
     });
   }
