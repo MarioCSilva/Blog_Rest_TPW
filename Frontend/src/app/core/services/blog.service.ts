@@ -3,6 +3,7 @@ import {Observable} from 'rxjs';
 import {Blog} from '../models/Blog';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,8 +13,8 @@ export class BlogService {
 
   constructor(private http: HttpClient) { }
 
-  getMyBlog(): Observable<Blog> {
-    const url = this.baseURL + 'my_blog/';
+  getBlog(blog_id): Observable<Blog> {
+    const url = this.baseURL + 'blog/' + blog_id;
     return this.http.get<Blog>(url);
   }
 }
