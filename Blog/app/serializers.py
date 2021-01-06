@@ -37,6 +37,13 @@ class ClientSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'user_id', 'description', 'birthdate', 'sex']
         extra_kwargs = {"id": {"required": False, "allow_null": True}}
 
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+
+        ret['user'] = UserSerializer(instance.user).data
+
+        return ret
+
 
 class TopicSerializer(serializers.ModelSerializer):
     class Meta:
@@ -51,8 +58,15 @@ class BlogSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
+
+        ret['owner'] = ClientSerializer(instance.owner.all(), many=True).data
+        ret['subs'] = ClientSerializer(instance.subs.all(), many=True).data
+        ret['invites'] = ClientSerializer(instance.invites.all(), many=True).data
+        ret['topic'] = TopicSerializer(instance.topic.all(), many=True).data
+
         # add all posts to the blog
         ret['posts'] = PostSerializer(Post.objects.filter(blog=instance.id), many=True).data
+
         return ret
 
 
