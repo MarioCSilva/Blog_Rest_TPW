@@ -7,7 +7,7 @@ import {AuthModule} from './features/auth/auth.module';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [SharedModule, AppRoutingModule, AuthModule],
+  imports: [SharedModule, AppRoutingModule, AuthModule, ],
   providers: [UserService],
   bootstrap: [AppComponent]
 })

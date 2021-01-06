@@ -7,7 +7,7 @@ import { EntryPageComponent } from './pages/entry-page/entry-page.component';
 @NgModule({
   declarations: [LoginComponent, RegisterComponent, EntryPageComponent],
   imports: [
-    SharedModule
+    SharedModule,
   ],
   exports: [LoginComponent, RegisterComponent, EntryPageComponent]
 })

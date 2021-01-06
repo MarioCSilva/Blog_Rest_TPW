@@ -7,7 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EntryPageComponent implements OnInit {
 
+  value: string;
   constructor() { }
+
 
   ngOnInit(): void {
   }
