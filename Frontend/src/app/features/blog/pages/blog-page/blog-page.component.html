@@ -1,1 +1,7 @@
-<p>{{ blog.name }}</p>
+<div class="row col-sm-12">
+  <h1 style="color:white">{{blog.name}}</h1>
+
+  <app-post *ngFor="let post of blog.posts" [post]="post"></app-post>
+</div>
+
+

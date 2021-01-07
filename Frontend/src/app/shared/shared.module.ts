@@ -13,11 +13,12 @@ import {CommentsModalComponent} from './components/comments-modal/comments-modal
 import {PostComponent} from './components/post/post.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatInputModule} from '@angular/material/input';
+import {BlogPageComponent} from "../features/blog/pages/blog-page/blog-page.component";
 
 
 
 @NgModule({
-  declarations: [NavbarComponent, CommentComponent, CreatePostComponent, CommentsModalComponent, PostComponent],
+  declarations: [NavbarComponent, BlogPageComponent, CommentComponent, CreatePostComponent, CommentsModalComponent, PostComponent],
   imports: [BrowserModule, FormsModule, HttpClientModule, NgbModule, MatIconModule, BrowserAnimationsModule, MatInputModule],
   exports: [
     BrowserModule,
