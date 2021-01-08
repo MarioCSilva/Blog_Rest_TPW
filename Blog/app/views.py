@@ -56,15 +56,12 @@ def register(request):
 @permission_classes([IsAuthenticated])
 class Profile(APIView):
     def get(self, request, name):
-        client = get_object_or_404(Client, user__username=name)
+        cclient = get_object_or_404(Client, user__username=name)
         owner = request.user.username == name
 
-        client_serializer = ClientSerializer(data=client.__dict__)
+        client_serializer = ClientSerializer(cclient)
 
-        if client_serializer.is_valid():
-            data = {"client": client_serializer.data, "owner": owner}
-        else:
-            data = client_serializer.errors
+        data = {"client": client_serializer.data, "owner": owner}
 
         return Response(data)
 

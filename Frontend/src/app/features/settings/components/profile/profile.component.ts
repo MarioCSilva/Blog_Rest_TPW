@@ -33,8 +33,8 @@ export class ProfileComponent implements OnInit {
 
     this.profileService.getProfile('olasounovoaqui40').subscribe(data => {
       console.log(data);
-      this.client = data[0];
-      this.owner = data[1];
+      this.client = data['client'];
+      this.owner = data['owner'];
     });
   }
 
