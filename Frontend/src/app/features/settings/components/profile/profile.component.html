@@ -1,11 +1,11 @@
 <div>
-  <form action="" method="POST" name="edit_profile" enctype="multipart/form-data">
+  <form (ngSubmit)="updateProfile()">
     <div class="container">
       <div class="row">
         <div class="col-lg-3">
           <div class="row">
             <div class="col-lg-12">
-              <img id="profile_pic" style="border:1px solid white;border-radius: 50%" class="profile_img" src="../media/{{ client.profile_pic }}" />
+              <img id="profile_pic" style="border:1px solid white;border-radius: 50%" class="profile_img"  [src]="client.profile_pic" />
             </div>
           </div>
           <div class="row edit_input" style="display: none">
@@ -35,9 +35,6 @@
                     </div>
                     <div class="row sub_head">
                       <div class="col-lg-11">@{{ client.user.username }}</div>
-                      <div *ngIf="owner" class="col-lg-1">
-                        <button type="button" id="edit_button" class="btn btn-primary"><i class="fa fa-edit"></i></button>
-                      </div>
                     </div>
 
                   </div>
