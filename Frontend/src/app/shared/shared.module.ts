@@ -13,12 +13,14 @@ import {CommentsModalComponent} from './components/comments-modal/comments-modal
 import {PostComponent} from './components/post/post.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatInputModule} from '@angular/material/input';
-
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatOptionModule} from '@angular/material/core';
+import {MatSelectModule} from '@angular/material/select';
 
 
 @NgModule({
   declarations: [NavbarComponent, CommentComponent, CreatePostComponent, CommentsModalComponent, PostComponent],
-  imports: [BrowserModule, FormsModule, HttpClientModule, NgbModule, MatIconModule, BrowserAnimationsModule, MatInputModule],
+  imports: [BrowserModule, FormsModule, HttpClientModule, NgbModule, MatIconModule, BrowserAnimationsModule, MatInputModule, MatDatepickerModule, MatOptionModule, MatSelectModule],
   exports: [
     BrowserModule,
     CommonModule,
@@ -30,6 +32,9 @@ import {MatInputModule} from '@angular/material/input';
     MatIconModule,
     BrowserAnimationsModule,
     MatInputModule,
+    MatDatepickerModule,
+    MatOptionModule,
+    MatSelectModule,
     NavbarComponent,
     CommentComponent,
     CreatePostComponent,

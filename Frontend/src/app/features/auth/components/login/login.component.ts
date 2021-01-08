@@ -9,8 +9,9 @@ import {StorageService} from '../../../../core/services/storage.service';
 })
 export class LoginComponent implements OnInit {
 
-  public username;
-  public password;
+  username: string;
+  password: string;
+
   constructor(
     private authService: AuthenticationService,
   ) { }

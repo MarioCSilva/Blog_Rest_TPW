@@ -2,13 +2,26 @@
   <h4>Login</h4>
   <p>Already registered? Login here.</p>
   <form (ngSubmit)="login()">
-    <div class="form-group">
-      <input [(ngModel)]="username" name="username" type="text" placeholder="Username" class="form-control">
+
+    <div id="username_div"  class="form-group">
+      <mat-form-field >
+        <mat-label>Username</mat-label>
+        <input matInput type="text" name="username" [(ngModel)]="username">
+        <button mat-button *ngIf="username" matSuffix mat-icon-button aria-label="Clear" (click)="username=''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    <div id="password_div" class="form-group">
+      <mat-form-field >
+        <mat-label>Password</mat-label>
+        <input matInput type="password" name="password" [(ngModel)]="password">
+        <button mat-button *ngIf="password" matSuffix mat-icon-button aria-label="Clear" (click)="password=''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
     </div>
 
-    <div class="form-group">
-      <input [(ngModel)]="password" name="password" type="password" placeholder="Password" class="form-control">
-    </div>
     <div class="form-group show_error">
       <p>Username and password do not match.</p>
     </div>
