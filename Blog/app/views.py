@@ -5,7 +5,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.status import HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 
@@ -59,25 +59,25 @@ class Profile(APIView):
         client = get_object_or_404(Client, user__username=name)
         owner = request.user.username == name
 
-        client_serializer = ClientSerializer(data=client.__dict__)
+        client_serializer = ClientSerializer(client)
 
-        if client_serializer.is_valid():
-            data = {"client": client_serializer.data, "owner": owner}
-        else:
-            data = client_serializer.errors
+        data = {"client": client_serializer.data, "owner": owner}
 
         return Response(data)
 
-    # Ver dps o update
     def put(self, request, name):
-        client = get_object_or_404(Client, user=request.user).id
-        client_serializer = ClientSerializer(data=client.__dict__)
+        client = get_object_or_404(Client, user__username=name)
+
+        if client.user.id != request.user.id:
+            return Response({"error": "not enough permissions"}, status=HTTP_401_UNAUTHORIZED)
+
+        client_serializer = ClientSerializer(client, data=request.data, partial=True)
 
         if client_serializer.is_valid():
-            client = client_serializer.update()
+            client_serializer.save()
             data = {"client": client_serializer.data}
         else:
-            data = client_serializer.errors
+            return Response(client_serializer.errors, status=HTTP_400_BAD_REQUEST)
 
         return Response(data)
 
@@ -105,7 +105,7 @@ def post_comment(request):
     blog = Blog.objects.get(id=post.blog)
 
     if not blog.isPublic and not client in blog.subs.all():
-        data = {'error': 'not enough permissions'}
+        return Response({'error': 'not enough permissions'}, status=HTTP_401_UNAUTHORIZED)
     else:
         com_serializer = CommentSerializer(data=data)
 
