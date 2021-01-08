@@ -5,7 +5,7 @@
         <div class="col-lg-3">
           <div class="row">
             <div class="col-lg-12">
-              <img id="profile_pic" style="border:1px solid white;border-radius: 50%" class="profile_img"  [src]="client.profile_pic" />
+              <img id="profile_pic" style="border:1px solid white;border-radius: 50%" class="profile_img"  [src]="updateClient.profile_pic" />
             </div>
           </div>
           <div class="row edit_input" style="display: none">
@@ -27,14 +27,14 @@
                       <!-- Name -->
                       <mat-form-field >
                         <mat-label>Name</mat-label>
-                        <input [readonly]="(owner && updating) ? null : 'readonly'" matInput type="text" name="name" [(ngModel)]="client.name">
+                        <input [readonly]="(owner && updating) ? null : 'readonly'" matInput type="text" name="name" [(ngModel)]="updateClient.name">
                       </mat-form-field>
                     </div>
                     <div class="edit_input" style="display: none">
                       <input type="text" placeholder="Name">
                     </div>
                     <div class="row sub_head">
-                      <div class="col-lg-11">@{{ client.user.username }}</div>
+                      <div class="col-lg-11">@{{ updateClient. user.username }}</div>
                     </div>
 
                   </div>
@@ -44,7 +44,7 @@
                     <!-- Sex -->
                       <mat-form-field   appearance="fill">
                         <mat-label>Sex</mat-label>
-                        <mat-select [disabled]="(owner && updating) ? null : 'readonly'"  [(value)]="client.sex" name="sex">
+                        <mat-select [disabled]="(owner && updating) ? null : 'readonly'"  [(value)]="updateClient. sex" name="sex">
                           <mat-option value="Male">Male</mat-option>
                           <mat-option value="Female">Female</mat-option>
                           <mat-option value="Other">Other</mat-option>
@@ -56,7 +56,7 @@
                     <!-- Birthdate  -->
                     <mat-form-field appearance="fill">
                       <mat-label>Choose a date</mat-label>
-                      <input [readonly]="(owner && updating) ? null : 'readonly'" matInput [matDatepicker]="picker" name="date" [(ngModel)]="client.birthdate" >
+                      <input [readonly]="(owner && updating) ? null : 'readonly'" matInput [matDatepicker]="picker" name="date" [(ngModel)]="updateClient. birthdate" >
                       <mat-datepicker-toggle [disabled]="(owner && updating) ? null : 'readonly'" matSuffix [for]="picker"></mat-datepicker-toggle>
                       <mat-datepicker #picker startView="year" [startAt]="'1/1/1900'" ></mat-datepicker>
                     </mat-form-field>
@@ -72,7 +72,7 @@
                   <!-- Description -->
                   <mat-form-field style="width:80%">
                     <mat-label>Description</mat-label>
-                    <textarea [readonly]="(owner && updating) ? null : 'readonly'" name="description" matInput [(ngModel)]="client.description"></textarea>
+                    <textarea [readonly]="(owner && updating) ? null : 'readonly'" name="description" matInput [(ngModel)]="updateClient.description"></textarea>
                   </mat-form-field>
                 </div>
               </div>
@@ -80,7 +80,10 @@
                 <button type="button" class="rounded-pill btn btn-primary" (click)="updating = true">Edit Profile</button>
               </div>
               <div [hidden]="updating ? null : 'hidden'" class="row">
-                <button type="submit" class="rounded-pill btn btn-primary" (click)="updateProfile()">Save Profile</button>
+                <button type="submit" class="rounded-pill btn btn-primary" (click)="updateProfile(); this.updating = false;">Save Profile</button>
+              </div>
+              <div [hidden]="updating ? null : 'hidden'" class="row">
+                <button type="button" class="rounded-pill btn btn-danger" (click)="discardChanges(); this.updating = false;">Discard Changes</button>
               </div>
             </div>
           </div>
