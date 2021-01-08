@@ -1,4 +1,4 @@
-import { Component, OnInit , ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {Post} from '../../../core/models/Post';
 import {User} from '../../../core/models/User';
 import {Comment} from '../../../core/models/Comment';
@@ -16,6 +16,7 @@ import {Comment} from '../../../core/models/Comment';
 })
 export class PostComponent implements OnInit {
 
+  @Input()
   post: Post;
   user: User;
   comments: Comment[];
@@ -31,24 +32,6 @@ export class PostComponent implements OnInit {
       username: 'test',
       email: 'test@gmail.com',
       password: 'randomquerty'
-    };
-    this.post = {
-      id: 1,
-      title: 'title',
-      date: new Date(),
-      image: null,
-      text: 'text',
-      likes: [],
-      client: {
-        user: this.user,
-        id: 1,
-        name: 'test',
-        description: 'test description',
-        profile_pic: null,
-        birthdate: new Date(),
-        sex: 'Male'
-      },
-      blog: null
     };
     this.comments = [];
   }

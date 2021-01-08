@@ -222,6 +222,8 @@ def blog_page(request, num):
     req_client_id = get_object_or_404(Client, user=request.user).id
     blog = Blog.objects.get(id=num)
 
+    posts = []
+
     if "search_post" in data:
         posts = Post.objects.filter(blog=blog.id)
 

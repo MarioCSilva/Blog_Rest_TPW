@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation, ViewChild, ElementRef, Input} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Comment} from '../../../core/models/Comment';
 
@@ -10,6 +10,7 @@ import {Comment} from '../../../core/models/Comment';
 })
 export class CommentsModalComponent implements OnInit {
 
+  @Input()
   comments: Comment[];
   constructor(private modalService: NgbModal) { }
 

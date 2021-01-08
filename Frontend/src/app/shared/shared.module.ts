@@ -16,10 +16,11 @@ import {MatInputModule} from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatOptionModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
+import {BlogPageComponent} from "../features/blog/pages/blog-page/blog-page.component";
 
 
 @NgModule({
-  declarations: [NavbarComponent, CommentComponent, CreatePostComponent, CommentsModalComponent, PostComponent],
+  declarations: [NavbarComponent,BlogPageComponent, CommentComponent, CreatePostComponent, CommentsModalComponent, PostComponent],
   imports: [BrowserModule, FormsModule, HttpClientModule, NgbModule, MatIconModule, BrowserAnimationsModule, MatInputModule, MatDatepickerModule, MatOptionModule, MatSelectModule],
   exports: [
     BrowserModule,
