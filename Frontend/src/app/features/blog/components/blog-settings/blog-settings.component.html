@@ -1,3 +1,9 @@
+<app-blog-edit-name-modal #blogEditNameModal></app-blog-edit-name-modal>
+<app-blog-edit-owners-modal #blogEditOwnersModal></app-blog-edit-owners-modal>
+<app-blog-edit-topics-modal #blogEditTopicsModal></app-blog-edit-topics-modal>
+<app-blog-edit-invites-modal #blogEditInvitesModal></app-blog-edit-invites-modal>
+<app-blog-edit-visibility-modal #blogEditVisibilityModal></app-blog-edit-visibility-modal>
+
 <div class="w3-card row col-sm-12">
 
   <mat-accordion>
@@ -12,22 +18,22 @@
       </mat-expansion-panel-header>
 
       <div class="row w3-bar-item">
-        <a href="" class="w3-button"> Name / Description </a>
+        <a (click)="blogEditNameModal.showModal()" class="w3-button"> Name / Description </a>
       </div>
       <div class="row w3-bar-item" *ngIf="!blog.personal">
-        <a href="" class="w3-button"> Owners </a>
+        <a (click)="blogEditOwnersModal.showModal()" href="" class="w3-button"> Owners </a>
       </div>
       <div class="row w3-bar-item">
-        <a href="" class="w3-button"> Visibility </a>
+        <a (click)="blogEditTopicsModal.showModal()" class="w3-button">  Topic </a>
       </div>
       <div class="row w3-bar-item">
-        <a href="" class="w3-button"> No Invites </a>
+        <a (click)="blogEditVisibilityModal.showModal()" class="w3-button"> Visibility </a>
+      </div>
+      <div class="row w3-bar-item" id="disabled_div">
+        <a class="w3-button" disabled id="disabled_btn"> No Invites </a>
       </div>
       <div class="row w3-bar-item">
-        <a href="" class="w3-button w3-white">  Topic </a>
-      </div>
-      <div class="row w3-bar-item">
-        <a href="" class="w3-button w3-white"> Invites </a>
+        <a (click)="blogEditInvitesModal.showModal()" class="w3-button"> Invites </a>
       </div>
 
     </mat-expansion-panel>
