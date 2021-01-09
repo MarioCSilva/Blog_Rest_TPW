@@ -1,14 +1,47 @@
 <ng-template #template let-modal>
+  <form (ngSubmit)="updateBlog()">
   <div class="modal-header">
-    <h4 class="modal-title">Modal title</h4>
+    <h1 class="modal-title">Edit Name/Description</h1>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <p>blog-edit-name-modal works!</p>
+
+    <div class="form-group">
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+
+        <input matInput type="text" name="Name" [(ngModel)]="blog.name">
+
+        <button mat-button *ngIf="blog.name" matSuffix mat-icon-button aria-label="Clear" (click)="blog.name=''">
+          <mat-icon>close</mat-icon>
+        </button>
+
+      </mat-form-field>
+    </div>
+
+    <div class="form-group">
+      <mat-form-field>
+        <mat-label>Description</mat-label>
+
+        <input matInput type="text" name="Description" [(ngModel)]="blog.description">
+
+        <button mat-button *ngIf="blog.description" matSuffix mat-icon-button aria-label="Clear"
+                (click)="blog.description=''">
+          <mat-icon>close</mat-icon>
+        </button>
+
+      </mat-form-field>
+    </div>
+
   </div>
   <div class="modal-footer">
+    <button (submit)="updateBlog()" class="btn rounded-pill btn-block btn-primary" name="updateBlog" value="updateBlog">
+      Save Changes
+    </button>
     <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
   </div>
+  </form>
+
 </ng-template>

@@ -17,4 +17,13 @@ export class BlogService {
     const url = this.baseURL + 'blog/' + blog_id;
     return this.http.get<Blog>(url);
   }
+
+  updateBlogName(blog_id, name, description): Observable<Blog> {
+    let data = {
+      name: name,
+      description: description,
+    }
+    const url = this.baseURL + 'blog/' + blog_id;
+    return this.http.put<Blog>(url, data);
+  }
 }

@@ -1,5 +1,5 @@
-<app-blog-edit-name-modal #blogEditNameModal></app-blog-edit-name-modal>
-<app-blog-edit-owners-modal #blogEditOwnersModal></app-blog-edit-owners-modal>
+<app-blog-edit-name-modal [blog]="blog" #blogEditNameModal></app-blog-edit-name-modal>
+<app-blog-edit-owners-modal *ngIf="!blog.personal" #blogEditOwnersModal></app-blog-edit-owners-modal>
 <app-blog-edit-topics-modal #blogEditTopicsModal></app-blog-edit-topics-modal>
 <app-blog-edit-invites-modal #blogEditInvitesModal></app-blog-edit-invites-modal>
 <app-blog-edit-visibility-modal #blogEditVisibilityModal></app-blog-edit-visibility-modal>
@@ -29,10 +29,10 @@
       <div class="row w3-bar-item">
         <a (click)="blogEditVisibilityModal.showModal()" class="w3-button"> Visibility </a>
       </div>
-      <div class="row w3-bar-item" id="disabled_div">
+      <div class="row w3-bar-item" *ngIf="blog.invites.length == 0" id="disabled_div">
         <a class="w3-button" disabled id="disabled_btn"> No Invites </a>
       </div>
-      <div class="row w3-bar-item">
+      <div class="row w3-bar-item" *ngIf="blog.invites.length > 0">
         <a (click)="blogEditInvitesModal.showModal()" class="w3-button"> Invites </a>
       </div>
 

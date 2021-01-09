@@ -1,5 +1,8 @@
-import {Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {Blog} from "../../../../core/models/Blog";
+import {BlogService} from "../../../../core/services/blog.service";
+import {StorageService} from "../../../../core/services/storage.service";
 
 @Component({
   selector: 'app-blog-edit-name-modal',
@@ -9,9 +12,13 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 })
 export class BlogEditNameModalComponent implements OnInit {
 
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal,
+              private blogService: BlogService) { }
 
   @ViewChild('template', { static: true }) template: ElementRef;
+
+  @Input()
+  blog: Blog;
 
   ngOnInit(): void {
   }
@@ -26,6 +33,12 @@ export class BlogEditNameModalComponent implements OnInit {
     });
   }
 
-
+  // TODO: handle errors and show them on html
+  updateBlog(): void{
+    this.blogService.updateBlogName(this.blog.id, this.blog.name, this.blog.description).subscribe(
+      data => {console.log(data) },
+    error => {console.log(error); }
+    );
+  }
 
 }
