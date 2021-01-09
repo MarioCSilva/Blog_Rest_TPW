@@ -27,7 +27,7 @@ export class RegisterComponent implements OnInit {
       password2: this.cpassword,
       email: this.email
     };
-    this.authservice.register(user).subscribe(token => {StorageService.setAuthToken(token); });
+    this.authservice.register(user).subscribe(token => {StorageService.setAuthToken(token.token); });
   }
 
 }
