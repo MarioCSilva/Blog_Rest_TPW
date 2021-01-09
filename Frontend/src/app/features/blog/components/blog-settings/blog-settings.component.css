@@ -1,0 +1,30 @@
+.w3-card {
+  color: black;
+  font-weight: bold;
+  max-width: 300px;
+  margin-bottom: auto;
+}
+
+h4 {
+  margin-bottom: auto;
+}
+
+.w3-bar-item {
+  height: 50px;
+}
+
+.w3-bar-item:hover {
+  background-color: rgba(29,161,242,1.00);
+}
+
+.w3-bar-item:hover .w3-button {
+  color: white;
+}
+
+.w3-button {
+  margin: auto;
+}
+
+#disabled {
+  background-color: rgba(250, 250, 250, 0.4);
+}

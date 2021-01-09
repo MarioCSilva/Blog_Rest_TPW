@@ -17,11 +17,15 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatOptionModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
 import {BlogPageComponent} from "../features/blog/pages/blog-page/blog-page.component";
+import {MatExpansionModule} from '@angular/material/expansion';
+import {BlogSettingsComponent} from "../features/blog/components/blog-settings/blog-settings.component";
 
 
 @NgModule({
-  declarations: [NavbarComponent,BlogPageComponent, CommentComponent, CreatePostComponent, CommentsModalComponent, PostComponent],
-  imports: [BrowserModule, FormsModule, HttpClientModule, NgbModule, MatIconModule, BrowserAnimationsModule, MatInputModule, MatDatepickerModule, MatOptionModule, MatSelectModule],
+  declarations: [NavbarComponent, BlogPageComponent, CommentComponent, CreatePostComponent, CommentsModalComponent,
+    PostComponent, BlogSettingsComponent],
+  imports: [BrowserModule, FormsModule, HttpClientModule, NgbModule, MatIconModule, BrowserAnimationsModule,
+    MatInputModule, MatDatepickerModule, MatOptionModule, MatSelectModule, MatExpansionModule],
   exports: [
     BrowserModule,
     CommonModule,
@@ -33,6 +37,7 @@ import {BlogPageComponent} from "../features/blog/pages/blog-page/blog-page.comp
     MatIconModule,
     BrowserAnimationsModule,
     MatInputModule,
+    MatExpansionModule,
     MatDatepickerModule,
     MatOptionModule,
     MatSelectModule,
@@ -40,7 +45,8 @@ import {BlogPageComponent} from "../features/blog/pages/blog-page/blog-page.comp
     CommentComponent,
     CreatePostComponent,
     CommentsModalComponent,
-    PostComponent
+    PostComponent,
+    BlogSettingsComponent
   ]
 })
 export class SharedModule { }

@@ -262,7 +262,7 @@ def blog_page(request, num):
     blog_data = BlogSerializer(blog).data
     blog_data.update({'personal': personal, 'permission': permission, 'subbed': subbed})
 
-    if posts is not None:
+    if posts:
         blog_data['update'] = posts
 
     return Response(blog_data)

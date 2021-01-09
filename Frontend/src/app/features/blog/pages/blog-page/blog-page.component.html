@@ -1,7 +1,25 @@
 <div class="row col-sm-12">
-  <h1 style="color:white">{{blog.name}}</h1>
 
-  <app-post *ngFor="let post of blog.posts" [post]="post"></app-post>
+  <div *ngIf="blog.permission" class="col-sm-3">
+    <app-blog-settings [blog]="blog" ></app-blog-settings>
+  </div>
+
+  <div class="header" [ngClass]="blog.permission ? 'col-sm-9' : 'col-sm-12'">
+
+    <h1>{{blog.name}}</h1>
+
+    <span *ngFor="let topic of blog.topic"> &emsp;{{topic.name}} </span>
+
+    <h2>{{ blog.description }}</h2>
+
+    <div class="clearfix">
+      <button id="follow-button" type="submit" name="Option" value="Follow">+ Follow</button>
+    </div>
+
+    <app-post *ngFor="let post of blog.posts" [post]="post"></app-post>
+
+  </div>
+
+
 </div>
-
 
