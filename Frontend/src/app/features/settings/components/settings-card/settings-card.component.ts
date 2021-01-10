@@ -9,18 +9,23 @@ import {User} from '../../../../core/models/User';
 })
 export class SettingsCardComponent implements OnInit {
 
+  user: User;
   constructor(private profileService: ProfileService) { }
 
   ngOnInit(): void {
+    // TODO: handle errors
+    this.user = {username: '', email: '', password: '', password2: ''};
+    this.profileService.getAccount().subscribe(data => { this.user.email = data.email; this.user.username = data.username} );
   }
   updateAccount(): void{
+    // TODO: handle errors
     const user: User = {
-      username: 'olasounovoaqui41',
+      username: '',
       email: 'randomquery@gmail.com',
       password: 'randomquerty',
       password2: 'randomquerty',
     };
-    this.profileService.updateAccount(user).subscribe(data => console.log('updating account'));
+    this.profileService.updateAccount(user).subscribe(data => console.log(data));
   }
 
 }

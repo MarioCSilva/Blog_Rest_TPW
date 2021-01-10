@@ -34,6 +34,11 @@ export class ProfileService {
     return this.http.put(url, client, httpOptions);
   }
 
+  getAccount(): Observable<User> {
+    const url = this.baseURL + 'settings';
+    return this.http.get<User>(url);
+  }
+
   updateAccount(user: User): Observable<any> {
     const url = this.baseURL + 'settings' ;
     return this.http.put(url, user, httpOptions);

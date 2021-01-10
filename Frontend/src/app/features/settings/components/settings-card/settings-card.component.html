@@ -1,33 +1,33 @@
 <div id="security_div" class="card card-fluid">
 
-  <h6 class="card-header" style="color:white"><strong>Account</strong></h6>
+  <h6 class="card-header" ><strong>Account</strong></h6>
   <div class="card-body">
     <form (ngSubmit)="updateAccount()">
 
       <div class="row mb-3">
-        <div class="col-lg-12" style="color:white">
+        <div class="col-lg-12" >
           <label for="username-input">Username</label>
-          <input id="username-input" name="username" type="text" class="form-control">
+          <input id="username-input" readonly [(ngModel)]="user.username" name="username" type="text" >
         </div>
 
       </div>
 
       <div class="row mb-3">
-        <div class="col-lg-12" style="color:white">
+        <div class="col-lg-12" >
           <label for="email-input">Email</label>
-          <input id="email-input" name="email" type="text" class="form-control">
+          <input id="email-input" [(ngModel)]="user.email" name="email" type="text" class="form-control">
         </div>
       </div>
       <div class="row mb-3">
-        <div class="col-lg-12" style="color:white">
+        <div class="col-lg-12" >
           <label for="password1-input">New Password</label>
-          <input id="password1-input" name="password1" type="password" class="form-control">
+          <input id="password1-input" [(ngModel)]="user.password" name="password1" type="password" class="form-control">
         </div>
       </div>
       <div class="row mb-3">
-        <div class="col-lg-12" style="color:white">
+        <div class="col-lg-12" >
           <label for="password2-input">Confirm Password</label>
-          <input id="password2-input" name="password2" type="password" class="form-control">
+          <input id="password2-input" [(ngModel)]="user.password2" name="password2" type="password" class="form-control">
         </div>
       </div>
       <div class="row">

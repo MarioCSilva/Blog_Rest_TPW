@@ -90,24 +90,30 @@ class Profile(APIView):
 
         return Response(data)
 
-@api_view(['PUT'])
 @permission_classes([IsAuthenticated])
-def update_settings(request):
-    data = request.data
-    user = get_object_or_404(User,id=request.user.id)
+class Settings(APIView):
 
-    user_serializer = UserSerializer(user,data=request.data,partial=True)
-    print("czsfsdfs")
-    if user_serializer.is_valid():
-        user_serializer.update(user,data)
-        data = {"success":"successfully updated settings"}
-    else:
-        print(user_serializer.errors)
-        print("asdufhasid")
-        return Response(user_serializer.errors, status=HTTP_400_BAD_REQUEST)
+    def get(self,request):
+        user = get_object_or_404(User, id=request.user.id)
+        user_serializer = UserSerializer(user)
+        data = {'user': user_serializer.data}
+        return Response(data)
 
 
-    return Response(data)
+    def put(self,request):
+        data = request.data
+        user = get_object_or_404(User,id=request.user.id)
+
+        user_serializer = UserSerializer(user,data=request.data,partial=True)
+        if user_serializer.is_valid():
+            user_serializer.update(user)
+            data = {"success": "successfully updated settings"}
+        else:
+            print(user_serializer.errors)
+            return Response(user_serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
+        return Response(data)
 
 
 
