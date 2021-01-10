@@ -15,17 +15,15 @@ export class SettingsCardComponent implements OnInit {
   ngOnInit(): void {
     // TODO: handle errors
     this.user = {username: '', email: '', password: '', password2: ''};
-    this.profileService.getAccount().subscribe(data => { this.user.email = data.email; this.user.username = data.username} );
+    this.profileService.getAccount().subscribe(data => {
+        this.user.email = data.user.email;
+        this.user.username = data.user.username;
+        console.log(data);
+    } );
   }
   updateAccount(): void{
     // TODO: handle errors
-    const user: User = {
-      username: '',
-      email: 'randomquery@gmail.com',
-      password: 'randomquerty',
-      password2: 'randomquerty',
-    };
-    this.profileService.updateAccount(user).subscribe(data => console.log(data));
+    this.profileService.updateAccount(this.user).subscribe(data => console.log(data));
   }
 
 }

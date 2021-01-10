@@ -71,7 +71,7 @@ urlpatterns = [
     path('ws/blog_visibility', views.blog_visibility2),
     path('ws/blog_invites', views.blog_invites2),
     path('ws/blog_post', views.blog_post2),
-    path('ws/settings', views.update_settings, name="settings"),
+    path('ws/settings', views.Settings.as_view(), name="settings"),
     path('ws/post_like', views.post_like2),
     path('ws/blog_pic', views.blog_pic2),
 

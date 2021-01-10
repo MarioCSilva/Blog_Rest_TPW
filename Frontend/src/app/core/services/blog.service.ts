@@ -20,7 +20,7 @@ export class BlogService {
     }
     return this.http.get<Blog>(url);
   }
-
+  
   updateBlogName(blog): Observable<Blog> {
     let data = {
       'name': blog.name,

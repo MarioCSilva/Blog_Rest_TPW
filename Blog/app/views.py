@@ -75,6 +75,7 @@ class Profile(APIView):
         return Response(data)
 
     def put(self, request):
+        # TODO: see if the gender value is valid
         client = get_object_or_404(Client, user__id=request.user.id)
 
         if client.user.id != request.user.id:

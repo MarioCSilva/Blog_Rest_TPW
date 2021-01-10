@@ -9,10 +9,20 @@ import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import {HeaderInterceptor} from "./core/interceptor/HeaderInterceptor";
 import {BlogModule} from "./features/blog/blog.module";
+import {MainModule} from './features/main/main.module';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BlogModule, SharedModule, AppRoutingModule, AuthModule, SettingsModule, MatNativeDateModule],
+  imports: [
+    BlogModule,
+    SharedModule,
+    AppRoutingModule,
+    AuthModule,
+    MainModule,
+    SettingsModule,
+    MainModule,
+    MatNativeDateModule
+  ],
   providers: [
     UserService,
     {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
