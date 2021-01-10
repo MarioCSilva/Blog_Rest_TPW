@@ -2,7 +2,6 @@ import {Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation} from
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Blog} from "../../../../core/models/Blog";
 import {BlogService} from "../../../../core/services/blog.service";
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-blog-edit-visibility-modal',
@@ -27,7 +26,6 @@ export class BlogEditVisibilityModalComponent implements OnInit {
 
   @ViewChild('template', { static: true }) template: ElementRef;
 
-
   ngOnInit(): void {
   }
 
@@ -43,8 +41,8 @@ export class BlogEditVisibilityModalComponent implements OnInit {
 
   // TODO: handle errors and show them on html
   updateBlog(): void{
-    this.blogService.updateBlogName(this.blog).subscribe(
-      data => {console.log(data) },
+    this.blogService.updateBlog(this.blog).subscribe(
+      data => {console.log(data);this.modalService.dismissAll(this.template);},
       error => {console.log(error); }
     );
   }

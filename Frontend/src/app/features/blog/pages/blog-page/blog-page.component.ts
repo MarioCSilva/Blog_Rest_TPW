@@ -30,4 +30,7 @@ export class BlogPageComponent implements OnInit {
     }
   }
 
+  blog_follow() {
+
+  }
 }

@@ -12,8 +12,8 @@
 
     <h2>{{ blog.description }}</h2>
 
-    <div class="clearfix">
-      <button id="follow-button" type="submit" name="Option" value="Follow">+ Follow</button>
+    <div class="clearfix" *ngIf="!blog.permission">
+      <button id="follow-button" type="submit" name="Option" value="Follow" (click)="blog_follow()">+ Follow</button>
     </div>
 
     <app-post *ngFor="let post of blog.posts" [post]="post"></app-post>
