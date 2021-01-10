@@ -419,7 +419,7 @@ def blog_follow(request):
 
     if client in blog.owner.all():
         data = {'error': "Can't " + option + " a blog that you own."}
-    elif option == "follow":
+    elif client in blog.subs.all():
         if blog.isPublic:
             data = {'success': 'Successfully followed this blog.'}
             blog.subs.add(client)
@@ -427,12 +427,10 @@ def blog_follow(request):
             data = {'success': 'Request sent to follow this blog.'}
             blog.invites.add(client)
         blog.save()
-    elif option == "unfollow":
+    else:
         data = {'success': 'Successfully unfollowed this blog.'}
         blog.subs.remove(client)
         blog.save()
-    else:
-        data = {'error': "Unsupported operation."}
 
     return Response(data)
 

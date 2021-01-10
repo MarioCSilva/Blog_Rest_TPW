@@ -23,8 +23,7 @@ export class BlogService {
   }
 
   updateBlog(blog): Observable<Blog> {
-    var topics: number[];
-    topics = [];
+    let topics: number[] = [];
 
     for(let i=0; i<blog.topic.length; i++){
       topics.push(blog.topic[i]['id']);
@@ -46,8 +45,8 @@ export class BlogService {
   }
 
   blog_follow(blog_id): Observable<any> {
-    const url = this.baseURL + 'blog_follow' + blog_id;
-    return this.http.post<any>(url, {});
+    const url = this.baseURL + 'blog_follow';
+    return this.http.post<any>(url, {'blog': blog_id});
   }
 
 }

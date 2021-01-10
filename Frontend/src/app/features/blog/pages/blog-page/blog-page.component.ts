@@ -31,6 +31,6 @@ export class BlogPageComponent implements OnInit {
   }
 
   blog_follow() {
-
+    this.blogService.blog_follow(this.blog.id).subscribe(data => { console.log(data); });
   }
 }
