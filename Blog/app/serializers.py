@@ -41,8 +41,7 @@ class ClientSerializer(serializers.ModelSerializer):
         ret = super().to_representation(instance)
 
         ret['user'] = UserSerializer(instance.user).data
-
-        return ret
+        return ret  
 
 
 class TopicSerializer(serializers.ModelSerializer):

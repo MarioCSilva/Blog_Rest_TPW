@@ -36,6 +36,8 @@ schema_view = get_schema_view(
 )
 
 
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.main_page2, name="home"),
@@ -69,14 +71,14 @@ urlpatterns = [
     path('ws/blog_visibility', views.blog_visibility2),
     path('ws/blog_invites', views.blog_invites2),
     path('ws/blog_post', views.blog_post2),
-    path('ws/settings', views.settings2, name="settings"),
+    path('ws/settings', views.update_settings, name="settings"),
     path('ws/post_like', views.post_like2),
     path('ws/blog_pic', views.blog_pic2),
 
     path('ws/register', views.register, name='register'),
     path('ws/login', obtain_auth_token, name='login'),
     path('ws', views.main_page, name="home"),
-    path('ws/profile/<str:name>', views.Profile.as_view(), name='profile'),
+    path('ws/profile', views.Profile.as_view(), name='profile'),
     path('ws/my_blog', views.my_blog, name='my_blog'),
     path('ws/new_post', views.new_post, name='new_post'),
     path('ws/new_blog', views.new_blog, name='new_blog'),
