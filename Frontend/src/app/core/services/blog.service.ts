@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
 import {Blog} from '../models/Blog';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Topic} from "../models/Topic";
 
 
 @Injectable({
@@ -20,14 +21,33 @@ export class BlogService {
     }
     return this.http.get<Blog>(url);
   }
-  
-  updateBlogName(blog): Observable<Blog> {
+
+  updateBlog(blog): Observable<Blog> {
+    var topics: number[];
+    topics = [];
+
+    for(let i=0; i<blog.topic.length; i++){
+      topics.push(blog.topic[i]['id']);
+    }
+
     let data = {
       'name': blog.name,
       'description': blog.description,
       'isPublic': blog.isPublic,
+      'topic': topics,
     }
     const url = this.baseURL + 'blog?id=' + blog.id;
     return this.http.put<Blog>(url, data);
   }
+
+  getTopics(): Observable<Topic[]> {
+    const url = this.baseURL + 'topics';
+    return this.http.get<Topic[]>(url);
+  }
+
+  blog_follow(blog_id): Observable<any> {
+    const url = this.baseURL + 'blog_follow' + blog_id;
+    return this.http.post<any>(url, {});
+  }
+
 }

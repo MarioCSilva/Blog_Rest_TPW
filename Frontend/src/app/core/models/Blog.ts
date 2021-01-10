@@ -11,7 +11,7 @@ export class Blog{
     isPublic: boolean;
     invites: Client[];
     description: string;
-    topic: Topic;
+    topic: Topic[];
     posts: Post[];
     personal?: boolean;
     permission?: boolean;

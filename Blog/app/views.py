@@ -252,11 +252,17 @@ def main_page(request):
 
 @permission_classes([IsAuthenticated])
 class BlogPage(APIView):
-    def get(self, request, num):
+    def get(self, request):
         data = request.data
 
-        req_client_id = get_object_or_404(Client, user=request.user).id
-        blog = Blog.objects.get(id=num)
+        req_client = get_object_or_404(Client, user=request.user)
+
+        num = request.GET.get('id', None)
+        if num is not None:
+            blog = Blog.objects.get(id=num)
+        else:
+            topic = Topic.objects.get(name="Personal")
+            blog = Blog.objects.get(topic=topic, owner__in=[req_client])
 
         posts = []
 
@@ -267,7 +273,7 @@ class BlogPage(APIView):
             choice = data["order_choice_post"]
             order = data["order_by_post"]
             # searchs for posts by name or by client name
-            posts = (Post.objects.filter(title__contains=search, blog=blog.id) \
+            posts = (Post.objects.filter(title__contains=search, blog=blog.id)
                      | Post.objects.filter(client__user__username__contains=search, blog=blog.id))
 
             if order == "asc":
@@ -285,16 +291,16 @@ class BlogPage(APIView):
             posts = PostSerializer(posts, many=True).data
             for post in posts:
                 post['req_client_like'] = len(
-                    [client_id for client_id in post['likes'] if req_client_id == client_id]) > 0
+                    [client_id for client_id in post['likes'] if req_client.id == client_id]) > 0
 
         # check if this blog is the client's personal
         personal = len([topic for topic in blog.topic.all() if topic.name == "Personal"]) > 0
 
         # check if the client has permission for this blog
-        permission = len([client for client in blog.owner.all() if req_client_id == client.id]) > 0
+        permission = len([client for client in blog.owner.all() if req_client == client]) > 0
 
         # check if the client is subbed to this blog
-        subbed = len([client for client in blog.subs.all() if req_client_id == client.id]) > 0
+        subbed = len([client for client in blog.subs.all() if req_client == client]) > 0
 
         blog_data = BlogSerializer(blog).data
         blog_data.update({'personal': personal, 'permission': permission, 'subbed': subbed})
@@ -304,11 +310,17 @@ class BlogPage(APIView):
 
         return Response(blog_data)
 
-    def put(self, request, num):
-        req_client_id = get_object_or_404(Client, user=request.user)
-        blog = Blog.objects.get(id=num)
+    def put(self, request):
+        req_client = get_object_or_404(Client, user=request.user)
 
-        if req_client_id not in blog.owner.all():
+        num = request.GET.get('id', None)
+        if num is not None:
+            blog = Blog.objects.get(id=num)
+        else:
+            topic = Topic.objects.get(name="Personal")
+            blog = Blog.objects.get(topic=topic, owner__in=[req_client])
+
+        if req_client not in blog.owner.all():
             return Response({"error": "not enough permissions"}, status=HTTP_401_UNAUTHORIZED)
 
         blog_serializer = BlogSerializer(blog, data=request.data, partial=True)
@@ -317,9 +329,16 @@ class BlogPage(APIView):
             blog_serializer.save()
             data = {"client": blog_serializer.data}
         else:
+            print(request.data['topic'])
             return Response(blog_serializer.errors, status=HTTP_400_BAD_REQUEST)
 
         return Response(data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def topics(request):
+    return Response(TopicSerializer(Topic.objects.all(), many=True).data)
 
 
 @api_view(['POST'])

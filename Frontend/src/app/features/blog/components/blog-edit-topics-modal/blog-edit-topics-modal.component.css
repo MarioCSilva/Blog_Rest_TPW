@@ -1,0 +1,16 @@
+mat-form-field{
+  width: 100%!important;
+  font-size: 18px !important;
+  color: white;
+}
+
+.ng-star-inserted {
+  color: white;
+}
+.mat-option-text {
+  color:#007bff;
+}
+
+.cdk-global-overlay-wrapper, .cdk-overlay-container {
+  z-index: 99999 !important;
+}

@@ -84,7 +84,8 @@ urlpatterns = [
     path('ws/new_blog', views.new_blog, name='new_blog'),
     path('ws/post_comment', views.post_comment),
     path('ws/blog_follow', views.blog_follow),
-    path('ws/blog/<int:num>', views.BlogPage.as_view(), name='blog_page'),
+    path('ws/blog', views.BlogPage.as_view(), name='blog_page'),
+    path('ws/topics', views.topics, name='topics'),
 
     path('ws/schema/swagger', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('ws/schema/redoc', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),

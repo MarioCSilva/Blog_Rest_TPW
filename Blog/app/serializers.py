@@ -56,7 +56,7 @@ class ClientSerializer(serializers.ModelSerializer):
 class TopicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Topic
-        fields = ['name']
+        fields = ['id', 'name']
 
 
 class BlogSerializer(serializers.ModelSerializer):
