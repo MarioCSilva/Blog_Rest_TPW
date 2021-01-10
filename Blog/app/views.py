@@ -96,6 +96,7 @@ class Settings(APIView):
     def get(self, request):
         user = get_object_or_404(User, id=request.user.id)
         user_serializer = UserSerializer(user)
+<<<<<<< HEAD
         data = {'user': user_serializer.data}
         return Response(data)
 
@@ -104,6 +105,13 @@ class Settings(APIView):
         user = get_object_or_404(User, id=request.user.id)
 
         user_serializer = UserSerializer(user, data=request.data, partial=True)
+=======
+        return Response(user_serializer.data)
+
+    def put(self,request):
+        user = get_object_or_404(User,id=request.user.id)
+        user_serializer = UserSerializer(user,data=request.data,partial=True)
+>>>>>>> 4f5144b3bbdd0edeba99696af96c169fdcbeb3fd
         if user_serializer.is_valid():
             user_serializer.update(user)
             data = {"success": "successfully updated settings"}
@@ -148,6 +156,34 @@ def post_comment(request):
 
     return Response(data)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def main_blog(request):
+    search = request.GET.get("search")
+    topics = request.GET.getlist("topics")
+    choice = request.GET.get("order")
+    order = request.GET.get("order_by")
+
+    if not search:
+        search = ""
+    # searches for pages with that name or owner name
+    blogs = (Blog.objects.filter(
+        name__contains=search).distinct())  # | Blog.objects.filter(owner__user__name__in=search))
+    if topics:
+        blogs = blogs & (Blog.objects.filter(topic__id__in=topics).distinct())
+
+    if order == "asc":
+        order = ""
+    elif order == "desc":
+        order = "-"
+
+    blogs = blogs.annotate(posts=Count("post"))
+    #blogs = blogs.annotate(subsn=Count("subs"))
+
+    if choice:
+        blogs = blogs.order_by(order + choice)
+    blogs_serializer = BlogSerializer(blogs, many=True)
+    return Response(blogs_serializer.data)
 
 # curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186" http://localhost:8000/ws/
 @api_view(['GET'])

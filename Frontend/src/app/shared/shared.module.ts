@@ -19,14 +19,26 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatButtonModule} from '@angular/material/button';
-
+import {MatGridListModule} from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [NavbarComponent, CommentComponent, CreatePostComponent, CommentsModalComponent,
     PostComponent],
-    imports: [BrowserModule, FormsModule, HttpClientModule, NgbModule, MatIconModule, BrowserAnimationsModule,
-        MatInputModule, MatDatepickerModule, MatOptionModule, MatSelectModule, MatExpansionModule, MatCheckboxModule,
-      MatButtonModule
+    imports: [
+      BrowserModule,
+      FormsModule,
+      HttpClientModule,
+      NgbModule,
+      MatIconModule,
+      BrowserAnimationsModule,
+      MatInputModule,
+      MatDatepickerModule,
+      MatOptionModule,
+      MatSelectModule,
+      MatExpansionModule,
+      MatCheckboxModule,
+      MatGridListModule,
+      MatButtonModule,
     ],
   exports: [
     BrowserModule,
@@ -43,6 +55,7 @@ import {MatButtonModule} from '@angular/material/button';
     MatExpansionModule,
     MatCheckboxModule,
     MatDatepickerModule,
+    MatGridListModule,
     MatOptionModule,
     MatSelectModule,
     NavbarComponent,
