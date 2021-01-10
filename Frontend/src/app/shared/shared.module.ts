@@ -18,6 +18,7 @@ import {MatOptionModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatButtonModule} from '@angular/material/button';
 
 
 @NgModule({
@@ -25,9 +26,11 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     PostComponent],
     imports: [BrowserModule, FormsModule, HttpClientModule, NgbModule, MatIconModule, BrowserAnimationsModule,
         MatInputModule, MatDatepickerModule, MatOptionModule, MatSelectModule, MatExpansionModule, MatCheckboxModule,
+      MatButtonModule
     ],
   exports: [
     BrowserModule,
+    MatButtonModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

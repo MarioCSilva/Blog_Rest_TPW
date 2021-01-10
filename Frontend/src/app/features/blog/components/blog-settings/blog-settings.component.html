@@ -1,8 +1,10 @@
 <app-blog-edit-name-modal [blog]="blog" #blogEditNameModal></app-blog-edit-name-modal>
-<app-blog-edit-owners-modal #blogEditOwnersModal></app-blog-edit-owners-modal>
+<app-blog-edit-owners-modal [blog]="blog" #blogEditOwnersModal></app-blog-edit-owners-modal>
 <app-blog-edit-topics-modal [blog]="blog" #blogEditTopicsModal></app-blog-edit-topics-modal>
-<app-blog-edit-invites-modal #blogEditInvitesModal></app-blog-edit-invites-modal>
+<app-blog-edit-invites-modal [blog]="blog" #blogEditInvitesModal></app-blog-edit-invites-modal>
 <app-blog-edit-visibility-modal [blog]="blog" #blogEditVisibilityModal></app-blog-edit-visibility-modal>
+<app-blog-edit-subs-modal [blog]="blog" #blogEditSubsModal></app-blog-edit-subs-modal>
+<app-blog-delete-modal [blog]="blog" #blogDeleteModal></app-blog-delete-modal>
 
 <div class="w3-card row col-sm-12">
 
@@ -20,8 +22,8 @@
       <div class="row w3-bar-item">
         <a (click)="blogEditNameModal.showModal()" class="w3-button"> Name / Description </a>
       </div>
-      <div class="row w3-bar-item" *ngIf="!blog.personal">
-        <a (click)="blogEditOwnersModal.showModal()" href="" class="w3-button"> Owners </a>
+      <div class="row w3-bar-item" *ngIf="!blog.personal && blog.owner.length > 1">
+        <a (click)="blogEditOwnersModal.showModal()" class="w3-button"> Owners </a>
       </div>
       <div class="row w3-bar-item">
         <a (click)="blogEditTopicsModal.showModal()" class="w3-button">  Topic </a>
@@ -29,11 +31,17 @@
       <div class="row w3-bar-item">
         <a (click)="blogEditVisibilityModal.showModal()" class="w3-button"> Visibility </a>
       </div>
+      <div class="row w3-bar-item">
+        <a (click)="blogEditSubsModal.showModal()" class="w3-button">  Subscribers </a>
+      </div>
       <div class="row w3-bar-item" *ngIf="blog.invites.length == 0" id="disabled_div">
         <a class="w3-button" disabled id="disabled_btn"> No Invites </a>
       </div>
       <div class="row w3-bar-item" *ngIf="blog.invites.length > 0">
         <a (click)="blogEditInvitesModal.showModal()" class="w3-button"> Invites </a>
+      </div>
+      <div class="row w3-bar-item alert-danger">
+        <a (click)="blogDeleteModal.showModal()" class="w3-button alert-danger" id="danger"> Delete Blog </a>
       </div>
 
     </mat-expansion-panel>

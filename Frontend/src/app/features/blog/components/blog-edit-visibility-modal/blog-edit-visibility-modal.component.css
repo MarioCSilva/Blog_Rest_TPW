@@ -1,11 +1,10 @@
 mat-form-field{
   width: 100%!important;
   font-size: 18px !important;
-  color: white;
 }
 
 .ng-star-inserted {
-  color: white;
+  color: #007bff;
 }
 .mat-option-text {
   color:#007bff;

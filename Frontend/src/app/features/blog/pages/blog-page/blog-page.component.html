@@ -11,9 +11,9 @@
     <span *ngFor="let topic of blog.topic"> &emsp;{{topic.name}} </span>
 
     <h2>{{ blog.description }}</h2>
-
+    {{blog.owner[0].user.username}}
     <div class="clearfix" *ngIf="!blog.permission">
-      <button id="follow-button" type="submit" name="Option" value="Follow" (click)="blog_follow()">+ Follow</button>
+      <button (click)="blog_follow()" [innerHTML]="blog.subbed ? '- Unfollow' : '+ Follow'" id="follow-button" type="submit" name="Option" value="Follow">+ Follow</button>
     </div>
 
     <app-post *ngFor="let post of blog.posts" [post]="post"></app-post>
