@@ -18,9 +18,9 @@ import {BlogSettingsComponent} from "./components/blog-settings/blog-settings.co
     BlogEditInvitesModalComponent,
     BlogEditVisibilityModalComponent,
   ],
-    imports: [
-        SharedModule,
-    ],
+  imports: [
+    SharedModule,
+  ],
   exports: [
     BlogPageComponent,
     BlogEditNameModalComponent,

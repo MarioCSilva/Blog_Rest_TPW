@@ -27,6 +27,9 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+    def update(self, instance):
+        instance.set_email(self.validated_data['email'])
+        return instance
 
 class ClientSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)

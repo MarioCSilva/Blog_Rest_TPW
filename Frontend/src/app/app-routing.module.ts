@@ -12,6 +12,7 @@ const routes: Routes = [
   {path: 'profile', component: ProfilePageComponent},
   {path: 'post', component: PostComponent},
   {path: 'blog/:num', component: BlogPageComponent},
+  {path: 'blog', component: BlogPageComponent},
 ];
 
 @NgModule({

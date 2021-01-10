@@ -13,17 +13,21 @@ export class BlogService {
 
   constructor(private http: HttpClient) { }
 
-  getBlog(blog_id): Observable<Blog> {
-    const url = this.baseURL + 'blog/' + blog_id;
+  getBlog(blog_id?: number): Observable<Blog> {
+    let url = this.baseURL + 'blog';
+    if (blog_id!=null) {
+      url += '?id=' + blog_id;
+    }
     return this.http.get<Blog>(url);
   }
 
-  updateBlogName(blog_id, name, description): Observable<Blog> {
+  updateBlogName(blog): Observable<Blog> {
     let data = {
-      name: name,
-      description: description,
+      'name': blog.name,
+      'description': blog.description,
+      'isPublic': blog.isPublic,
     }
-    const url = this.baseURL + 'blog/' + blog_id;
+    const url = this.baseURL + 'blog?id=' + blog.id;
     return this.http.put<Blog>(url, data);
   }
 }

@@ -35,7 +35,7 @@ export class BlogEditNameModalComponent implements OnInit {
 
   // TODO: handle errors and show them on html
   updateBlog(): void{
-    this.blogService.updateBlogName(this.blog.id, this.blog.name, this.blog.description).subscribe(
+    this.blogService.updateBlogName(this.blog).subscribe(
       data => {console.log(data) },
     error => {console.log(error); }
     );

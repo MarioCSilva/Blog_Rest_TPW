@@ -22,12 +22,12 @@ export class BlogPageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.blog_id = parseInt(this.route.snapshot.paramMap.get('num'));
-    this.getBlog(this.blog_id);
-  }
-
-  getBlog(blog_id): void {
-    this.blogService.getBlog(blog_id).subscribe(data => { this.blog = data; });
+    if (this.route.snapshot.paramMap.has('num')) {
+      this.blog_id = parseInt(this.route.snapshot.paramMap.get('num'));
+      this.blogService.getBlog(this.blog_id).subscribe(data => { this.blog = data; });
+    } else {
+        this.blogService.getBlog().subscribe(data => { this.blog = data; });
+    }
   }
 
 }
