@@ -6,7 +6,7 @@
 }
 
 h4 {
-  margin-bottom: auto;
+  padding-top: 13px;
 }
 
 .w3-bar-item {
@@ -23,6 +23,8 @@ h4 {
 }
 
 .w3-button {
+  padding-top: 14px;
+  height: 100%;
   margin: auto;
 }
 

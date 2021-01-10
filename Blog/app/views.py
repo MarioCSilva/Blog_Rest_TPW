@@ -237,64 +237,82 @@ def main_page(request):
 
     print(blogs)
     return Response({
-       "blogs": blogs,
-       "posts_more_det": posts_more_det,
-       "search_query": search_query
+        "blogs": blogs,
+        "posts_more_det": posts_more_det,
+        "search_query": search_query
     })
 
 
-@api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def blog_page(request, num):
-    data = request.data
+class BlogPage(APIView):
+    def get(self, request, num):
+        data = request.data
 
-    req_client_id = get_object_or_404(Client, user=request.user).id
-    blog = Blog.objects.get(id=num)
+        req_client_id = get_object_or_404(Client, user=request.user).id
+        blog = Blog.objects.get(id=num)
 
-    posts = []
+        posts = []
 
-    if "search_post" in data:
-        posts = Post.objects.filter(blog=blog.id)
+        if "search_post" in data:
+            posts = Post.objects.filter(blog=blog.id)
 
-        search = data["search_post"]
-        choice = data["order_choice_post"]
-        order = data["order_by_post"]
-        # searchs for posts by name or by client name
-        posts = (Post.objects.filter(title__contains=search, blog=blog.id) \
-                 | Post.objects.filter(client__user__username__contains=search, blog=blog.id))
+            search = data["search_post"]
+            choice = data["order_choice_post"]
+            order = data["order_by_post"]
+            # searchs for posts by name or by client name
+            posts = (Post.objects.filter(title__contains=search, blog=blog.id) \
+                     | Post.objects.filter(client__user__username__contains=search, blog=blog.id))
 
-        if order == "asc":
-            order = ""
-        elif order == "desc":
-            order = "-"
+            if order == "asc":
+                order = ""
+            elif order == "desc":
+                order = "-"
 
-        if choice == "recent":
-            posts = posts.order_by(order + "date")
-        elif choice == "likes":
-            posts = posts.order_by(order + "likes", "-date")
-        elif choice == "comments":
-            posts = posts.annotate(count=Count("comment")).order_by(order + "count")
+            if choice == "recent":
+                posts = posts.order_by(order + "date")
+            elif choice == "likes":
+                posts = posts.order_by(order + "likes", "-date")
+            elif choice == "comments":
+                posts = posts.annotate(count=Count("comment")).order_by(order + "count")
 
-        posts = PostSerializer(posts, many=True).data
-        for post in posts:
-            post['req_client_like'] = len([client_id for client_id in post['likes'] if req_client_id == client_id]) > 0
+            posts = PostSerializer(posts, many=True).data
+            for post in posts:
+                post['req_client_like'] = len(
+                    [client_id for client_id in post['likes'] if req_client_id == client_id]) > 0
 
-    # check if this blog is the client's personal
-    personal = len([topic for topic in blog.topic.all() if topic.name == "Personal"]) > 0
+        # check if this blog is the client's personal
+        personal = len([topic for topic in blog.topic.all() if topic.name == "Personal"]) > 0
 
-    # check if the client has permission for this blog
-    permission = len([client for client in blog.owner.all() if req_client_id == client.id]) > 0
+        # check if the client has permission for this blog
+        permission = len([client for client in blog.owner.all() if req_client_id == client.id]) > 0
 
-    # check if the client is subbed to this blog
-    subbed = len([client for client in blog.subs.all() if req_client_id == client.id]) > 0
+        # check if the client is subbed to this blog
+        subbed = len([client for client in blog.subs.all() if req_client_id == client.id]) > 0
 
-    blog_data = BlogSerializer(blog).data
-    blog_data.update({'personal': personal, 'permission': permission, 'subbed': subbed})
+        blog_data = BlogSerializer(blog).data
+        blog_data.update({'personal': personal, 'permission': permission, 'subbed': subbed})
 
-    if posts:
-        blog_data['update'] = posts
+        if posts:
+            blog_data['update'] = posts
 
-    return Response(blog_data)
+        return Response(blog_data)
+
+    def put(self, request, num):
+        req_client_id = get_object_or_404(Client, user=request.user)
+        blog = Blog.objects.get(id=num)
+
+        if req_client_id not in blog.owner.all():
+            return Response({"error": "not enough permissions"}, status=HTTP_401_UNAUTHORIZED)
+
+        blog_serializer = BlogSerializer(blog, data=request.data, partial=True)
+
+        if blog_serializer.is_valid():
+            blog_serializer.save()
+            data = {"client": blog_serializer.data}
+        else:
+            return Response(blog_serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+        return Response(data)
 
 
 @api_view(['POST'])

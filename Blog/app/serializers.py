@@ -27,6 +27,9 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+    def update(self, instance):
+        instance.set_email(self.validated_data['email'])
+        return instance
 
 class ClientSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
@@ -53,7 +56,7 @@ class TopicSerializer(serializers.ModelSerializer):
 class BlogSerializer(serializers.ModelSerializer):
     class Meta:
         model = Blog
-        fields = ['name', 'owner', 'subs', 'blog_pic', 'isPublic', 'invites', 'description', 'topic']
+        fields = ['id', 'name', 'owner', 'subs', 'blog_pic', 'isPublic', 'invites', 'description', 'topic']
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)

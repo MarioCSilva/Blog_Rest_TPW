@@ -76,7 +76,7 @@
                   </mat-form-field>
                 </div>
               </div>
-              <div [hidden]="updating ? 'hidden' : null" class="row">
+              <div [hidden]="updating || !owner ? 'hidden' : null" class="row">
                 <button type="button" class="rounded-pill btn btn-primary" (click)="updating = true">Edit Profile</button>
               </div>
               <div [hidden]="updating ? null : 'hidden'" class="row">

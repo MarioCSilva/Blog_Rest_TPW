@@ -17,13 +17,15 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatOptionModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 @NgModule({
   declarations: [NavbarComponent, CommentComponent, CreatePostComponent, CommentsModalComponent,
     PostComponent],
     imports: [BrowserModule, FormsModule, HttpClientModule, NgbModule, MatIconModule, BrowserAnimationsModule,
-        MatInputModule, MatDatepickerModule, MatOptionModule, MatSelectModule, MatExpansionModule],
+        MatInputModule, MatDatepickerModule, MatOptionModule, MatSelectModule, MatExpansionModule, MatCheckboxModule,
+    ],
   exports: [
     BrowserModule,
     CommonModule,
@@ -36,6 +38,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
     BrowserAnimationsModule,
     MatInputModule,
     MatExpansionModule,
+    MatCheckboxModule,
     MatDatepickerModule,
     MatOptionModule,
     MatSelectModule,

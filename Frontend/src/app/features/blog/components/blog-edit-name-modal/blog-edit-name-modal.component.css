@@ -1,0 +1,10 @@
+mat-form-field{
+  width: 100%!important;
+  font-size: 18px !important;
+}
+mat-label {
+  color: white;
+}
+.cdk-global-overlay-wrapper, .cdk-overlay-container {
+  z-index: 99999 !important;
+}
