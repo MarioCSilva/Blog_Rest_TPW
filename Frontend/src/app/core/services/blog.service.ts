@@ -28,6 +28,7 @@ export class BlogService {
     for(let i=0; i<blog.topic.length; i++){
       topics.push(blog.topic[i]['id']);
     }
+
     let data = {
       'name': blog.name,
       'description': blog.description,

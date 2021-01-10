@@ -28,7 +28,13 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
     def update(self, instance):
-        instance.set_email(self.validated_data['email'])
+        password = self.validated_data['password']
+        password2 = self.validated_data['password2']
+        if password != password2:
+            raise serializers.ValidationError({'password':'Passwords must match.'})
+        instance.set_password(password)
+        instance.email = self.validated_data['email']
+
         return instance
 
 class ClientSerializer(serializers.ModelSerializer):
@@ -44,8 +50,7 @@ class ClientSerializer(serializers.ModelSerializer):
         ret = super().to_representation(instance)
 
         ret['user'] = UserSerializer(instance.user).data
-
-        return ret
+        return ret  
 
 
 class TopicSerializer(serializers.ModelSerializer):

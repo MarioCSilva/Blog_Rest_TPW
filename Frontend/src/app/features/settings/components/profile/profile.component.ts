@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Client} from '../../../../core/models/Client';
 import {ProfileService} from '../../../../core/services/profile.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -12,15 +13,22 @@ export class ProfileComponent implements OnInit {
   owner: boolean;
   updating: boolean;
   updateClient: Client;
-  constructor(private profileService: ProfileService) { }
+  name: string;
+  constructor(private profileService: ProfileService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.updating = false;
-    this.profileService.getProfile('olasounovoaqui40').subscribe(data => {
+    this.route.queryParams.subscribe(params => {
+      this.name = params['name'];
+      console.log(this.name);
+    });
+    this.profileService.getProfile(this.name).subscribe(data => {
       this.client = data['client'];
+      console.log(this.client);
       this.owner = data['owner'];
       this.client.profile_pic = this.client.profile_pic == null ? '' : this.client.profile_pic  ;
       this.updateClient = this.client;
+      console.log(this.updateClient);
     });
   }
 

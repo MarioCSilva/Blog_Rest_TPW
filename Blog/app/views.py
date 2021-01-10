@@ -53,24 +53,34 @@ def register(request):
 # token: e26f7aca6dd0661469c62016562949106c822b66
 # get: curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186"  http://localhost:8000/ws/profile/olasounovoaqui40
 # post: curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186" -d '{}' -H "Content-Type: application/json" http://localhost:8000/ws/profile/olasounovoaqui40
+
+
 @permission_classes([IsAuthenticated])
 class Profile(APIView):
-    def get(self, request, name):
-        cclient = get_object_or_404(Client, user__username=name)
-        owner = request.user.username == name
+    def get(self, request):
+        # returns client for the user that made the request
+        name = request.GET.get('name')
+        print(request.user.username == name)
+        cclient = None
+        if name is not None:
+            cclient = get_object_or_404(Client, user__username=name)
+        else:
+            cclient = get_object_or_404(Client, user__id=request.user.id)
 
         client_serializer = ClientSerializer(cclient)
 
-        data = {"client": client_serializer.data, "owner": owner}
+        data = {"client": client_serializer.data, "owner": request.user.username == name}
+        print(data)
 
         return Response(data)
 
-    def put(self, request, name):
-        client = get_object_or_404(Client, user__username=name)
+    def put(self, request):
+        # TODO: see if the gender value is valid
+        client = get_object_or_404(Client, user__id=request.user.id)
 
         if client.user.id != request.user.id:
             return Response({"error": "not enough permissions"}, status=HTTP_401_UNAUTHORIZED)
-
+        
         client_serializer = ClientSerializer(client, data=request.data, partial=True)
 
         if client_serializer.is_valid():
@@ -80,6 +90,32 @@ class Profile(APIView):
             return Response(client_serializer.errors, status=HTTP_400_BAD_REQUEST)
 
         return Response(data)
+
+@permission_classes([IsAuthenticated])
+class Settings(APIView):
+
+    def get(self,request):
+        user = get_object_or_404(User, id=request.user.id)
+        user_serializer = UserSerializer(user)
+        data = {'user': user_serializer.data}
+        return Response(data)
+
+
+    def put(self,request):
+        data = request.data
+        user = get_object_or_404(User,id=request.user.id)
+
+        user_serializer = UserSerializer(user,data=request.data,partial=True)
+        if user_serializer.is_valid():
+            user_serializer.update(user)
+            data = {"success": "successfully updated settings"}
+        else:
+            print(user_serializer.errors)
+            return Response(user_serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
+        return Response(data)
+
 
 
 # curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186"  http://localhost:8000/ws/my_blog
