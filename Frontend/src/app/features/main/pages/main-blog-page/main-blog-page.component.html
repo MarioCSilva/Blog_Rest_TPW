@@ -1,0 +1,5 @@
+<mat-grid-list cols="4" rowHeight="1:1" >
+  <mat-grid-tile *ngFor="let blog of blogs" >
+    <app-blog-card [blog]="blog"></app-blog-card>
+  </mat-grid-tile>
+</mat-grid-list>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Blog} from '../../../../core/models/Blog';
 
 @Component({
@@ -7,7 +7,7 @@ import {Blog} from '../../../../core/models/Blog';
   styleUrls: ['./blog-card.component.css']
 })
 export class BlogCardComponent implements OnInit {
-
+  @Input()
   blog: Blog;
 
   constructor() { }
