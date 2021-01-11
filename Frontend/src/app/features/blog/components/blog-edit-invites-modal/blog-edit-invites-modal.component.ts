@@ -12,7 +12,7 @@ import {BlogService} from "../../../../core/services/blog.service";
 })
 export class BlogEditInvitesModalComponent implements OnInit {
 
-  invites: Client[];
+  invites: Client[] = [];
 
   @Input()
   blog: Blog;
@@ -24,9 +24,7 @@ export class BlogEditInvitesModalComponent implements OnInit {
 
   @ViewChild('template', { static: true }) template: ElementRef;
 
-  ngOnInit(): void {
-    this.invites = this.blog.invites.slice();
-  }
+  ngOnInit(): void { }
 
   showModal(): void{
     // Adjust css

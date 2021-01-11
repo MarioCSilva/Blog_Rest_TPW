@@ -1,7 +1,7 @@
 <ng-template #template let-modal>
   <form (ngSubmit)="updateBlog()">
     <div class="modal-header">
-      <h1 class="modal-title">Owners</h1>
+      <h1 class="modal-title">Invites</h1>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click');clearData()">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -10,7 +10,7 @@
 
       <div class="form-group">
 
-        <div *ngFor="let client of invites">
+        <div *ngFor="let client of blog.invites">
           <mat-checkbox class="example-margin"
                         [checked]="checkClient(client)"
                         [color]="'#007bff'"

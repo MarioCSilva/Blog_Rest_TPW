@@ -329,6 +329,9 @@ class BlogPage(APIView):
         if posts:
             blog_data['update'] = posts
 
+        if not subbed:
+            blog_data['posts'] = []
+
         return Response(blog_data)
 
     def put(self, request):
@@ -347,6 +350,10 @@ class BlogPage(APIView):
         if 'owner' in request.data:
             if req_client.id not in request.data['owner']:
                 return Response({"error": "Can't remove yourself from blog"}, status=HTTP_400_BAD_REQUEST)
+
+        if 'accepted_invites' in request.data:
+            accepted_clients = Client.objects.filter(id__in=request.data['accepted_invites'])
+            request.data.update({'accepted_invites': accepted_clients})
 
         request.data.update({'req_client_id': req_client})
         blog_serializer = BlogSerializer(blog, data=request.data, partial=True)

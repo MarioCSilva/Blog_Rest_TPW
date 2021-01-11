@@ -1,6 +1,7 @@
 .header {
   text-align: center;
   color: white;
+  height: 100vh;
 }
 
 #follow_button {
