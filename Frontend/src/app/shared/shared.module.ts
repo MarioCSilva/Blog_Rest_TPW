@@ -11,6 +11,7 @@ import {CommentComponent} from './components/comment/comment.component';
 import {CreatePostComponent} from './components/create-post/create-post.component';
 import {CommentsModalComponent} from './components/comments-modal/comments-modal.component';
 import {PostComponent} from './components/post/post.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatInputModule} from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -26,7 +27,8 @@ import {MatListModule} from "@angular/material/list";
 
 @NgModule({
   declarations: [NavbarComponent, CommentComponent, CreatePostComponent, CommentsModalComponent,
-    PostComponent],
+    PostComponent,
+    PageNotFoundComponent],
     imports: [
       BrowserModule,
       FormsModule,
