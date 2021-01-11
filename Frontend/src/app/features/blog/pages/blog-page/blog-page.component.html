@@ -1,25 +1,57 @@
 <div class="row col-sm-12">
 
-  <div *ngIf="blog.permission" class="col-sm-3">
-    <app-blog-settings [blog]="blog" ></app-blog-settings>
-  </div>
+  <mat-drawer-container class="example-container" [hasBackdrop]="true">
+    <mat-drawer #drawer [mode]="'over'">
+      <div *ngIf="blog.permission">
+        <app-blog-settings [blog]="blog" ></app-blog-settings>
+      </div>
 
-  <div class="header" [ngClass]="blog.permission ? 'col-sm-9' : 'col-sm-12'">
+    </mat-drawer>
+    <mat-drawer-content>
 
-    <h1>{{blog.name}}</h1>
+      <div class="header col-sm-12">
 
-    <span *ngFor="let topic of blog.topic"> &emsp;{{topic.name}} </span>
+        <h1>{{blog.name}}</h1>
 
-    <h2>{{ blog.description }}</h2>
 
-    <div class="clearfix" *ngIf="!blog.permission">
-      <button id="follow-button" type="submit" name="Option" value="Follow" (click)="blog_follow()">+ Follow</button>
-    </div>
+        <h2>{{ blog.description }}</h2>
+        <h3>{{blog.owner[0].user.username}}</h3>
 
-    <app-post *ngFor="let post of blog.posts" [post]="post"></app-post>
+        <span *ngFor="let topic of blog.topic"> &emsp;{{topic.name}} </span>
 
-  </div>
+        <div class="row">
+          <div class="col-sm-2"></div>
 
+          <div class="col-sm-8">
+
+            <div class="row col-sm-12">
+              <div class="col-sm-6" id="settings_button">
+                <button *ngIf="blog.permission" mat-raised-button (click)="drawer.toggle()">Settings</button>
+              </div>
+
+              <div class="col-sm-6" id="follow_div" *ngIf="!blog.permission">
+                <button (click)="blog_follow()" mat-raised-button id="follow_btn"  [innerHTML]="blog.subbed ? '- Unfollow' : '+ Follow'" name="Option">+ Follow</button>
+              </div>
+            </div>
+
+            <div class="row col-sm-12 create_post" *ngIf="blog.subbed">
+              <app-create-post [blog]="blog" #blogCreatePostModal></app-create-post>
+              <button (click)="blogCreatePostModal.showModal()" mat-raised-button id="create_post">Create Post</button>
+            </div>
+
+          <app-post *ngFor="let post of blog.posts" [post]="post"></app-post>
+          </div>
+
+          <div class="col-sm-2"></div>
+        </div>
+
+      </div>
+
+
+
+
+    </mat-drawer-content>
+  </mat-drawer-container>
 
 </div>
 

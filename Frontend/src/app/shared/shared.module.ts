@@ -11,6 +11,7 @@ import {CommentComponent} from './components/comment/comment.component';
 import {CreatePostComponent} from './components/create-post/create-post.component';
 import {CommentsModalComponent} from './components/comments-modal/comments-modal.component';
 import {PostComponent} from './components/post/post.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatInputModule} from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -18,37 +19,50 @@ import {MatOptionModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatButtonModule} from '@angular/material/button';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatListModule} from "@angular/material/list";
 
 @NgModule({
   declarations: [NavbarComponent, CommentComponent, CreatePostComponent, CommentsModalComponent,
-    PostComponent],
+    PostComponent,
+    PageNotFoundComponent],
     imports: [
       BrowserModule,
       FormsModule,
       HttpClientModule,
       NgbModule,
       MatIconModule,
+      MatListModule,
       BrowserAnimationsModule,
       MatInputModule,
       MatDatepickerModule,
       MatOptionModule,
       MatSelectModule,
+      MatSidenavModule,
       MatExpansionModule,
       MatCheckboxModule,
-      MatGridListModule
+      MatDividerModule,
+      MatGridListModule,
+      MatButtonModule,
     ],
   exports: [
     BrowserModule,
+    MatButtonModule,
     CommonModule,
     FormsModule,
+    MatListModule,
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule,
+    MatSidenavModule,
     NgbModule,
     MatIconModule,
     BrowserAnimationsModule,
     MatInputModule,
+    MatDividerModule,
     MatExpansionModule,
     MatCheckboxModule,
     MatDatepickerModule,

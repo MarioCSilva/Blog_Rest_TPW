@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, HostListener, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Blog} from "../../../../core/models/Blog";
 import {BlogService} from "../../../../core/services/blog.service";
@@ -13,6 +13,7 @@ export class BlogEditVisibilityModalComponent implements OnInit {
 
   @Input()
   blog: Blog;
+  isPublic: boolean;
 
   options = [
     { value: true, text: 'Public' },
@@ -27,13 +28,12 @@ export class BlogEditVisibilityModalComponent implements OnInit {
   @ViewChild('template', { static: true }) template: ElementRef;
 
   ngOnInit(): void {
+    this.isPublic = this.blog.isPublic;
   }
 
   showModal(): void{
     // Adjust css
     this.modalService.open(this.template, {
-      backdropClass: 'light-blue-backdrop',
-      windowClass: 'dark-modal',
       size: 'lg',
       centered: true
     });
@@ -41,10 +41,16 @@ export class BlogEditVisibilityModalComponent implements OnInit {
 
   // TODO: handle errors and show them on html
   updateBlog(): void{
+    this.blog.isPublic = this.isPublic;
     this.blogService.updateBlog(this.blog).subscribe(
       data => {console.log(data);this.modalService.dismissAll(this.template);},
       error => {console.log(error); }
     );
+    this.blogService.getBlog().subscribe(data => { this.blog = data; });
+  }
+
+  clearData() {
+    this.isPublic = this.blog.isPublic;
   }
 
 }

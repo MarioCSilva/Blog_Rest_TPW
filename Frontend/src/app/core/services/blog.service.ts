@@ -3,6 +3,7 @@ import {Observable} from 'rxjs';
 import {Blog} from '../models/Blog';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Topic} from "../models/Topic";
+import {Client} from "../models/Client";
 
 
 @Injectable({
@@ -23,20 +24,49 @@ export class BlogService {
   }
 
   updateBlog(blog): Observable<Blog> {
-    let topics: number[] = [];
+    let topics: number[];
+    let final_owners: number[];
+    let final_invites: number[];
+    let final_subs: number[];
 
-    for(let i=0; i<blog.topic.length; i++){
-      topics.push(blog.topic[i]['id']);
-    }
+    [topics, final_owners, final_invites, final_subs] = this.handleData(blog)
 
     let data = {
       'name': blog.name,
       'description': blog.description,
       'isPublic': blog.isPublic,
       'topic': topics,
+      'owner': final_owners,
+      'accepted_invites': final_invites,
+      'subs': final_subs,
     }
     const url = this.baseURL + 'blog?id=' + blog.id;
     return this.http.put<Blog>(url, data);
+  }
+
+  handleData(blog, owners?: Client[], invites?: Client[], subs?: Client[]) {
+    let topics: number[] = [];
+    let final_owners: number[] = [];
+    let final_invites: number[] = [];
+    let final_subs: number[] = [];
+
+    for(let i=0; i<blog.owner.length; i++){
+      final_owners.push(blog.owner[i]['id']);
+    }
+
+    for(let i=0; i<blog.invites.length; i++){
+      final_invites.push(blog.invites[i]['id']);
+    }
+
+    for(let i=0; i<blog.subs.length; i++){
+      final_subs.push(blog.subs[i]['id']);
+    }
+
+    for(let i=0; i<blog.topic.length; i++){
+      topics.push(blog.topic[i]['id']);
+    }
+
+    return [topics, final_owners, final_invites, final_subs]
   }
 
   getTopics(): Observable<Topic[]> {
@@ -49,4 +79,8 @@ export class BlogService {
     return this.http.post<any>(url, {'blog': blog_id});
   }
 
+  deleteBlog(blog_id: number) {
+    let url = this.baseURL + 'blog' + '?id=' + blog_id;
+    return this.http.delete<any>(url);
+  }
 }

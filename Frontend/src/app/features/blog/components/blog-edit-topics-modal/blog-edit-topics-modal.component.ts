@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, HostListener, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Blog} from "../../../../core/models/Blog";
 import {BlogService} from "../../../../core/services/blog.service";
@@ -14,7 +14,7 @@ export class BlogEditTopicsModalComponent implements OnInit {
 
   @Input()
   blog: Blog;
-
+  init_topics: Topic[];
   topics: Topic[];
 
   @ViewChild('template', { static: true }) template: ElementRef;
@@ -22,24 +22,23 @@ export class BlogEditTopicsModalComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private blogService: BlogService,
-  ) {
-    this.getTopics();
-  }
+  ) { }
 
   ngOnInit(): void {
+    this.getTopics();
+    this.topics = this.blog.topic.slice();
   }
 
   showModal(): void{
     // Adjust css
     this.modalService.open(this.template, {
-      backdropClass: 'light-blue-backdrop',
-      windowClass: 'dark-modal',
       size: 'lg',
       centered: true
     });
   }
 
   updateBlog(): void{
+    this.blog.topic = this.topics.slice();
     this.blogService.updateBlog(this.blog).subscribe(
       data => {console.log(data);
         this.modalService.dismissAll(this.template);
@@ -50,15 +49,15 @@ export class BlogEditTopicsModalComponent implements OnInit {
 
   getTopics(): void {
     this.blogService.getTopics().subscribe(
-      data => {this.topics = data;},
+      data => {this.init_topics = data;},
       error => {console.log(error); }
     );
   }
 
 
   checkTopic(topic: Topic) {
-    for(let i=0; i<this.blog.topic.length; i++){
-      if (this.blog.topic[i].name == topic.name) {
+    for(let i=0; i<this.topics.length; i++){
+      if (this.topics[i].name == topic.name) {
         return true;
       }
     }
@@ -67,14 +66,17 @@ export class BlogEditTopicsModalComponent implements OnInit {
 
   selectTopic(topic, checked: boolean) {
     if (checked) {
-      this.blog.topic.push(topic);
+      this.topics.push(topic);
     } else {
-      for (let i = this.blog.topic.length - 1; i >= 0; --i) {
-        if (this.blog.topic[i].name == topic.name) {
-          this.blog.topic.splice(i,1);
+      for (let i = this.topics.length - 1; i >= 0; --i) {
+        if (this.topics[i].name == topic.name) {
+          this.topics.splice(i,1);
         }
       }
     }
-    console.log(this.blog.topic);
+  }
+
+  clearData() {
+    this.topics = this.blog.topic.slice();
   }
 }

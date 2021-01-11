@@ -60,7 +60,6 @@ class Profile(APIView):
     def get(self, request):
         # returns client for the user that made the request
         name = request.GET.get('name')
-        print(request.user.username == name)
         cclient = None
         if name is not None:
             cclient = get_object_or_404(Client, user__username=name)
@@ -70,7 +69,6 @@ class Profile(APIView):
         client_serializer = ClientSerializer(cclient)
 
         data = {"client": client_serializer.data, "owner": request.user.username == name}
-        print(data)
 
         return Response(data)
 
@@ -80,7 +78,7 @@ class Profile(APIView):
 
         if client.user.id != request.user.id:
             return Response({"error": "not enough permissions"}, status=HTTP_401_UNAUTHORIZED)
-        
+
         client_serializer = ClientSerializer(client, data=request.data, partial=True)
 
         if client_serializer.is_valid():
@@ -91,27 +89,27 @@ class Profile(APIView):
 
         return Response(data)
 
+
 @permission_classes([IsAuthenticated])
 class Settings(APIView):
-
-    def get(self,request):
+    def get(self, request):
         user = get_object_or_404(User, id=request.user.id)
         user_serializer = UserSerializer(user)
-        return Response(user_serializer.data)
+
+        data = {'user': user_serializer.data}
+        return Response(data)
 
     def put(self,request):
         user = get_object_or_404(User,id=request.user.id)
         user_serializer = UserSerializer(user,data=request.data,partial=True)
+
         if user_serializer.is_valid():
             user_serializer.update(user)
             data = {"success": "successfully updated settings"}
         else:
-            print(user_serializer.errors)
             return Response(user_serializer.errors, status=HTTP_400_BAD_REQUEST)
 
-
         return Response(data)
-
 
 
 # curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186"  http://localhost:8000/ws/my_blog
@@ -220,7 +218,6 @@ def main_posts(request):
     return Response(posts)
 
 
-
 @permission_classes([IsAuthenticated])
 class BlogPage(APIView):
     def get(self, request):
@@ -279,6 +276,9 @@ class BlogPage(APIView):
         if posts:
             blog_data['update'] = posts
 
+        if not subbed:
+            blog_data['posts'] = []
+
         return Response(blog_data)
 
     def put(self, request):
@@ -294,16 +294,44 @@ class BlogPage(APIView):
         if req_client not in blog.owner.all():
             return Response({"error": "not enough permissions"}, status=HTTP_401_UNAUTHORIZED)
 
+        if 'owner' in request.data:
+            if req_client.id not in request.data['owner']:
+                return Response({"error": "Can't remove yourself from blog"}, status=HTTP_400_BAD_REQUEST)
+
+        if 'accepted_invites' in request.data:
+            accepted_clients = Client.objects.filter(id__in=request.data['accepted_invites'])
+            request.data.update({'accepted_invites': accepted_clients})
+
+        request.data.update({'req_client_id': req_client})
         blog_serializer = BlogSerializer(blog, data=request.data, partial=True)
 
         if blog_serializer.is_valid():
             blog_serializer.save()
             data = {"client": blog_serializer.data}
         else:
-            print(request.data['topic'])
             return Response(blog_serializer.errors, status=HTTP_400_BAD_REQUEST)
 
         return Response(data)
+
+    def delete(self, request):
+        req_client = get_object_or_404(Client, user=request.user)
+
+        num = request.GET.get('id', None)
+        if num is not None:
+            blog = Blog.objects.get(id=num)
+        else:
+            return Response({"error": "blog id not provided"}, status=HTTP_400_BAD_REQUEST)
+
+        # check if it's a personal blog
+        if Topic.objects.get(name="Personal") in blog.topic.all():
+            return Response({"error": "Can't delete your personal blog"}, status=HTTP_400_BAD_REQUEST)
+
+        # check for permissions
+        if req_client not in blog.owner.all():
+            return Response({"error": "not enough permissions"}, status=HTTP_401_UNAUTHORIZED)
+
+        blog.delete()
+        return Response({'success': 'successfully deleted the blog'})
 
 
 @api_view(['GET'])
@@ -321,9 +349,10 @@ def new_post(request):
     # check permissions to create new post on this blog
     blog = get_object_or_404(Blog, id=data['blog'])
 
-    if not blog.isPublic and not client in blog.subs.all():
+    if not blog.isPublic and client not in blog.subs.all():
         data = {'error': 'not enough permissions'}
     else:
+        data.update({'client': client.id})
         post_serializer = PostSerializer(data=data)
 
         if post_serializer.is_valid():
@@ -361,12 +390,11 @@ def blog_follow(request):
     client = get_object_or_404(Client, user=request.user)
 
     data = request.data
-    option = data['option']
     blog = get_object_or_404(Blog, id=data['blog'])
 
     if client in blog.owner.all():
-        data = {'error': "Can't " + option + " a blog that you own."}
-    elif client in blog.subs.all():
+        data = {'error': "Can't follow/unfollow a blog that you own."}
+    elif client not in blog.subs.all():
         if blog.isPublic:
             data = {'success': 'Successfully followed this blog.'}
             blog.subs.add(client)
@@ -462,7 +490,6 @@ def main_page2(request):
         posts = Post.objects.filter(blog__in=post_blogs).order_by("-date")
         # orders posts with more subs first
         blogs = Blog.objects.all().order_by(Length("subs").desc())
-        print(request.GET)
         if "search_post_type" in request.GET:
             search = request.GET.get("search_post")
             choice = request.GET.get("order_choice_post")
@@ -565,7 +592,6 @@ def entry_page2(request):
                 login(request, user)
                 return redirect('/my_profile')
             else:
-                print(form.errors)
                 return render(request, "entry_page.html",
                               {"form_login": LoginForm(), "form_register": RegisterForm(), "form_errors": form.errors})
 
@@ -580,7 +606,6 @@ def entry_page2(request):
                     return redirect('home')
                 # passar os dados do utilizador
             else:
-                print(form.errors)
                 return render(request, "entry_page.html",
                               {"form_login": LoginForm(), "form_register": RegisterForm(), "form_errors2": form.errors})
 
@@ -605,11 +630,9 @@ def profile_page2(request, name):
 
         form = EditProfileForm(data=request.POST, files=request.FILES, instance=user)
         if form.is_valid():
-            print("valid")
             client = form.save(commit=False)
             client.save()
             return redirect("/profile/" + name)
-        print("not valid")
         return render(request, "profile_page.html", {"client": user, "form_edit": form, "form_errors": form.errors})
 
 
@@ -743,7 +766,6 @@ def blog_topics2(request):
         if personal in blog.topic.all():
             topics += [str(personal.id)]
         topics = Topic.objects.filter(id__in=[int(x) for x in topics])
-        print(topics)
         blog.topic.set(topics)
         blog.save()
         return redirect('/blog/' + blog_id)
@@ -761,7 +783,6 @@ def blog_subs2(request):
         blog = Blog.objects.get(id=blog_id)
         subs = form.cleaned_data.get('subs')
         subs = [Client.objects.get(user=int(x)) for x in subs]
-        print(subs)
         blog.subs.set(subs)
         client = Client.objects.get(user=request.user)
         blog.subs.add(client)
@@ -885,7 +906,6 @@ def settings2(request):
 
         return render(request, "settings.html", {"form_security": RegisterForm(instance=request.user)})
     elif request.method == "POST":
-        print(request.POST)
         if "security" in request.POST:
             user = User.objects.get(id=request.user.id)
             form = RegisterForm(request.POST, instance=user)
@@ -893,7 +913,6 @@ def settings2(request):
                 user = form.save()
                 login(request, user)
                 return render(request, "settings.html", {"form_security": RegisterForm(instance=user), "valid": True})
-            print(form.errors)
             return render(request, "settings.html",
                           {"form_security": RegisterForm(data=request.POST), "form_security_errors": form.errors})
 
@@ -957,7 +976,6 @@ def blog_pic2(request):
     blog = Blog.objects.get(id=blog_id)
     form = EditBlogPic(data=request.POST, files=request.FILES)
     if form.is_valid():
-        print(form.cleaned_data["blog_pic"])
         blog.blog_pic = form.cleaned_data["blog_pic"]
         blog.save()
         return redirect('/blog/' + blog_id)

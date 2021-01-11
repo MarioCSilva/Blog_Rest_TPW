@@ -7,6 +7,8 @@ import {BlogEditTopicsModalComponent} from "./components/blog-edit-topics-modal/
 import {BlogEditInvitesModalComponent} from "./components/blog-edit-invites-modal/blog-edit-invites-modal.component";
 import {BlogEditVisibilityModalComponent} from "./components/blog-edit-visibility-modal/blog-edit-visibility-modal.component";
 import {BlogSettingsComponent} from "./components/blog-settings/blog-settings.component";
+import { BlogEditSubsModalComponent } from './components/blog-edit-subs-modal/blog-edit-subs-modal.component';
+import { BlogDeleteModalComponent } from './components/blog-delete-modal/blog-delete-modal.component';
 
 @NgModule({
   declarations: [
@@ -17,17 +19,13 @@ import {BlogSettingsComponent} from "./components/blog-settings/blog-settings.co
     BlogEditTopicsModalComponent,
     BlogEditInvitesModalComponent,
     BlogEditVisibilityModalComponent,
+    BlogEditSubsModalComponent,
+    BlogDeleteModalComponent,
   ],
   imports: [
     SharedModule,
   ],
   exports: [
-    BlogPageComponent,
-    BlogEditNameModalComponent,
-    BlogEditOwnersModalComponent,
-    BlogEditTopicsModalComponent,
-    BlogEditInvitesModalComponent,
-    BlogEditVisibilityModalComponent,
     BlogPageComponent,
   ],
 })

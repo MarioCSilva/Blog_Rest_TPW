@@ -5,7 +5,7 @@ import {Post} from "./Post";
 export class Blog{
     id: number;
     name: string;
-    owner: Client;
+    owner: Client[];
     subs: Client[];
     blog_pic: string;
     isPublic: boolean;
