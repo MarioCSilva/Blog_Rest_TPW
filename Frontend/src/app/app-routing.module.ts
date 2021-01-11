@@ -7,6 +7,7 @@ import {EntryPageComponent} from './features/auth/pages/entry-page/entry-page.co
 import {ProfilePageComponent} from './features/settings/pages/profile-page/profile-page.component';
 import {SettingsCardComponent} from './features/settings/components/settings-card/settings-card.component';
 import {MainBlogPageComponent} from './features/main/pages/main-blog-page/main-blog-page.component';
+import {MainPostsPageComponent} from './features/main/pages/main-posts-page/main-posts-page.component';
 
 
 const routes: Routes = [
@@ -16,7 +17,8 @@ const routes: Routes = [
   {path: 'blog/:num', component: BlogPageComponent},
   {path: 'settings', component: SettingsCardComponent},
   {path: 'blog', component: BlogPageComponent},
-  {path: '', component: MainBlogPageComponent}
+  {path: 'home/blogs', component: MainBlogPageComponent},
+  {path: 'home/posts', component: MainPostsPageComponent}
 ];
 
 @NgModule({

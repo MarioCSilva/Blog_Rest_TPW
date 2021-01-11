@@ -81,7 +81,7 @@ class BlogSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ['title', 'client', 'date', 'image', 'text', 'blog', 'likes']
+        fields = ['id','title', 'client', 'date', 'image', 'text', 'blog', 'likes']
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)

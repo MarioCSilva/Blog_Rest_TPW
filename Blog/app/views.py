@@ -178,100 +178,47 @@ def main_blog(request):
     blogs_serializer = BlogSerializer(blogs, many=True)
     return Response(blogs_serializer.data)
 
-# curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186" http://localhost:8000/ws/
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def main_page(request):
-    comments = Comment.objects.all()
-    post_com = {}
-    for comment in comments:
-        com_list = post_com.get(comment.post.id, [])
-        com_list.append(comment)
-        post_com[comment.post.id] = com_list
+def main_posts(request):
 
+    # get the client that did the request
     client = get_object_or_404(Client, user=request.user)
+
+    # get the blogs that the client subscribed and order the posts by recent
     post_blogs = Blog.objects.filter(subs__in=[client])
-    # recent ones first
     posts = Post.objects.filter(blog__in=post_blogs).order_by("-date")
-    # orders posts with more subs first
-    blogs = Blog.objects.all().order_by(Length("subs").desc())
 
-    if "search_post_type" in request.GET:
-        search = request.GET.get("search_post")
-        choice = request.GET.get("order_choice_post")
-        order = request.GET.get("order_by_post")
-        # searchs for posts by name or by client name
-        posts = (Post.objects.filter(title__contains=search, blog__in=post_blogs) \
-                 | Post.objects.filter(client__user__username__contains=search, blog__in=post_blogs))
+    search = request.GET.get("search")
+    choice = request.GET.get("order")
+    order = request.GET.get("order_by")
 
-        if order == "asc":
-            order = ""
-        elif order == "desc":
-            order = "-"
+    if search is None:
+        search = ""
 
-        if choice == "recent":
-            posts = posts.order_by(order + "date")
-        elif choice == "likes":
-            posts = posts.annotate(count=Count("likes")).order_by(order + "count")
-        elif choice == "comments":
-            posts = posts.annotate(count=Count("comment")).order_by(order + "count")
+    posts = (Post.objects.filter(title__contains=search, blog__in=post_blogs) \
+             | Post.objects.filter(client__user__username__contains=search, blog__in=post_blogs))
 
-    if "search_blog_type" in request.GET:
-        search = request.GET.get("search_blog")
-        topics = request.GET.getlist("topic_choice_blog")
-        choice = request.GET.get("order_choice_blog")
-        order = request.GET.get("order_by_blog")
+    if order == "asc":
+        order = ""
+    elif order == "desc":
+        order = "-"
 
-        # searches for pages with that name or owner name
-        blogs = (Blog.objects.filter(
-            name__contains=search).distinct())  # | Blog.objects.filter(owner__user__name__in=search))
-        if topics:
-            blogs = blogs & (Blog.objects.filter(topic__id__in=topics).distinct())
+    if choice == "recent":
+        posts = posts.order_by(order + "date")
+    elif choice == "likes":
+        posts = posts.annotate(count=Count("likes")).order_by(order + "count")
+    elif choice == "comments":
+        posts = posts.annotate(count=Count("comment")).order_by(order + "count")
 
-        if order == "asc":
-            order = ""
-        elif order == "desc":
-            order = "-"
-
-        if choice == "subs":
-            blogs = blogs.annotate(count=Count("subs")).order_by(order + "count")
-        elif choice == "posts":
-            blogs = blogs.annotate(count=Count("post")).order_by(order + "count")
-
-        # blogs = blogs.order_by(Length("subs").desc())
-
-    posts_more_det = []
+    posts = PostSerializer(posts,many=True).data
     for post in posts:
-        posts_detail = {}
-        posts_detail["comments"] = post_com.get(post.id, [])
-        posts_detail["post"] = post
-        if post.likes.count() > 0:
-            if client in post.likes.all():
-                posts_detail["like"] = True
-            else:
-                posts_detail["like"] = False
-        else:
-            posts_detail["like"] = False
+        if client.id in post['likes']: # post.likes:
+            post['liked'] = True
 
-        topic = Topic.objects.get(name="Personal")
-        blog = Blog.objects.get(owner__in=[post.client], topic=topic.id)
-        posts_detail["personal"] = blog.id
+    return Response(posts)
 
-        posts_more_det.append(posts_detail)
-    if "search_query" in request.GET:
-        search_query = "blog"
-    else:
-        search_query = "post"
-
-    blogs = blogs.annotate(count_post=Count("post"))
-    blogs = json.loads(serialize('json', blogs))
-
-    print(blogs)
-    return Response({
-        "blogs": blogs,
-        "posts_more_det": posts_more_det,
-        "search_query": search_query
-    })
 
 
 @permission_classes([IsAuthenticated])
@@ -433,6 +380,29 @@ def blog_follow(request):
         blog.save()
 
     return Response(data)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def like_post(request):
+    client = get_object_or_404(Client, user=request.user)
+    data = request.data
+    print(data)
+    post_id = data['post']
+    post = get_object_or_404(Post, id=post_id)
+
+    message = ""
+    if client in post.likes.all():
+        print("Remove like")
+        message = "Successfully removed like"
+        post.likes.remove(client)
+    else:
+        print("Add like")
+        message = "Successfully added like"
+        post.likes.add(client)
+    post.save()
+
+    return Response({"success": message,'post':PostSerializer(post).data})
+
 
 
 def main_page2(request):
