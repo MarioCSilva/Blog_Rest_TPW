@@ -8,7 +8,7 @@ import {ProfilePageComponent} from './features/settings/pages/profile-page/profi
 import {SettingsCardComponent} from './features/settings/components/settings-card/settings-card.component';
 import {MainBlogPageComponent} from './features/main/pages/main-blog-page/main-blog-page.component';
 import {MainPostsPageComponent} from './features/main/pages/main-posts-page/main-posts-page.component';
-import {PageNotFoundComponent} from "./shared/components/page-not-found/page-not-found.component";
+import {PageNotFoundComponent} from './shared/components/page-not-found/page-not-found.component';
 
 
 const routes: Routes = [
@@ -19,7 +19,7 @@ const routes: Routes = [
   {path: 'settings', component: SettingsCardComponent},
   {path: 'blog', component: BlogPageComponent},
   {path: 'home/blogs', component: MainBlogPageComponent},
-  {path: 'home/posts', component: MainPostsPageComponent}
+  {path: 'home/posts', component: MainPostsPageComponent},
   {path: '', component: MainBlogPageComponent},
   { path: '**', component: PageNotFoundComponent },
 ];

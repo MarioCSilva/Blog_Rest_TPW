@@ -27,14 +27,12 @@ export class PostService {
     return this.http.get<Post[]>(url);
   }
 
-<<<<<<< HEAD
   likePost(id: number): Observable<any> {
     const url = this.baseURL + 'like_post';
     console.log(id);
     return this.http.post(url, {'post': id}, httpOptions);
   }
 
-=======
   createPost(blod_id: number, title: string, text: string): Observable<Post[]> {
     let data = {
       'title': title,
@@ -44,5 +42,4 @@ export class PostService {
     const url = this.baseURL + 'new_post?blog=' + blod_id;
     return this.http.post<Post[]>(url, data);
   }
->>>>>>> 893a388adc05b799ca5cef6efd892dfdbb78754b
 }
