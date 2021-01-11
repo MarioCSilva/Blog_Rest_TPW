@@ -11,7 +11,7 @@ export class BlogSettingsComponent implements OnInit {
 
   @Input()
   blog: Blog;
-  panelOpenState: boolean;
+
   constructor() { }
 
   ngOnInit(): void {

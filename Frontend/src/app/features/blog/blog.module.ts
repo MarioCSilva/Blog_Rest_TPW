@@ -21,18 +21,11 @@ import { BlogDeleteModalComponent } from './components/blog-delete-modal/blog-de
     BlogEditVisibilityModalComponent,
     BlogEditSubsModalComponent,
     BlogDeleteModalComponent,
-    BlogEditSubsModalComponent,
   ],
   imports: [
     SharedModule,
   ],
   exports: [
-    BlogPageComponent,
-    BlogEditNameModalComponent,
-    BlogEditOwnersModalComponent,
-    BlogEditTopicsModalComponent,
-    BlogEditInvitesModalComponent,
-    BlogEditVisibilityModalComponent,
     BlogPageComponent,
   ],
 })

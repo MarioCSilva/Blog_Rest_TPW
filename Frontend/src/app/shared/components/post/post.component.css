@@ -36,10 +36,10 @@
   text-align: center;
 }
 
-.box:hover {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
-}
+/*.box:hover {*/
+/*  -webkit-transform: scale(1.1);*/
+/*  transform: scale(1.1);*/
+/*}*/
 
 .icon {
   margin: 0 auto 15px auto;

@@ -1,51 +1,91 @@
-<app-blog-edit-name-modal [blog]="blog" #blogEditNameModal></app-blog-edit-name-modal>
-<app-blog-edit-owners-modal [blog]="blog" #blogEditOwnersModal></app-blog-edit-owners-modal>
-<app-blog-edit-topics-modal [blog]="blog" #blogEditTopicsModal></app-blog-edit-topics-modal>
-<app-blog-edit-invites-modal [blog]="blog" #blogEditInvitesModal></app-blog-edit-invites-modal>
-<app-blog-edit-visibility-modal [blog]="blog" #blogEditVisibilityModal></app-blog-edit-visibility-modal>
-<app-blog-edit-subs-modal [blog]="blog" #blogEditSubsModal></app-blog-edit-subs-modal>
-<app-blog-delete-modal [blog]="blog" #blogDeleteModal></app-blog-delete-modal>
-
 <div class="w3-card row col-sm-12">
 
-  <mat-accordion>
-    <mat-expansion-panel (opened)="panelOpenState = true"
-                         (closed)="panelOpenState = false">
-      <mat-expansion-panel-header>
 
-        <mat-panel-title>
           <h4> SETTINGS </h4>
-        </mat-panel-title>
 
-      </mat-expansion-panel-header>
 
-      <div class="row w3-bar-item">
-        <a (click)="blogEditNameModal.showModal()" class="w3-button"> Name / Description </a>
-      </div>
-      <div class="row w3-bar-item" *ngIf="!blog.personal && blog.owner.length > 1">
-        <a (click)="blogEditOwnersModal.showModal()" class="w3-button"> Owners </a>
-      </div>
-      <div class="row w3-bar-item">
-        <a (click)="blogEditTopicsModal.showModal()" class="w3-button">  Topic </a>
-      </div>
-      <div class="row w3-bar-item">
-        <a (click)="blogEditVisibilityModal.showModal()" class="w3-button"> Visibility </a>
-      </div>
-      <div class="row w3-bar-item">
-        <a (click)="blogEditSubsModal.showModal()" class="w3-button">  Subscribers </a>
-      </div>
-      <div class="row w3-bar-item" *ngIf="blog.invites.length == 0" id="disabled_div">
-        <a class="w3-button" disabled id="disabled_btn"> No Invites </a>
-      </div>
-      <div class="row w3-bar-item" *ngIf="blog.invites.length > 0">
-        <a (click)="blogEditInvitesModal.showModal()" class="w3-button"> Invites </a>
-      </div>
-      <div class="row w3-bar-item alert-danger" *ngIf="!blog.personal">
-        <a (click)="blogDeleteModal.showModal()" class="w3-button alert-danger" id="danger"> Delete Blog </a>
-      </div>
+      <mat-list>
+        <mat-list-item class="lst_item">
 
-    </mat-expansion-panel>
-  </mat-accordion>
+          <div class="row w3-bar-item">
+            <app-blog-edit-name-modal [blog]="blog" #blogEditNameModal></app-blog-edit-name-modal>
+            <a (click)="blogEditNameModal.showModal()" class="w3-button"> Name / Description </a>
+          </div>
+        </mat-list-item>
+
+        <mat-divider></mat-divider>
+
+        <mat-list-item class="lst_item" *ngIf="!blog.personal && blog.owner.length > 1">
+
+          <div class="row w3-bar-item">
+            <app-blog-edit-owners-modal [blog]="blog" #blogEditOwnersModal></app-blog-edit-owners-modal>
+            <a (click)="blogEditOwnersModal.showModal()" class="w3-button"> Owners </a>
+          </div>
+
+        </mat-list-item>
+
+      <mat-divider></mat-divider>
+
+      <mat-list-item class="lst_item">
+
+        <div class="row w3-bar-item">
+          <app-blog-edit-topics-modal [blog]="blog" #blogEditTopicsModal></app-blog-edit-topics-modal>
+          <a (click)="blogEditTopicsModal.showModal()" class="w3-button">  Topic </a>
+        </div>
+
+      </mat-list-item>
+
+      <mat-divider></mat-divider>
+
+      <mat-list-item class="lst_item">
+
+          <div class="row w3-bar-item">
+            <app-blog-edit-visibility-modal [blog]="blog" #blogEditVisibilityModal></app-blog-edit-visibility-modal>
+            <a (click)="blogEditVisibilityModal.showModal()" class="w3-button"> Visibility </a>
+          </div>
+
+      </mat-list-item>
+
+      <mat-divider></mat-divider>
+
+        <mat-list-item class="lst_item">
+
+          <div class="row w3-bar-item disabled_div"  *ngIf="blog.subs.length == 1">
+            <a disabled="" class="w3-button disabled_btn"> No Subscribers </a>
+          </div>
+          <div class="row w3-bar-item" *ngIf="blog.subs.length > 1">
+            <app-blog-edit-subs-modal [blog]="blog" #blogEditSubsModal></app-blog-edit-subs-modal>
+            <a (click)="blogEditSubsModal.showModal()" class="w3-button">  Subscribers </a>
+          </div>
+
+        </mat-list-item>
+
+        <mat-divider></mat-divider>
+
+        <mat-list-item class="lst_item">
+
+          <div class="row w3-bar-item disabled_div" *ngIf="blog.invites.length == 0">
+            <a class="w3-button disabled_btn" disabled> No Invites </a>
+          </div>
+          <div class="row w3-bar-item" *ngIf="blog.invites.length > 0">
+            <app-blog-edit-invites-modal [blog]="blog" #blogEditInvitesModal></app-blog-edit-invites-modal>
+            <a (click)="blogEditInvitesModal.showModal()" class="w3-button"> Invites </a>
+          </div>
+
+        </mat-list-item>
+
+        <mat-divider></mat-divider>
+
+        <mat-list-item class="lst_item" *ngIf="!blog.personal">
+
+          <div class="row w3-bar-item alert-danger">
+            <app-blog-delete-modal [blog]="blog" #blogDeleteModal></app-blog-delete-modal>
+            <a (click)="blogDeleteModal.showModal()" class="w3-button alert-danger" id="danger"> Delete Blog </a>
+          </div>
+
+        </mat-list-item>
+
+      </mat-list>
 
 
 </div>

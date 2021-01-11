@@ -3,11 +3,34 @@
   color: white;
 }
 
-#follow-button {
-  float: right;
+#follow_button {
+  text-align: right;
+  color: #007bff;
+}
+
+#settings_button {
+  text-align: left;
+  color: #007bff;
 }
 
 .create_post {
   padding-top: 20px;
   padding-bottom: 20px;
+}
+
+.example-container {
+  background:inherit;
+}
+
+#create_post {
+  color:#007bff;
+}
+
+#follow_div {
+  text-align: right;
+}
+
+#follow_btn {
+  color:#007bff;
+  text-align: right;
 }

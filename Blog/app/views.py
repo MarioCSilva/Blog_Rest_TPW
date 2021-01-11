@@ -391,13 +391,18 @@ class BlogPage(APIView):
         if num is not None:
             blog = Blog.objects.get(id=num)
         else:
+            return Response({"error": "blog id not provided"}, status=HTTP_400_BAD_REQUEST)
+
+        # check if it's a personal blog
+        if Topic.objects.get(name="Personal") in blog.topic.all():
             return Response({"error": "Can't delete your personal blog"}, status=HTTP_400_BAD_REQUEST)
 
+        # check for permissions
         if req_client not in blog.owner.all():
             return Response({"error": "not enough permissions"}, status=HTTP_401_UNAUTHORIZED)
 
         blog.delete()
-        return Response({'success': 'successfully created a new post'})
+        return Response({'success': 'successfully deleted the blog'})
 
 
 @api_view(['GET'])
@@ -459,7 +464,7 @@ def blog_follow(request):
     blog = get_object_or_404(Blog, id=data['blog'])
 
     if client in blog.owner.all():
-        data = {'error': "Can't " + option + " a blog that you own."}
+        data = {'error': "Can't follow/unfollow a blog that you own."}
     elif client not in blog.subs.all():
         if blog.isPublic:
             data = {'success': 'Successfully followed this blog.'}

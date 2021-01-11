@@ -30,8 +30,6 @@ export class BlogEditSubsModalComponent implements OnInit {
   showModal(): void{
     // Adjust css
     this.modalService.open(this.template, {
-      backdropClass: 'light-blue-backdrop',
-      windowClass: 'dark-modal',
       size: 'lg',
       centered: true
     });

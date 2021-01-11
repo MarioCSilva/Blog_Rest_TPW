@@ -20,6 +20,9 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatButtonModule} from '@angular/material/button';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatListModule} from "@angular/material/list";
 
 @NgModule({
   declarations: [NavbarComponent, CommentComponent, CreatePostComponent, CommentsModalComponent,
@@ -30,13 +33,16 @@ import {MatGridListModule} from '@angular/material/grid-list';
       HttpClientModule,
       NgbModule,
       MatIconModule,
+      MatListModule,
       BrowserAnimationsModule,
       MatInputModule,
       MatDatepickerModule,
       MatOptionModule,
       MatSelectModule,
+      MatSidenavModule,
       MatExpansionModule,
       MatCheckboxModule,
+      MatDividerModule,
       MatGridListModule,
       MatButtonModule,
     ],
@@ -45,13 +51,16 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatButtonModule,
     CommonModule,
     FormsModule,
+    MatListModule,
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule,
+    MatSidenavModule,
     NgbModule,
     MatIconModule,
     BrowserAnimationsModule,
     MatInputModule,
+    MatDividerModule,
     MatExpansionModule,
     MatCheckboxModule,
     MatDatepickerModule,
