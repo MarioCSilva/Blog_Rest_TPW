@@ -344,41 +344,16 @@ class BlogPage(APIView):
         if req_client not in blog.owner.all():
             return Response({"error": "not enough permissions"}, status=HTTP_401_UNAUTHORIZED)
 
-        if 'owner' in request.data.keys():
+        if 'owner' in request.data:
             if req_client.id not in request.data['owner']:
                 return Response({"error": "Can't remove yourself from blog"}, status=HTTP_400_BAD_REQUEST)
 
+        request.data.update({'req_client_id': req_client})
         blog_serializer = BlogSerializer(blog, data=request.data, partial=True)
 
         if blog_serializer.is_valid():
             blog_serializer.save()
             data = {"client": blog_serializer.data}
-
-            # accept invites
-            if 'accepted_invites' in request.data.keys():
-                for client_id in request.data['accepted_invites']:
-                    client = get_object_or_404(Client, id=client_id)
-                    blog.subs.add(client.id)
-                    blog.invites.remove(client.id)
-                    blog.save()
-
-            # accept all invites when changing to blog to public
-            elif 'isPublic' in request.data.keys():
-                if request.data['isPublic']:
-                    for client in blog.invites.all():
-                        blog.subs.add(client.id)
-                    blog.invites.set([])
-                    blog.save()
-
-            elif 'subs' in request.data.keys():
-                if req_client.id not in request.data['subs']:
-                    blog.subs.add(req_client.id)
-                    blog.save()
-
-            if ('accepted_invites' in request.data.keys()
-                    or 'isPublic' in request.data.keys()
-                    or 'subs' in request.data.keys()):
-                data = {"client": BlogSerializer(blog).data}
         else:
             return Response(blog_serializer.errors, status=HTTP_400_BAD_REQUEST)
 
