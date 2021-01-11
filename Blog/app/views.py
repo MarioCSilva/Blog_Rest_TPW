@@ -92,26 +92,17 @@ class Profile(APIView):
 
 @permission_classes([IsAuthenticated])
 class Settings(APIView):
-
     def get(self, request):
         user = get_object_or_404(User, id=request.user.id)
         user_serializer = UserSerializer(user)
-<<<<<<< HEAD
+
         data = {'user': user_serializer.data}
         return Response(data)
-
-    def put(self, request):
-        data = request.data
-        user = get_object_or_404(User, id=request.user.id)
-
-        user_serializer = UserSerializer(user, data=request.data, partial=True)
-=======
-        return Response(user_serializer.data)
 
     def put(self,request):
         user = get_object_or_404(User,id=request.user.id)
         user_serializer = UserSerializer(user,data=request.data,partial=True)
->>>>>>> 4f5144b3bbdd0edeba99696af96c169fdcbeb3fd
+
         if user_serializer.is_valid():
             user_serializer.update(user)
             data = {"success": "successfully updated settings"}
