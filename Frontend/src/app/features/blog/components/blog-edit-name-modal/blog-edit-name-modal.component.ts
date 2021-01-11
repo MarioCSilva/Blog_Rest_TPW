@@ -1,8 +1,7 @@
-import {Component, ElementRef, HostListener, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Blog} from "../../../../core/models/Blog";
 import {BlogService} from "../../../../core/services/blog.service";
-import {StorageService} from "../../../../core/services/storage.service";
 
 @Component({
   selector: 'app-blog-edit-name-modal',

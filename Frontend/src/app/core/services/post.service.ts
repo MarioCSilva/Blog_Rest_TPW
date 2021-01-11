@@ -21,4 +21,13 @@ export class PostService {
     return this.http.get<Post[]>(url);
   }
 
+  createPost(blod_id: number, title: string, text: string): Observable<Post[]> {
+    let data = {
+      'title': title,
+      'text': text,
+      'blog': blod_id,
+    }
+    const url = this.baseURL + 'new_post?blog=' + blod_id;
+    return this.http.post<Post[]>(url, data);
+  }
 }

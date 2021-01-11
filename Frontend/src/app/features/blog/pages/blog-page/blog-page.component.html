@@ -16,6 +16,11 @@
       <button (click)="blog_follow()" [innerHTML]="blog.subbed ? '- Unfollow' : '+ Follow'" id="follow-button" type="submit" name="Option" value="Follow">+ Follow</button>
     </div>
 
+    <div class="row create_post" *ngIf="blog.subbed">
+      <app-create-post [blog]="blog" #blogCreatePostModal></app-create-post>
+      <button (click)="blogCreatePostModal.showModal()" mat-raised-button color="primary">Create Post</button>
+    </div>
+
     <app-post *ngFor="let post of blog.posts" [post]="post"></app-post>
 
   </div>

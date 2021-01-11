@@ -6,3 +6,8 @@
 #follow-button {
   float: right;
 }
+
+.create_post {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}

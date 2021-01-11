@@ -40,7 +40,7 @@
       <div class="row w3-bar-item" *ngIf="blog.invites.length > 0">
         <a (click)="blogEditInvitesModal.showModal()" class="w3-button"> Invites </a>
       </div>
-      <div class="row w3-bar-item alert-danger">
+      <div class="row w3-bar-item alert-danger" *ngIf="!blog.personal">
         <a (click)="blogDeleteModal.showModal()" class="w3-button alert-danger" id="danger"> Delete Blog </a>
       </div>
 
