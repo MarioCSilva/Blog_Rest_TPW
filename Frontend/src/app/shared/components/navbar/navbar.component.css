@@ -1,12 +1,69 @@
-nav{
-  background-color: black;
-  color:white;
-  z-index: 9999;
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
-.stiky{
+main {
+  z-index: 9999999;
   position: fixed;
   top: 0;
   width: 100%;
+  padding-top: 10px;
+  background-color: white;
+  border: 1px solid rgba(238, 238, 238, 1);
+  border-radius: 5px;
+  color: rgba(117, 117, 117, 1);
+  box-shadow: 5px 10px 20px -20px rgba(85, 172, 238, 1);
+}
 
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+.twitter {
+  display: flex;
+}
+
+.twitter__bird {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.twitter {
+  height: 46px;
+  align-items: center;
+}
+.twitter li {
+  font-size: 1.5em;
+  color: #007bff;
+  cursor: pointer;
+}
+.twitter li:hover {
+  color: rgba(85, 172, 238, 1);
+}
+.twitter__bird {
+  color: rgba(85, 172, 238, 1);
+  font-size: 1.5em;
+}
+.twitter li:not(:last-child):not(.twitter__bird) {
+  margin-right: 10px;
+}
+.twitter li i:not(.fa-twitter):not(.fa-search):not(.fa-user-circle-o) {
+  margin-right: 3px;
+}
+
+.fa-user-circle-o {
+  font-size: 2em;
+}
+
+#nav_btn {
+  background-color: #007bff;
+  color: white;
+  font-size: 1em;
+  border-radius: 100px;
 }

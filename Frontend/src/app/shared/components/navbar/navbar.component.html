@@ -1,8 +1,41 @@
-<nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
-  <div class="container">
-    <a class="navbar-brand"><h1>BlogWhere</h1></a>
-    <ul class="nav navbar-nav" routerLinkActive="active">
-      <li class="nav-item"><a class="nav-link" routerLink="/">Login</a></li>
-    </ul>
+<main>
+  <div class="row">
+    <div class="col-sm-2"></div>
+      <div class="col-sm-8">
+        <div class="row">
+
+          <div class="col-sm-4">
+            <ul class="twitter" role="navigation">
+              <li><i class="fa fa-home" routerLink="/home/posts"></i>Home</li>
+            </ul>
+          </div>
+
+          <div class="col-sm-4">
+            <ul class="twitter" role="navigation">
+              <li class="twitter__bird" routerLink="/home/posts"><i style="color: #007bff; font-size: 2em" class="fa fa-twitter"></i></li>
+            </ul>
+          </div>
+
+          <div class="col-sm-4" >
+            <ul class="twitter" role="navigation" style="float: right">
+              <li style="float: right"><button mat-raised-button id="nav_btn">post</button></li>
+
+              <li>
+                <div ngbDropdown class="d-inline-block">
+                  <i class="fa fa-user-circle-o" ngbDropdownToggle></i>
+                  <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                    <button ngbDropdownItem routerLink="/blog">My Blog</button>
+                    <button ngbDropdownItem routerLink="/profile">Profile</button>
+                    <button ngbDropdownItem routerLink="/settings">Settings</button>
+                    <button ngbDropdownItem routerLink="/login">Logout</button>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    <div class="col-sm-2"></div>
   </div>
-</nav>
+</main>

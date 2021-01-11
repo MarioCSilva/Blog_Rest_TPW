@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import {BlogPageComponent} from './features/blog/pages/blog-page/blog-page.component';
 import {PostComponent} from './shared/components/post/post.component';
@@ -24,7 +23,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [],
   exports: [
-    RouterModule
+    RouterModule,
   ],
   imports: [
     RouterModule.forRoot(routes)
