@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Blog} from '../models/Blog';
+import {Post} from '../models/Post';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -22,5 +23,9 @@ export class MainPageService {
     return this.http.get<Blog[]>(url);
   }
 
+  getPosts(): Observable<Post[]> {
+    const url = this.baseURL + 'main/posts';
+    return this.http.get<Post[]>(url);
+  }
 
 }

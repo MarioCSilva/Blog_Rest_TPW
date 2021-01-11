@@ -2,14 +2,15 @@ import { NgModule } from '@angular/core';
 import { BlogCardComponent } from './components/blog-card/blog-card.component';
 import {SharedModule} from '../../shared/shared.module';
 import { MainBlogPageComponent } from './pages/main-blog-page/main-blog-page.component';
+import { MainPostsPageComponent } from './pages/main-posts-page/main-posts-page.component';
 
 
 
 @NgModule({
-  declarations: [BlogCardComponent, MainBlogPageComponent],
+  declarations: [BlogCardComponent, MainBlogPageComponent, MainPostsPageComponent],
   imports: [
     SharedModule
   ],
-  exports: [MainBlogPageComponent]
+  exports: [MainBlogPageComponent, MainPostsPageComponent]
 })
 export class MainModule { }

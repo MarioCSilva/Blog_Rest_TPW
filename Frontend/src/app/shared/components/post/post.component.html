@@ -24,15 +24,15 @@
         <div class="col-sm-6" style="text-align: left; padding-left: 30px; font-size: 20px;">
           <input name="post_id" type="text" value="{{ post.id }}" style="display: none" required>
           <input name="post_id" type="text" value="{{ post.id }}" style="display: none" required>
-            <button id="like{{ post.id }}" [ngClass]="isLiked ? 'liked' : 'disliked' " value="like"  style="background: transparent; border: 0px" (click)="likePost()">
-              <mat-icon>thumb_up</mat-icon> <span class="likeNumber"  id="number{{ post.id }}">{{ likes }}</span>
+            <button id="like{{ post.id }}" [ngClass]="post.liked ? 'liked' : 'disliked' " value="like"  style="background: transparent; border: 0px" (click)="likePost()">
+              <mat-icon>thumb_up</mat-icon> <span class="likeNumber"  id="number{{ post.id }}">{{ post.likes.length }}</span>
             </button>
         </div>
 
         <div class="col-sm-6" style="text-align: right; font-size: 20px;">
           <app-comments-modal #commentsModal></app-comments-modal>
           <a (click)="commentsModal.showModal()">
-            <span>{{ comments.length  }} Comments</span></a>
+            <span>{{ post.comments.length  }} Comments</span></a>
         </div>
       </div>
 

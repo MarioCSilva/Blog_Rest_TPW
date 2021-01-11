@@ -2,6 +2,7 @@ import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import {Post} from '../../../core/models/Post';
 import {User} from '../../../core/models/User';
 import {Comment} from '../../../core/models/Comment';
+import {PostService} from '../../../core/services/post.service';
 
 /*
   See tutorial
@@ -19,26 +20,19 @@ export class PostComponent implements OnInit {
   @Input()
   post: Post;
   user: User;
-  comments: Comment[];
-  likes: number;
-  isLiked: boolean;
-  constructor() { }
+  constructor(private postService: PostService) { }
 
   ngOnInit(): void {
-    this.isLiked = true;
-    this.likes = 3;
-    this.user = {
-      id: 1,
-      username: 'test',
-      email: 'test@gmail.com',
-      password: 'randomquerty'
-    };
-    this.comments = [];
+    console.log(this.post);
   }
   likePost(): void{
-    // Check if the user has liked the post or not
-    this.isLiked = !this.isLiked;
-    console.log(this.isLiked);
+    // TODO: Handle Possible Errors
+    console.log(this.post);
+    this.postService.likePost(this.post.id).subscribe(data => {
+      this.post.liked = !this.post.liked;
+      this.post.likes = data.post.likes;
+      console.log(this.post.likes);
+    });
   }
 
 }
