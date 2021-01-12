@@ -12,7 +12,8 @@ main {
   position: fixed;
   top: 0;
   width: 100%;
-  padding-top: 10px;
+  height: 70px;
+  padding-top: 9px;
   background-color: white;
   border: 1px solid rgba(238, 238, 238, 1);
   border-radius: 5px;
@@ -58,12 +59,22 @@ ul {
 }
 
 .fa-user-circle-o {
-  font-size: 2em;
+  font-size: 1.7em;
 }
 
 #nav_btn {
   background-color: #007bff;
   color: white;
-  font-size: 1em;
+  font-size: .8em;
   border-radius: 100px;
+}
+
+#image {
+  max-width: 40px;
+  max-height: 40px;
+}
+
+#image2 {
+  max-width: 38px;
+  max-height: 38px;
 }

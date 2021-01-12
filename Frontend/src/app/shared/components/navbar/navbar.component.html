@@ -6,20 +6,25 @@
 
           <div class="col-sm-4">
             <ul class="twitter" role="navigation">
-              <li><i class="fa fa-home" routerLink="/home/posts"></i>Home</li>
+              <li routerLink="/home/posts"><i class="fa fa-home"></i>Home</li>
+
+
             </ul>
           </div>
 
           <div class="col-sm-4">
             <ul class="twitter" role="navigation">
-              <li class="twitter__bird" routerLink="/home/posts"><i style="color: #007bff; font-size: 2em" class="fa fa-twitter"></i></li>
+              <li class="twitter__bird" routerLink="/home/blogs">
+                <img id="image" src="../../../../assets/images/BlogWhere.png"/>
+              </li>
             </ul>
           </div>
 
           <div class="col-sm-4" >
             <ul class="twitter" role="navigation" style="float: right">
-              <li style="float: right"><button mat-raised-button id="nav_btn">post</button></li>
+              <li style="float: right" routerLink="/home/blogs"><img id="image2" src="../../../../assets/images/search.png"></li>
 
+              <li style="float: right" routerLink="/home/posts"><button mat-raised-button id="nav_btn">post</button></li>
               <li>
                 <div ngbDropdown class="d-inline-block">
                   <i class="fa fa-user-circle-o" ngbDropdownToggle></i>
