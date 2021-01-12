@@ -18,7 +18,6 @@ import {MainModule} from './features/main/main.module';
     SharedModule,
     AppRoutingModule,
     AuthModule,
-    MainModule,
     SettingsModule,
     MainModule,
     MatNativeDateModule

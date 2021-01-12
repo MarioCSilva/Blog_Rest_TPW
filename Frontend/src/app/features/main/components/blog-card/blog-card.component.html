@@ -1,11 +1,14 @@
 <div class="box">
   <div >
     <h4 class="blog_title">
-      <a href="blog/{{ blog.id }}" style="color:white">{{ blog.name }}</a>
+      <a routerLink="blog/{{ blog.id }}">{{ blog.name }}</a>
     </h4>
+    <p>
+      <span *ngFor="let topic of blog.topic"> {{topic.name}} </span>
+    </p>
     <!-- <img class="blog_pic" src="../media/{{ blog.blog_pic }}"> -->
     <div class="blog_icon"></div>
-    <!--<p>{{ blog.description }}</p> -->
+    <p>{{ blog.description }}</p>
     <p class="mt-2">Subs: {{ blog.subs.length }}  Posts: {{ blog.posts.length }}</p>
   </div>
 </div>

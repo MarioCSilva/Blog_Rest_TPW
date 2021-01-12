@@ -1,9 +1,10 @@
 .box{
   width: 100%;
+  padding: 10px;
   display: table;
-  color:white;
+  color: black;
   border:1px solid gray;
-  background-color:transparent;
+  background-color: white;
   text-align: center;
   vertical-align: middle;
   width:290px;
@@ -19,6 +20,7 @@
 
 .blog_title{
   padding-top: 30px;
+  color: #007bff;
 }
 
 /* TODO: change url */

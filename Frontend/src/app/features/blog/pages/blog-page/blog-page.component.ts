@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {Blog} from "../../../../core/models/Blog";
 import {BlogService} from "../../../../core/services/blog.service";
@@ -14,6 +14,7 @@ export class BlogPageComponent implements OnInit {
 
   blog: Blog;
   blog_id: number;
+
 
   constructor (
     private modalService: NgbModal,

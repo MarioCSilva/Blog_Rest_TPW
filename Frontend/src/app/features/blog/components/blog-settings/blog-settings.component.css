@@ -3,6 +3,7 @@
   font-weight: bold;
   max-width: 350px;
   margin-bottom: auto;
+  z-index: 99999999;
 }
 
 

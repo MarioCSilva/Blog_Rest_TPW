@@ -1,7 +1,6 @@
 .header {
   text-align: center;
   color: white;
-  height: 100vh;
 }
 
 #follow_button {
@@ -34,4 +33,10 @@
 #follow_btn {
   color:#007bff;
   text-align: right;
+}
+
+.mat-drawer.mat-drawer-end {
+  position: fixed;
+  overflow: auto;
+  height: 100%;
 }
