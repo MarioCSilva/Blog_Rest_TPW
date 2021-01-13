@@ -6,7 +6,12 @@
     </button>
   </div>
   <div class="modal-body">
-    <app-comment *ngFor="let comment of comments" [comment]="comment"></app-comment>
+    <app-comment *ngFor="let comment of post.comments" [comment]="comment"></app-comment>
+    <br>
+    <form (ngSubmit)="addComment()">
+      <input type="text" name="comment" [(ngModel)]="newcomment" />
+      <button type="submit" value="addcomment">Add Comment</button>
+    </form>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>

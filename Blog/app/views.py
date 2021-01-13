@@ -132,7 +132,7 @@ def post_comment(request):
 
     # check permissions to create a comment on this post
     post = get_object_or_404(Post, id=data['post'])
-    blog = Blog.objects.get(id=post.blog)
+    blog = Blog.objects.get(id=post.blog.id)
 
     if not blog.isPublic and not client in blog.subs.all():
         return Response({'error': 'not enough permissions'}, status=HTTP_401_UNAUTHORIZED)
@@ -141,7 +141,7 @@ def post_comment(request):
 
         if com_serializer.is_valid():
             com_serializer.save()
-            data = {'success': 'successfully added a comment to post'}
+            data = {'success': 'successfully added a comment to post','comment':com_serializer.data}
         else:
             data = com_serializer.errors
 

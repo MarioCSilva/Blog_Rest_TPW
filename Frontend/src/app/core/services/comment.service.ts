@@ -14,15 +14,12 @@ export class CommentService {
 
   private baseURL = 'http://localhost:8000/ws/';
 
+
+
   constructor(private http: HttpClient) { }
 
-  postComment(comment: Comment): Observable<any> {
-    const url = this.baseURL + 'post_comment/';
-    return  this.http.post(url, comment, httpOptions);
-  }
-  getComments(post: number): Observable<Comment> {
-    // TODO: Check api endpoint
-    const url = this.baseURL + 'comment';
-    return this.http.get<Comment>(url);
+  postComment(post: number, text: string): Observable<any> {
+    const url = this.baseURL + 'post_comment';
+    return  this.http.post(url, {post, text}, httpOptions);
   }
 }

@@ -30,7 +30,7 @@
         </div>
 
         <div class="col-sm-6" style="text-align: right; font-size: 20px;">
-          <app-comments-modal #commentsModal></app-comments-modal>
+          <app-comments-modal [post]="post"  #commentsModal></app-comments-modal>
           <a (click)="commentsModal.showModal()">
             <span>{{ post.comments.length  }} Comments</span></a>
         </div>

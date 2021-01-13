@@ -1,6 +1,8 @@
-import {Component, OnInit, ViewEncapsulation, ViewChild, ElementRef, Input} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation, ViewChild, ElementRef, Input, Output, EventEmitter} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Comment} from '../../../core/models/Comment';
+import {Post} from '../../../core/models/Post';
+import {CommentService} from '../../../core/services/comment.service';
 
 @Component({
   selector: 'app-comments-modal',
@@ -9,10 +11,11 @@ import {Comment} from '../../../core/models/Comment';
   styleUrls: ['./comments-modal.component.css']
 })
 export class CommentsModalComponent implements OnInit {
-
   @Input()
-  comments: Comment[];
-  constructor(private modalService: NgbModal) { }
+  post: Post;
+  newcomment: string;
+
+  constructor(private modalService: NgbModal, private commentService: CommentService) { }
 
   @ViewChild('template', { static: true }) template: ElementRef;
 
@@ -28,9 +31,14 @@ export class CommentsModalComponent implements OnInit {
       centered: true
     });
   }
-  loadComments(): Comment[] {
-    console.log('hello');
-    return null;
+
+  addComment(): void{
+    this.commentService.postComment(this.post.id, this.newcomment).subscribe(
+      data => {
+        console.log(data);
+        this.post.comments.push(data['comment']);
+      }
+    );
   }
 
 }

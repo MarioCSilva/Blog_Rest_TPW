@@ -34,5 +34,4 @@ export class PostComponent implements OnInit {
       console.log(this.post.likes);
     });
   }
-
 }

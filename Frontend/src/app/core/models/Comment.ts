@@ -7,4 +7,5 @@ export class Comment{
     client: Client;
     date: Date;
     post: Post;
+    username?: string;
 }
