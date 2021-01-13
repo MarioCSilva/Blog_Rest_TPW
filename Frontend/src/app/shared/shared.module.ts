@@ -24,13 +24,17 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from "@angular/material/list";
 import {RouterModule} from "@angular/router";
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
   declarations: [NavbarComponent, CommentComponent, CreatePostComponent, CommentsModalComponent,
     PostComponent,
     PageNotFoundComponent],
   imports: [
+    MatTabsModule,
     BrowserModule,
+    MatPaginatorModule,
     FormsModule,
     HttpClientModule,
     NgbModule,
@@ -52,12 +56,14 @@ import {RouterModule} from "@angular/router";
   ],
   exports: [
     BrowserModule,
+    MatTabsModule,
     MatButtonModule,
     CommonModule,
     FormsModule,
     MatListModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatPaginatorModule,
     MatSidenavModule,
     NgbModule,
     MatIconModule,

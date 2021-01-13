@@ -1,5 +1,21 @@
-<mat-grid-list cols="4" rowHeight="1:1" >
-  <mat-grid-tile *ngFor="let blog of blogs" >
-    <app-blog-card [blog]="blog"></app-blog-card>
-  </mat-grid-tile>
-</mat-grid-list>
+<div class="create_blog" [style]="hasPage ? 'padding-left: 300px ;padding-right: 300px' : ''">
+  <app-create-blog #blogCreateBlogModal></app-create-blog>
+  <button (click)="blogCreateBlogModal.showModal()" mat-raised-button id="create_blog">Create Blog</button>
+</div>
+
+<div style="height: 100vh" [style]="hasPage ? 'padding-left: 300px ;padding-right: 300px' : ''">
+ <mat-grid-list cols="3" rowHeight="1:1" >
+
+    <mat-grid-tile *ngFor="let blog of blogs | slice: lowValue : highValue" >
+      <app-blog-card [blog]="blog"></app-blog-card>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+
+  <mat-paginator [length]="blogs.length"
+                 [pageSize]="pageSize"
+                 (page)="pageEvent = getPaginatorData($event)">
+  </mat-paginator>
+</div>
+

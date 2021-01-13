@@ -1,0 +1,61 @@
+<ng-template #template let-modal>
+  <form (ngSubmit)="createBlog()">
+    <div class="modal-header">
+      <h1 class="modal-title">Create Blog</h1>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click');clearData();">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Name</mat-label>
+
+          <input matInput type="text" name="name" [(ngModel)]="name">
+
+          <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
+            <mat-icon>close</mat-icon>
+          </button>
+
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Description</mat-label>
+
+          <input matInput type="text" name="description" [(ngModel)]="description">
+
+          <button mat-button *ngIf="description" matSuffix mat-icon-button aria-label="Clear"
+                  (click)="description=''">
+            <mat-icon>close</mat-icon>
+          </button>
+
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <div *ngFor="let topic of init_topics">
+          <mat-checkbox class="example-margin" *ngIf="topic.name != 'Personal'"
+                        [checked]="checkTopic(topic)"
+                        [color]="'#007bff'"
+                        (change)="selectTopic(topic, $event.checked)">
+            {{topic.name}}
+          </mat-checkbox>
+        </div>
+      </div>
+
+
+      <div class="form-group">
+        <input type="file" name="file" id="file-input">
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click');clearData();">Close</button>
+      <button type="submit" (submit)="createBlog()" class="btn btn-primary" name="Create Blog" value="Create Blog">Create Blog</button>
+    </div>
+  </form>
+</ng-template>
+

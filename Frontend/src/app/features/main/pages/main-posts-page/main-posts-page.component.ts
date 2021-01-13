@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MainPageService} from '../../../../core/services/main-page.service';
 import {Post} from '../../../../core/models/Post';
+import {Blog} from "../../../../core/models/Blog";
 
 @Component({
   selector: 'app-main-posts-page',
@@ -10,6 +11,12 @@ import {Post} from '../../../../core/models/Post';
 export class MainPostsPageComponent implements OnInit {
 
   posts: Post[];
+
+  @Input()
+  hasPage: boolean = true;
+
+  @Input()
+  blog: Blog = null;
 
   constructor(private mainService: MainPageService) { }
 

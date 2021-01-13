@@ -8,6 +8,7 @@ import {SettingsCardComponent} from './features/settings/components/settings-car
 import {MainBlogPageComponent} from './features/main/pages/main-blog-page/main-blog-page.component';
 import {MainPostsPageComponent} from './features/main/pages/main-posts-page/main-posts-page.component';
 import {PageNotFoundComponent} from './shared/components/page-not-found/page-not-found.component';
+import {MainPageComponent} from "./features/main/pages/main-page/main-page.component";
 
 
 const routes: Routes = [
@@ -19,7 +20,7 @@ const routes: Routes = [
   {path: 'blog', component: BlogPageComponent},
   {path: 'home/blogs', component: MainBlogPageComponent},
   {path: 'home/posts', component: MainPostsPageComponent},
-  {path: '', component: MainBlogPageComponent},
+  {path: 'home', component: MainPageComponent},
   { path: '**', component: PageNotFoundComponent },
 ];
 

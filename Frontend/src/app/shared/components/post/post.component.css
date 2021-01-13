@@ -4,6 +4,11 @@
   text-align: center;
 }
 
+.maindiv {
+  padding-right: 30px;
+  padding-left: 30px;
+}
+
 .likeNumber{
   padding-left: 3px;
 }

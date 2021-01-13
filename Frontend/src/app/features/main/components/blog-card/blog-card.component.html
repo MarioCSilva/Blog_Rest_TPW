@@ -1,7 +1,7 @@
 <div class="box">
   <div >
     <h4 class="blog_title">
-      <a routerLink="blog/{{ blog.id }}">{{ blog.name }}</a>
+      <a routerLink="/blog/{{ blog.id }}">{{ blog.name }}</a>
     </h4>
     <p>
       <span *ngFor="let topic of blog.topic"> {{topic.name}} </span>

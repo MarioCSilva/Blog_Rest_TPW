@@ -16,9 +16,12 @@ main {
   padding-top: 9px;
   background-color: white;
   border: 1px solid rgba(238, 238, 238, 1);
-  border-radius: 5px;
   color: rgba(117, 117, 117, 1);
   box-shadow: 5px 10px 20px -20px rgba(85, 172, 238, 1);
+}
+
+.covernav {
+  height: 70px;
 }
 
 ul {

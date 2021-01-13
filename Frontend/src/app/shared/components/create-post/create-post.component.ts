@@ -22,8 +22,7 @@ export class CreatePostComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    private postService: PostService,
-    private blogService: BlogService,
+    private postService: PostService
   ) { }
 
 
