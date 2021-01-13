@@ -1,12 +1,15 @@
 <div>
-  <p>
-    {{ comment.text }}
-  </p>
-  <p>
-    {{ comment.username}}
-  </p>
-  <p>
-    {{ comment.date|date:"HH:mm dd/MM/yyyy"}}
-  </p>
-
+  <div class="row mx-3">
+    <div class="col-8">
+      {{ comment.username }}
+    </div>
+    <div class="col-4">
+      {{ comment.date|date:"HH:mm dd/MM/yyyy"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 mb-4">
+      {{ comment.text }}
+    </div>
+  </div>
 </div>
