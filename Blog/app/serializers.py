@@ -47,13 +47,14 @@ class ClientSerializer(serializers.ModelSerializer):
     # PROFILE PIC
     class Meta:
         model = Client
-        fields = ['id', 'name', 'user_id', 'description', 'birthdate', 'sex']
+        fields = ['id', 'name', 'user_id', 'description', 'birthdate', 'sex', 'profile_pic']
         extra_kwargs = {"id": {"required": False, "allow_null": True}}
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
 
         ret['user'] = UserSerializer(instance.user).data
+        ret['profile_pic'] = 'http://www.localhost:8000'+ret['profile_pic']
         return ret
 
 
@@ -140,3 +141,9 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ['text', 'client', 'date', 'post']
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        ret['username'] = instance.client.user.username
+        print(ret)
+        return ret

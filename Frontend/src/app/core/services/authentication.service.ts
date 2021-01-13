@@ -30,6 +30,9 @@ export class AuthenticationService {
     return this.http.post<string>(url, user, httpOptions);
   }
 
+  logout(): void {
+    StorageService.removeAuthToken();
+  }
   isAuthenticated(): boolean {
     const token = StorageService.getAuthToken();
     if (token){
