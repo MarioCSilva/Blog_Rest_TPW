@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Post} from '../models/Post';
+import {Blog} from "../models/Blog";
 
 
 const httpOptions = {
@@ -33,13 +34,15 @@ export class PostService {
     return this.http.post(url, {'post': id}, httpOptions);
   }
 
-  createPost(blod_id: number, title: string, text: string): Observable<Post[]> {
+  createPost(title: string, text: string, blog: Blog): Observable<any> {
     let data = {
       'title': title,
       'text': text,
-      'blog': blod_id,
     }
-    const url = this.baseURL + 'new_post?blog=' + blod_id;
+    if (blog != null) {
+      data['blog'] = blog.id;
+    }
+    const url = this.baseURL + 'new_post';
     return this.http.post<Post[]>(url, data);
   }
 }

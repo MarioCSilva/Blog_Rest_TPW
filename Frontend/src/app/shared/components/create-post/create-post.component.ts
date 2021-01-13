@@ -16,7 +16,7 @@ export class CreatePostComponent implements OnInit {
   content: string;
 
   @Input()
-  blog: Blog;
+  blog: Blog = null;
 
   @ViewChild('template', { static: true }) template: ElementRef;
 
@@ -40,16 +40,13 @@ export class CreatePostComponent implements OnInit {
   }
 
   createPost(): void{
-    console.log(this.blog);
-    this.postService.createPost(this.blog.id, this.title, this.content).subscribe(
-      data => {console.log(data);
-        this.blogService.getBlog(this.blog.id).subscribe(data => {
-            this.blog.posts = data.posts;
-          },
-          error => {console.log(error);}
-        );
-        this.modalService.dismissAll(this.template);
-    }, error => {console.log(error)});
+    this.postService.createPost(this.title, this.content, this.blog).subscribe(
+      data => {
+            if (this.blog != null) {
+              this.blog.posts.push(data['post']);
+            }
+            this.modalService.dismissAll(this.template);
+      }, error => {console.log(error)});
     this.clearData();
   }
 

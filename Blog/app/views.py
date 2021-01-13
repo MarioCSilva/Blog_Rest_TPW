@@ -346,9 +346,14 @@ def new_post(request):
     data = request.data
     client = get_object_or_404(Client, user=request.user)
 
-    # check permissions to create new post on this blog
-    blog = get_object_or_404(Blog, id=data['blog'])
+    if 'blog' in data:
+        blog = get_object_or_404(Blog, id=data['blog'])
+    else:
+        topic = Topic.objects.get(name="Personal")
+        blog = Blog.objects.get(topic=topic, owner__in=[client])
+        data.update({'blog': blog.id})
 
+    # check permissions to create new post on this blog
     if not blog.isPublic and client not in blog.subs.all():
         data = {'error': 'not enough permissions'}
     else:
@@ -357,10 +362,11 @@ def new_post(request):
 
         if post_serializer.is_valid():
             post_serializer.save()
-            data = {'success': 'successfully created a new post'}
+            data = {'success': 'successfully created a new post', 'post': post_serializer.data}
         else:
             data = post_serializer.errors
 
+    print(data)
     return Response(data)
 
 

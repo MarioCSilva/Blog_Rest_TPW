@@ -26,7 +26,7 @@
 
             <div class="row col-sm-12">
               <div class="col-sm-6" id="settings_button">
-                <button *ngIf="blog.permission" mat-raised-button (click)="drawer.toggle()">Settings</button>
+                <button *ngIf="blog.permission" mat-raised-button color="primary" (click)="drawer.toggle()">Settings</button>
               </div>
 
               <div class="col-sm-6" id="follow_div" *ngIf="!blog.permission">

@@ -11,6 +11,8 @@
 #settings_button {
   text-align: left;
   color: #007bff;
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 
 .create_post {
