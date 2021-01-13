@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {User} from '../models/User';
+import {StorageService} from './storage.service';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -29,4 +30,11 @@ export class AuthenticationService {
     return this.http.post<string>(url, user, httpOptions);
   }
 
+  isAuthenticated(): boolean {
+    const token = StorageService.getAuthToken();
+    if (token){
+      return true;
+    }
+    return false;
+  }
 }

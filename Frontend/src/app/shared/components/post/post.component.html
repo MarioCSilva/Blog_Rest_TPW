@@ -11,13 +11,13 @@
       </div>
 
       <a href="/blog"> <!-- /blog/{client.personal} -->
-        <img id="profile_pic" class="profile_img" src="../media/{{ post.client.profile_pic }}" style="width: 60px;height: 60px" />
+        <img id="profile_pic" class="profile_img" src="post.client.profile_pic" style="width: 60px;height: 60px" />
         <p> {{ post.client.name }} </p>
       </a>
       <h4 class="title">{{ post.title }}</h4>
       <p class="description">{{ post.text }}  </p>
 
-      <img style="max-width: 800px;max-height: 350px" id="myImg" class="profile_img" src="../media/{{ post.image }}" />
+      <img style="max-width: 800px;max-height: 350px" id="myImg" class="profile_img" src="post.image" />
       <br><br>
       <hr style="background-color:white">
       <div class="row col-sm-12 mb-3" style="padding-top: -2px">
