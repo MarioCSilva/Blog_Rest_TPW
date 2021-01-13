@@ -6,6 +6,7 @@
           <div class="row">
             <div class="col-lg-12">
               <img id="profile_pic" style="border:1px solid white;border-radius: 50%" class="profile_img"  [src]="updateClient.profile_pic" />
+              <input type="file" [hidden]="(owner && updating) ? null : 'hidden'" [(ngModel)]="updateClient.filePic" >
             </div>
           </div>
           <div class="row edit_input" style="display: none">

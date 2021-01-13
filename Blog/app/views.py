@@ -76,6 +76,7 @@ class Profile(APIView):
         # TODO: see if the gender value is valid
         client = get_object_or_404(Client, user__id=request.user.id)
 
+
         if client.user.id != request.user.id:
             return Response({"error": "not enough permissions"}, status=HTTP_401_UNAUTHORIZED)
 
@@ -110,6 +111,21 @@ class Settings(APIView):
             return Response(user_serializer.errors, status=HTTP_400_BAD_REQUEST)
 
         return Response(data)
+
+    def delete(self, request):
+
+        user = get_object_or_404(User, id=request.user.id)
+        client = get_object_or_404(Client, id=user.client.id)
+
+        blogs = Blog.objects.filter(owner__in=[client])
+        for blog in blogs:
+            if len(blog.owner) == 1:
+                blog.delete()
+
+        client.delete()
+        user.delete()
+
+        return Response().ok()
 
 
 # curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186"  http://localhost:8000/ws/my_blog

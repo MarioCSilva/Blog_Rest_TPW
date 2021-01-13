@@ -16,9 +16,8 @@ export class SettingsCardComponent implements OnInit {
     // TODO: handle errors
     this.user = {username: '', email: '', password: '', password2: ''};
     this.profileService.getAccount().subscribe(data => {
-        this.user.email = data.email;
-        this.user.username = data.username;
-        console.log(data);
+        this.user.email = data['user'].email;
+        this.user.username = data['user'].username;
     } );
   }
   updateAccount(): void{

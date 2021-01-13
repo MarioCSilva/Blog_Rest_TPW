@@ -29,18 +29,21 @@ export class ProfileService {
   }
 
   updateProfile(client: Client): Observable<any> {
-    // TODO: update url
     const url = this.baseURL + 'profile';
     return this.http.put(url, client, httpOptions);
   }
 
-  getAccount(): Observable<User> {
+  getAccount(): Observable<any> {
     const url = this.baseURL + 'settings';
-    return this.http.get<User>(url);
+    return this.http.get<any>(url);
   }
 
   updateAccount(user: User): Observable<any> {
     const url = this.baseURL + 'settings' ;
     return this.http.put(url, user, httpOptions);
+  }
+  deleteAccount(): Observable<any> {
+    const url = this.baseURL + 'settings';
+    return this.http.delete(url);
   }
 }

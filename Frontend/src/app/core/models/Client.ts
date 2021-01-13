@@ -8,4 +8,5 @@ export class Client{
     profile_pic: string;
     birthdate: Date;
     sex: string;
+    filePic?: File;
 }
