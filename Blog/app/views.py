@@ -206,7 +206,7 @@ def main_posts(request):
 
     search = request.GET.get("search")
     choice = request.GET.get("order")
-    order = request.GET.get("order_by")
+    order = request.GET.get("orderBy")
 
     if search is None:
         search = ""

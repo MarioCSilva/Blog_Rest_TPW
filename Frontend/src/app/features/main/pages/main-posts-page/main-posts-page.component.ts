@@ -13,7 +13,7 @@ export class MainPostsPageComponent implements OnInit {
   posts: Post[];
 
   @Input()
-  hasPage: boolean = true;
+  hasPage = true;
 
   @Input()
   blog: Blog = null;

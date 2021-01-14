@@ -23,11 +23,6 @@ export class PostService {
     return this.http.get<Post>(url);
   }
 
-  getPosts(id: number): Observable<Post[]> {
-    const url = this.baseURL + 'posts?blog=' + id;
-    return this.http.get<Post[]>(url);
-  }
-
   likePost(id: number): Observable<any> {
     const url = this.baseURL + 'like_post';
     console.log(id);

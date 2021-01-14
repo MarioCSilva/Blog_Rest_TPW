@@ -34,7 +34,7 @@ export class MainBlogPageComponent implements OnInit {
     this.mainService.getBlogs().subscribe(data => {
       this.blogs = data;
     });
-    if (window.innerWidth <= 1500) {
+    if (window.innerWidth <= 1000) {
       this.cols = 2;
       this.pageSize = 4;
       this.highValue = 4;

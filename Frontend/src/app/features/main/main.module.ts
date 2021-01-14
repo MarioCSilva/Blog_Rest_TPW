@@ -6,11 +6,13 @@ import { MainPostsPageComponent } from './pages/main-posts-page/main-posts-page.
 import {AppRoutingModule} from "../../app-routing.module";
 import { MainPageComponent } from './pages/main-page/main-page.component';
 import {CreateBlogComponent} from './components/create-blog/create-blog.component';
+import { PostFiltersComponent } from './components/post-filters/post-filters.component';
+import { BlogFiltersComponent } from './components/blog-filters/blog-filters.component';
 
 
 @NgModule({
   declarations: [BlogCardComponent, MainBlogPageComponent, MainPostsPageComponent,
-    MainPageComponent, CreateBlogComponent],
+    MainPageComponent, CreateBlogComponent, PostFiltersComponent, BlogFiltersComponent],
   imports: [
     SharedModule,
     AppRoutingModule
