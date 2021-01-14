@@ -4,7 +4,7 @@
 </div>
 
 <div style="height: 100vh" [style]="hasPage ? 'padding-left: 300px ;padding-right: 300px' : ''">
- <mat-grid-list cols="3" rowHeight="1:1" >
+ <mat-grid-list [cols]="cols" rowHeight="1:1" >
 
     <mat-grid-tile *ngFor="let blog of blogs | slice: lowValue : highValue" >
       <app-blog-card [blog]="blog"></app-blog-card>

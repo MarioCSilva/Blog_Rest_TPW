@@ -32,7 +32,7 @@ export class CreateBlogComponent implements OnInit {
 
   getTopics(): void {
     this.blogService.getTopics().subscribe(
-      data => {this.init_topics = data; console.log(this.init_topics)},
+      data => {this.init_topics = data;},
       error => {console.log(error); }
     );
   }
@@ -57,7 +57,7 @@ export class CreateBlogComponent implements OnInit {
       }
     }
   }
-
+  // TODO: create blog and nav bar logged in
   createBlog(): void{
     this.clearData();
   }

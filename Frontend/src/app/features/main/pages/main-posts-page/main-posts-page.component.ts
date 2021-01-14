@@ -21,6 +21,6 @@ export class MainPostsPageComponent implements OnInit {
   constructor(private mainService: MainPageService) { }
 
   ngOnInit(): void {
-    this.mainService.getPosts().subscribe(data => {console.log(data); this.posts = data; });
+    this.mainService.getPosts().subscribe(data => {this.posts = data; });
   }
 }

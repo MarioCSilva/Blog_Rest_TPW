@@ -382,7 +382,6 @@ def new_post(request):
         else:
             data = post_serializer.errors
 
-    print(data)
     return Response(data)
 
 
@@ -436,17 +435,14 @@ def blog_follow(request):
 def like_post(request):
     client = get_object_or_404(Client, user=request.user)
     data = request.data
-    print(data)
     post_id = data['post']
     post = get_object_or_404(Post, id=post_id)
 
     message = ""
     if client in post.likes.all():
-        print("Remove like")
         message = "Successfully removed like"
         post.likes.remove(client)
     else:
-        print("Add like")
         message = "Successfully added like"
         post.likes.add(client)
     post.save()

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, HostListener, Input, OnInit, ViewChild} from '@angular/core';
 import {MainPageService} from '../../../../core/services/main-page.service';
 import {Blog} from '../../../../core/models/Blog';
 import {PageEvent} from "@angular/material/paginator";
@@ -11,15 +11,18 @@ import {PageEvent} from "@angular/material/paginator";
 export class MainBlogPageComponent implements OnInit {
 
   // MatPaginator Inputs
+  cols: number = 3;
   pageIndex:number = 0;
   pageSize:number = 6;
   lowValue:number = 0;
   highValue:number = 6;
+  cur_page: number = 0;
+  flag: boolean = true;
 
   // MatPaginator Output
   pageEvent: PageEvent;
 
-  blogs: Blog[];
+  blogs: Blog[] = [];
 
   @Input()
   hasPage: boolean = true;
@@ -29,8 +32,16 @@ export class MainBlogPageComponent implements OnInit {
   ngOnInit(): void {
     this.mainService.getBlogs().subscribe(data => {
       this.blogs = data;
-      console.log(this.blogs);
     });
+    if (window.innerWidth <= 1500) {
+      this.cols = 2;
+      this.pageSize = 4;
+      this.highValue = 4;
+    } else {
+      this.cols = 3;
+      this.pageSize = 6;
+      this.highValue = 6;
+    }
   }
 
   getPaginatorData(event){
@@ -44,6 +55,29 @@ export class MainBlogPageComponent implements OnInit {
     }
     this.pageIndex = event.pageIndex;
     return event;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    if (window.innerWidth <= 1500) {
+      this.cols = 2;
+      this.pageSize = 4;
+
+      this.lowValue = this.cur_page * 4;
+      console.log(this.lowValue)
+      this.highValue = this.cur_page * 4 + 4;
+      console.log(this.highValue)
+      if (this.flag == true)
+        this.cur_page = (~~(this.highValue / 4))
+    } else {
+      this.cols = 3;
+      this.pageSize = 6;
+
+      this.lowValue = 0;
+      this.highValue = 6;
+      if (this.cur_page !=  (~~(this.highValue / 6)))
+        this.cur_page = (~~(this.highValue / 6))
+    }
   }
 
 }

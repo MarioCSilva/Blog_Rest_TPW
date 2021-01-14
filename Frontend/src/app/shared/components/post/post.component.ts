@@ -23,11 +23,10 @@ export class PostComponent implements OnInit {
   constructor(private postService: PostService) { }
 
   ngOnInit(): void {
-    console.log(this.post);
   }
+
   likePost(): void{
     // TODO: Handle Possible Errors
-    console.log(this.post);
     this.postService.likePost(this.post.id).subscribe(data => {
       this.post.liked = !this.post.liked;
       this.post.likes = data.post.likes;

@@ -21,8 +21,10 @@ const routes: Routes = [
   {path: 'blog/:num', component: BlogPageComponent,  canActivate: [RoleGuardService], data: isAuthenticated},
   {path: 'settings', component: SettingsPageComponent,  canActivate: [RoleGuardService], data: isAuthenticated},
   {path: 'blog', component: BlogPageComponent,  canActivate: [RoleGuardService], data: isAuthenticated},
-  {path: 'home/blogs', component: MainBlogPageComponent,  canActivate: [RoleGuardService], data: isAuthenticated},
-  {path: 'home/posts', component: MainPostsPageComponent,  canActivate: [RoleGuardService], data: isAuthenticated },
+  {path: 'blogs', component: MainBlogPageComponent,  canActivate: [RoleGuardService], data: isAuthenticated},
+  {path: 'posts', component: MainPostsPageComponent,  canActivate: [RoleGuardService], data: isAuthenticated },
+  {path: 'home/:str', component: MainPageComponent, canActivate: [RoleGuardService], data: isAuthenticated },
+  {path: '', component: MainPageComponent, canActivate: [RoleGuardService], data: isAuthenticated },
   {path: 'home', component: MainPageComponent, canActivate: [RoleGuardService], data: isAuthenticated },
   { path: '**', component: PageNotFoundComponent},
 ];
