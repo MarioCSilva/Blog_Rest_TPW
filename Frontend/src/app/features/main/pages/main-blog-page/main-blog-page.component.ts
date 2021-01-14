@@ -17,7 +17,8 @@ export class MainBlogPageComponent implements OnInit {
   lowValue:number = 0;
   highValue:number = 6;
   cur_page: number = 0;
-  flag: boolean = true;
+  flag_2: boolean = false;
+  flag_3: boolean = true;
 
   // MatPaginator Output
   pageEvent: PageEvent;
@@ -63,21 +64,23 @@ export class MainBlogPageComponent implements OnInit {
       this.cols = 2;
       this.pageSize = 4;
 
-      this.lowValue = this.cur_page * 4;
-      console.log(this.lowValue)
-      this.highValue = this.cur_page * 4 + 4;
-      console.log(this.highValue)
-      if (this.flag == true)
-        this.cur_page = (~~(this.highValue / 4))
+      if (this.flag_2 == true){
+        this.flag_2 = false;
+      }
+      this.lowValue = this.pageIndex * 4;
+      this.highValue = this.pageIndex * 4 + 4;
     } else {
       this.cols = 3;
       this.pageSize = 6;
 
-      this.lowValue = 0;
-      this.highValue = 6;
-      if (this.cur_page !=  (~~(this.highValue / 6)))
-        this.cur_page = (~~(this.highValue / 6))
+      if (this.flag_3 == true) {
+        this.flag_3 = false;
+      }
+      this.lowValue = this.pageIndex * 6;
+      this.highValue = this.pageIndex * 6 + 6;
     }
+    console.log(this.highValue)
+    console.log(this.lowValue)
   }
 
 }
