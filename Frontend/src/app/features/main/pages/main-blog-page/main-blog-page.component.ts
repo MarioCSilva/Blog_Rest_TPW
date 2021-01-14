@@ -79,8 +79,6 @@ export class MainBlogPageComponent implements OnInit {
       this.lowValue = this.pageIndex * 6;
       this.highValue = this.pageIndex * 6 + 6;
     }
-    console.log(this.highValue)
-    console.log(this.lowValue)
   }
 
 }

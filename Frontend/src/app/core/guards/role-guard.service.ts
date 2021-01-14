@@ -6,19 +6,20 @@ import {ActivatedRouteSnapshot, Router} from '@angular/router';
   providedIn: 'root'
 })
 export class RoleGuardService {
+  static loggedIn: boolean = false;
 
   constructor(private authService: AuthenticationService , private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
     const expectedRole = route.data.role;
-    console.log(route.data.role);
-    console.log(this.authService.isAuthenticated());
 
-    if (this.authService.isAuthenticated() && expectedRole !== 'Authenticated') {
+    let loggedIn = this.authService.isAuthenticated();
+
+    if (loggedIn && expectedRole !== 'Authenticated') {
       this.router.navigate(['/home/posts']);
       return false;
     }
-    if (!this.authService.isAuthenticated() && expectedRole !== 'Not Authenticated'){
+    if (!loggedIn && expectedRole !== 'Not Authenticated'){
       this.router.navigate(['/login']);
       return false;
     }

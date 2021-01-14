@@ -83,4 +83,17 @@ export class BlogService {
     let url = this.baseURL + 'blog' + '?id=' + blog_id;
     return this.http.delete<any>(url);
   }
+
+  newBlog(data: { topic: any[]; name: string; description: string; isPublic: boolean }) {
+    let topics: number[] = [];
+
+    for(let i=0; i< data.topic.length; i++){
+      topics.push(data.topic[i]['id']);
+    }
+
+    data.topic = topics;
+
+    let url = this.baseURL + 'new_blog';
+    return this.http.post<any>(url, data);
+  }
 }
