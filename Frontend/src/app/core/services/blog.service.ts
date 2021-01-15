@@ -23,20 +23,26 @@ export class BlogService {
     return this.http.get<Blog>(url);
   }
 
-  updateBlog(blog): Observable<Blog> {
+  updateBlog(blog, owners?: string[]): Observable<Blog> {
     let topics: number[];
-    let final_owners: number[];
     let final_invites: number[];
     let final_subs: number[];
 
-    [topics, final_owners, final_invites, final_subs] = this.handleData(blog)
+    [topics, final_invites, final_subs] = this.handleData(blog)
+
+    if (owners == undefined) {
+      owners = [];
+      for(let i=0; i < blog.owner.length; i++){
+        owners.push(blog.owner[i].user.username);
+      }
+    }
 
     let data = {
       'name': blog.name,
       'description': blog.description,
       'isPublic': blog.isPublic,
       'topic': topics,
-      'owner': final_owners,
+      'owner': owners,
       'accepted_invites': final_invites,
       'subs': final_subs,
     }
@@ -44,15 +50,10 @@ export class BlogService {
     return this.http.put<Blog>(url, data);
   }
 
-  handleData(blog, owners?: Client[], invites?: Client[], subs?: Client[]) {
+  handleData(blog) {
     let topics: number[] = [];
-    let final_owners: number[] = [];
     let final_invites: number[] = [];
     let final_subs: number[] = [];
-
-    for(let i=0; i<blog.owner.length; i++){
-      final_owners.push(blog.owner[i]['id']);
-    }
 
     for(let i=0; i<blog.invites.length; i++){
       final_invites.push(blog.invites[i]['id']);
@@ -66,7 +67,7 @@ export class BlogService {
       topics.push(blog.topic[i]['id']);
     }
 
-    return [topics, final_owners, final_invites, final_subs]
+    return [topics, final_invites, final_subs]
   }
 
   getTopics(): Observable<Topic[]> {

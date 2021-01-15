@@ -14,7 +14,8 @@ export class BlogEditOwnersModalComponent implements OnInit {
 
   @Input()
   blog: Blog;
-  owners: Client[];
+  owners: string[] = [];
+  new_owner: string = "";
 
   constructor(
     private modalService: NgbModal,
@@ -24,7 +25,9 @@ export class BlogEditOwnersModalComponent implements OnInit {
   @ViewChild('template', { static: true }) template: ElementRef;
 
   ngOnInit(): void {
-    this.owners = this.blog.owner.slice();
+    for (let i = this.blog.owner.length - 1; i >= 0; --i) {
+      this.owners.push(this.blog.owner[i].user.username);
+    }
   }
 
   showModal(): void{
@@ -36,17 +39,18 @@ export class BlogEditOwnersModalComponent implements OnInit {
   }
 
   updateBlog(): void{
-    this.blog.owner = this.owners.slice();
-    this.blogService.updateBlog(this.blog).subscribe(
-      data => {console.log(data);
-        this.modalService.dismissAll(this.template);
-      },
-      error => {
+
+    this.blogService.updateBlog(this.blog, this.owners).subscribe(
+      data => {
         this.blogService.getBlog(this.blog.id).subscribe(data => {
           this.blog.owner = data.owner;
-          this.clearData()});
-      }
-    );
+          this.owners = [];
+          this.clearData()
+        });
+        this.modalService.dismissAll(this.template);
+      },
+      error => { console.log(error)});
+    this.clearData()
   }
 
   changeOwners(owner, checked: boolean) {
@@ -54,16 +58,23 @@ export class BlogEditOwnersModalComponent implements OnInit {
       this.owners.push(owner);
     } else {
       for (let i = this.owners.length - 1; i >= 0; --i) {
-        if (this.owners[i].id == owner.id) {
+        if (this.owners[i] == owner) {
           this.owners.splice(i,1);
         }
       }
     }
   }
 
-  checkClient(owner: Client) {
+  addOwner($event, owner: string) {
+    $event.preventDefault();
+    this.owners.push(owner);
+    this.new_owner = "";
+  }
+
+
+  checkClient(owner: string) {
     for (let i = this.owners.length - 1; i >= 0; --i) {
-      if (this.owners[i].id == owner.id) {
+      if (this.owners[i] == owner) {
         return true;
       }
     }
@@ -71,6 +82,10 @@ export class BlogEditOwnersModalComponent implements OnInit {
   }
 
   clearData() {
-    this.owners = this.blog.owner;
+    this.new_owner = "";
+    this.owners = [];
+    for (let i = this.blog.owner.length - 1; i >= 0; --i) {
+      this.owners.push(this.blog.owner[i].user.username);
+    }
   }
 }

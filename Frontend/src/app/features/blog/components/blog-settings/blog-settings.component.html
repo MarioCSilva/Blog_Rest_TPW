@@ -15,7 +15,7 @@
 
         <mat-divider></mat-divider>
 
-        <mat-list-item class="lst_item" *ngIf="!blog.personal && blog.owner.length > 1">
+        <mat-list-item class="lst_item" *ngIf="!blog.personal">
 
           <div class="row w3-bar-item">
             <app-blog-edit-owners-modal [blog]="blog" #blogEditOwnersModal></app-blog-edit-owners-modal>
