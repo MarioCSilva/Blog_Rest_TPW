@@ -1,21 +1,30 @@
-<div class="create_blog" [style]="hasPage ? 'padding-left: 300px ;padding-right: 300px' : ''">
-  <app-create-blog #blogCreateBlogModal></app-create-blog>
-  <button (click)="blogCreateBlogModal.showModal()" mat-raised-button id="create_blog">Create Blog</button>
-</div>
+<div class="container">
+  <div class="row">
+    <div class="col-4">
+      <app-blog-filters [(blogs)]="blogs"></app-blog-filters>
+    </div>
+    <div class="col-8">
+      <div class="create_blog" [style]="hasPage ? 'padding-left: 300px ;padding-right: 300px' : ''">
+        <app-create-blog #blogCreateBlogModal></app-create-blog>
+        <button (click)="blogCreateBlogModal.showModal()" mat-raised-button id="create_blog">Create Blog</button>
+      </div>
+    </div>
+  </div>
 
-<div style="height: 100vh" [style]="hasPage ? 'padding-left: 300px ;padding-right: 300px' : ''">
- <mat-grid-list [cols]="cols" rowHeight="1:1" >
+  <div style="height: 100vh" [style]="hasPage ? 'padding-left: 300px ;padding-right: 300px' : ''">
+    <mat-grid-list [cols]="cols" rowHeight="1:1" >
 
-    <mat-grid-tile *ngFor="let blog of blogs | slice: lowValue : highValue" >
-      <app-blog-card [blog]="blog"></app-blog-card>
-    </mat-grid-tile>
+      <mat-grid-tile *ngFor="let blog of blogs | slice: lowValue : highValue" >
+        <app-blog-card [blog]="blog"></app-blog-card>
+      </mat-grid-tile>
 
-  </mat-grid-list>
+    </mat-grid-list>
 
 
-  <mat-paginator [length]="blogs.length"
-                 [pageSize]="pageSize"
-                 (page)="pageEvent = getPaginatorData($event)">
-  </mat-paginator>
+    <mat-paginator [length]="blogs.length"
+                   [pageSize]="pageSize"
+                   (page)="pageEvent = getPaginatorData($event)">
+    </mat-paginator>
+  </div>
 </div>
 

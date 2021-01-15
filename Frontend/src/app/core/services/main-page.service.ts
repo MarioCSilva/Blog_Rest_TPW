@@ -34,8 +34,13 @@ export class MainPageService {
     return this.http.get<Post[]>(url);
   }
 
-  getFilteredBlogs(search: string, order: string, orderBy: string, topics: Topic[]): Observable<Blog[]> {
-    const url = this.baseURL + 'main/blogs?search=' + search + '&order=' + order + '&orderBy=' + orderBy + '&topics=' + topics;
+  getFilteredBlogs(search: string, order: string, orderBy: string, topics: number[]): Observable<Blog[]> {
+    let url = this.baseURL + 'main/blog?search=' + search + '&order=' + order + '&orderBy=' + orderBy + '&topics=';
+    console.log(topics);
+    if (topics.length !== 0){
+      url += topics;
+    }
+    return this.http.get<Blog[]>(url);
   }
 
 }

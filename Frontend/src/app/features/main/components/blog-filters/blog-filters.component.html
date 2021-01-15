@@ -13,9 +13,8 @@
       <mat-form-field appearance="outline">
         <mat-label>Order</mat-label>
         <mat-select [(ngModel)]="order" name="order">
-          <mat-option value="recent">Recent</mat-option>
-          <mat-option value="likes">Likes</mat-option>
-          <mat-option value="comments">Comments</mat-option>
+          <mat-option value="subs">Number of Subs</mat-option>
+          <mat-option value="posts">Number of Posts</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field appearance="outline">
@@ -27,7 +26,7 @@
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Toppings</mat-label>
-        <mat-select [(ngModel)]="selected_topics" multiple>
+        <mat-select name="topics" [(ngModel)]="selected_topics" multiple>
           <mat-option *ngFor="let topic of topics " [value]="topic">{{topic.name}}</mat-option>
         </mat-select>
       </mat-form-field>

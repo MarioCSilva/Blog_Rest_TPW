@@ -16,18 +16,22 @@ export class BlogFiltersComponent implements OnInit {
   @Output()
   blogsChange =  new EventEmitter<Blog[]>();
   search = '';
-  order: string;
-  orderBy: string;
-  selected_topics: Topic[];
+  order = '';
+  orderBy = '';
+  selected_topics: Topic[] = [];
   topics: Topic[];
 
   constructor(private mainService: MainPageService, private blogService: BlogService) { }
 
   ngOnInit(): void {
-    this.blogService.getTopics().subscribe();
+    this.blogService.getTopics().subscribe(data => {this.topics = data; });
   }
   filter(): void{
-    this.mainService.getFilteredBlogs(this.search, this.order, this.orderBy, this.selected_topics).subscribe(
+    let ids = [];
+    for(let i=0; i<this.selected_topics.length; i++){
+      ids.push(this.selected_topics[i]['id']);
+    }
+    this.mainService.getFilteredBlogs(this.search, this.order, this.orderBy, ids).subscribe(
       data => { this.blogs = data; this.blogsChange.emit(data); }
     );
   }

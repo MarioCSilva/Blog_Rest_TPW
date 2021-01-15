@@ -169,27 +169,39 @@ def main_blog(request):
     search = request.GET.get("search")
     topics = request.GET.getlist("topics")
     choice = request.GET.get("order")
-    order = request.GET.get("order_by")
+    order = request.GET.get("orderBy")
 
+    print("REQUESTS...........................")
+    print(search)
+    print(topics)
+    print(choice)
+    print(order)
     if not search:
         search = ""
     # searches for pages with that name or owner name
     blogs = (Blog.objects.filter(
         name__contains=search).distinct())  # | Blog.objects.filter(owner__user__name__in=search))
-    if topics:
+    if topics and topics[0] != '':
+        # TODO: change this to use django filters or split the string
         blogs = blogs & (Blog.objects.filter(topic__id__in=topics).distinct())
 
+
+
+    print(blogs)
     if order == "asc":
         order = ""
     elif order == "desc":
         order = "-"
 
-    blogs = blogs.annotate(posts=Count("post"))
     #blogs = blogs.annotate(subsn=Count("subs"))
 
-    if choice:
-        blogs = blogs.order_by(order + choice)
+    if choice == "subs":
+        blogs = blogs.annotate(count=Count("subs")).order_by(order + "count")
+    elif choice == "posts":
+        blogs = blogs.annotate(count=Count("post")).order_by(order + "count")
     blogs_serializer = BlogSerializer(blogs, many=True)
+
+    print(blogs_serializer.data)
     return Response(blogs_serializer.data)
 
 
