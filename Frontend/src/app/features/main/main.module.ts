@@ -8,15 +8,17 @@ import { MainPageComponent } from './pages/main-page/main-page.component';
 import {CreateBlogComponent} from './components/create-blog/create-blog.component';
 import { PostFiltersComponent } from './components/post-filters/post-filters.component';
 import { BlogFiltersComponent } from './components/blog-filters/blog-filters.component';
+import {MatCardModule} from '@angular/material/card';
 
 
 @NgModule({
   declarations: [BlogCardComponent, MainBlogPageComponent, MainPostsPageComponent,
     MainPageComponent, CreateBlogComponent, PostFiltersComponent, BlogFiltersComponent],
-  imports: [
-    SharedModule,
-    AppRoutingModule
-  ],
+    imports: [
+        SharedModule,
+        AppRoutingModule,
+        MatCardModule
+    ],
   exports: [MainBlogPageComponent, MainPostsPageComponent, CreateBlogComponent]
 })
 export class MainModule { }

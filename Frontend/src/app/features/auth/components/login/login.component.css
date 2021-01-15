@@ -1,5 +1,10 @@
-
 mat-form-field{
-  width:400px !important;
+  width: 100%!important;
   font-size: 18px !important;
+}
+mat-label {
+  color: white;
+}
+.login {
+  color: white;
 }

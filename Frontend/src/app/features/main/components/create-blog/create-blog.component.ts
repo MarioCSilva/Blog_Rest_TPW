@@ -4,6 +4,7 @@ import {PostService} from "../../../../core/services/post.service";
 import {BlogService} from "../../../../core/services/blog.service";
 import {Blog} from "../../../../core/models/Blog";
 import {Topic} from "../../../../core/models/Topic";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-create-blog',
@@ -17,6 +18,12 @@ export class CreateBlogComponent implements OnInit {
   description: string = "";
   init_topics: Topic[] = [];
   topics: Topic[] = [];
+  isPublic: boolean = true;
+
+  options = [
+    { value: true, text: 'Public' },
+    { value: false, text: 'Private' },
+  ];
 
   @ViewChild('template', { static: true }) template: ElementRef;
 
@@ -24,6 +31,8 @@ export class CreateBlogComponent implements OnInit {
     private modalService: NgbModal,
     private postService: PostService,
     private blogService: BlogService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
@@ -57,8 +66,25 @@ export class CreateBlogComponent implements OnInit {
       }
     }
   }
-  // TODO: create blog and nav bar logged in
+
   createBlog(): void{
+    let data = {
+      name: this.name,
+      description: this.description,
+      topic: this.topics,
+      isPublic: this.isPublic,
+    }
+    this.blogService.newBlog(data).subscribe(
+      data => {
+        let blog = Blog;
+        blog = data.blog
+        this.modalService.dismissAll(this.template);
+        this.clearData();
+        if (blog != undefined)
+          this.router.navigate(['/blog/' + blog['id']]);
+      },
+      error => {console.log(error); }
+    );
     this.clearData();
   }
 

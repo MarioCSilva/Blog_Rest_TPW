@@ -1,26 +1,24 @@
 .box{
   width: 100%;
-  padding: 10px;
   display: table;
   color: black;
-  border:1px solid gray;
   background-color: white;
   text-align: center;
-  vertical-align: middle;
-  width:290px;
-  height: 254px;
+  min-width: 300px;
+  margin: 0 10px 40px 10px;
+  box-shadow: 0 2px 5px 0 #007bff;
 }
 
-.blog_pic{
-  width: 60px;
-  height: 60px;
-  border:2px solid white;
+.img {
+  width: 200px;
+  height: 200px;
+  padding-top: 10px;
   border-radius: 50%;
 }
 
-.blog_title{
-  padding-top: 30px;
-  color: #007bff;
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
 }
 
 /* TODO: change url */

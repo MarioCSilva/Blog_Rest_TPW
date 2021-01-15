@@ -53,8 +53,6 @@ def register(request):
 # token: e26f7aca6dd0661469c62016562949106c822b66
 # get: curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186"  http://localhost:8000/ws/profile/olasounovoaqui40
 # post: curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186" -d '{}' -H "Content-Type: application/json" http://localhost:8000/ws/profile/olasounovoaqui40
-
-
 @permission_classes([IsAuthenticated])
 class Profile(APIView):
     def get(self, request):
@@ -100,7 +98,7 @@ class Settings(APIView):
         data = {'user': user_serializer.data}
         return Response(data)
 
-    def put(self,request):
+    def put(self, request):
         user = get_object_or_404(User,id=request.user.id)
         user_serializer = UserSerializer(user,data=request.data,partial=True)
 
@@ -119,13 +117,13 @@ class Settings(APIView):
 
         blogs = Blog.objects.filter(owner__in=[client])
         for blog in blogs:
-            if len(blog.owner) == 1:
+            if len(blog.owner.all()) == 1:
                 blog.delete()
 
         client.delete()
         user.delete()
 
-        return Response().ok()
+        return Response({"success": "successfully deleted account"})
 
 
 # curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186"  http://localhost:8000/ws/my_blog
@@ -323,8 +321,12 @@ class BlogPage(APIView):
             return Response({"error": "not enough permissions"}, status=HTTP_401_UNAUTHORIZED)
 
         if 'owner' in request.data:
-            if req_client.id not in request.data['owner']:
+            owners = set()
+            for owner in request.data['owner']:
+                owners.add(get_object_or_404(Client, user__username__contains=owner).id)
+            if req_client.id not in owners:
                 return Response({"error": "Can't remove yourself from blog"}, status=HTTP_400_BAD_REQUEST)
+            request.data['owner'] = owners
 
         if 'accepted_invites' in request.data:
             accepted_clients = Client.objects.filter(id__in=request.data['accepted_invites'])
@@ -337,6 +339,7 @@ class BlogPage(APIView):
             blog_serializer.save()
             data = {"client": blog_serializer.data}
         else:
+            print(blog_serializer.errors)
             return Response(blog_serializer.errors, status=HTTP_400_BAD_REQUEST)
 
         return Response(data)
@@ -410,7 +413,10 @@ def new_blog(request):
 
     if blog_serializer.is_valid():
         blog_serializer.save()
-        data = {'success': 'successfully created a new blog'}
+        data = {
+            'success': 'successfully created a new blog',
+            'blog': blog_serializer.data
+        }
     else:
         data = blog_serializer.errors
 

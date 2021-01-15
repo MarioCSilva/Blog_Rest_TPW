@@ -40,7 +40,7 @@ export class BlogEditTopicsModalComponent implements OnInit {
   updateBlog(): void{
     this.blog.topic = this.topics.slice();
     this.blogService.updateBlog(this.blog).subscribe(
-      data => {console.log(data);
+      data => {
         this.modalService.dismissAll(this.template);
         },
       error => {console.log(error); }

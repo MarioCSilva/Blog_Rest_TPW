@@ -43,7 +43,7 @@ export class BlogEditVisibilityModalComponent implements OnInit {
   updateBlog(): void{
     this.blog.isPublic = this.isPublic;
     this.blogService.updateBlog(this.blog).subscribe(
-      data => {console.log(data);this.modalService.dismissAll(this.template);},
+      data => {this.modalService.dismissAll(this.template);},
       error => {console.log(error); }
     );
     this.blogService.getBlog().subscribe(data => { this.blog = data; });

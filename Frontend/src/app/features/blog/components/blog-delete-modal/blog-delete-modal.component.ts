@@ -2,6 +2,7 @@ import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {Blog} from "../../../../core/models/Blog";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {BlogService} from "../../../../core/services/blog.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-blog-delete-modal',
@@ -16,6 +17,7 @@ export class BlogDeleteModalComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private blogService: BlogService,
+    private router: Router,
   ) { }
 
   @ViewChild('template', { static: true }) template: ElementRef;
@@ -31,10 +33,10 @@ export class BlogDeleteModalComponent implements OnInit {
     });
   }
 
-  // TODO: Redirect after deletion
   deleteBlog(): void {
     this.blogService.deleteBlog(this.blog.id).subscribe(
-      data => {console.log(data);
+      data => {
+        this.router.navigate(['/home']);
       },
       error => {console.log(error); }
     );

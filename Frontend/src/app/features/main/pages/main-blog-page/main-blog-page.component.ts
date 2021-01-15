@@ -35,6 +35,10 @@ export class MainBlogPageComponent implements OnInit {
       this.blogs = data;
     });
     if (window.innerWidth <= 1000) {
+      this.cols = 1;
+      this.pageSize = 4;
+      this.highValue = 4;
+    } else if (window.innerWidth <= 1700) {
       this.cols = 2;
       this.pageSize = 4;
       this.highValue = 4;
@@ -60,8 +64,12 @@ export class MainBlogPageComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    if (window.innerWidth <= 1500) {
+    if (window.innerWidth <= 1140) {
+      this.cols = 1;
+    } else if (window.innerWidth <= 1700) {
       this.cols = 2;
+    }
+    if (window.innerWidth <= 1700) {
       this.pageSize = 4;
 
       if (this.flag_2 == true){
@@ -79,8 +87,6 @@ export class MainBlogPageComponent implements OnInit {
       this.lowValue = this.pageIndex * 6;
       this.highValue = this.pageIndex * 6 + 6;
     }
-    console.log(this.highValue)
-    console.log(this.lowValue)
   }
 
 }
