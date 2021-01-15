@@ -53,8 +53,6 @@ def register(request):
 # token: e26f7aca6dd0661469c62016562949106c822b66
 # get: curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186"  http://localhost:8000/ws/profile/olasounovoaqui40
 # post: curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186" -d '{}' -H "Content-Type: application/json" http://localhost:8000/ws/profile/olasounovoaqui40
-
-
 @permission_classes([IsAuthenticated])
 class Profile(APIView):
     def get(self, request):
@@ -119,13 +117,13 @@ class Settings(APIView):
 
         blogs = Blog.objects.filter(owner__in=[client])
         for blog in blogs:
-            if len(blog.owner) == 1:
+            if len(blog.owner.all()) == 1:
                 blog.delete()
 
         client.delete()
         user.delete()
 
-        return Response().ok()
+        return Response({"success": "successfully deleted account"})
 
 
 # curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186"  http://localhost:8000/ws/my_blog
@@ -398,7 +396,10 @@ def new_blog(request):
 
     if blog_serializer.is_valid():
         blog_serializer.save()
-        data = {'success': 'successfully created a new blog'}
+        data = {
+            'success': 'successfully created a new blog',
+            'blog': blog_serializer.data
+        }
     else:
         data = blog_serializer.errors
 

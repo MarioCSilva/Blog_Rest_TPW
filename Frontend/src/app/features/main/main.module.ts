@@ -6,15 +6,17 @@ import { MainPostsPageComponent } from './pages/main-posts-page/main-posts-page.
 import {AppRoutingModule} from "../../app-routing.module";
 import { MainPageComponent } from './pages/main-page/main-page.component';
 import {CreateBlogComponent} from './components/create-blog/create-blog.component';
+import {MatCardModule} from "@angular/material/card";
 
 
 @NgModule({
   declarations: [BlogCardComponent, MainBlogPageComponent, MainPostsPageComponent,
     MainPageComponent, CreateBlogComponent],
-  imports: [
-    SharedModule,
-    AppRoutingModule
-  ],
+    imports: [
+        SharedModule,
+        AppRoutingModule,
+        MatCardModule
+    ],
   exports: [MainBlogPageComponent, MainPostsPageComponent, CreateBlogComponent]
 })
 export class MainModule { }

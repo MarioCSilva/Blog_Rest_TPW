@@ -12,6 +12,8 @@ body {
   position: fixed;
   top: 0;
   width: 100%;
+  padding: 0px;
+
 }
 
 .dropdown-toggle::after {
@@ -67,12 +69,13 @@ ul {
 
 .fa-user-circle-o {
   font-size: 1.7em;
+  color: rgba(29,161,242,1.00)
 }
 
 #nav_btn {
-  background-color: #007bff;
+  background-color: rgba(29,161,242,1.00);
   color: white;
-  font-size: .8em;
+  font-size: .7em;
   border-radius: 100px;
 }
 
@@ -92,14 +95,14 @@ ul {
   height: 60px;
   transition: all 0.5s ease-in;
   background-color: white;
-  color: #007bff;
+  color: rgba(29,161,242,1.00)
 }
 
 .navbar-normal {
   padding-top: 10px;
 
   height: 90px;
-  color: white;
+  color: rgba(29,161,242,1.00);
   transition: all 0.5s ease-in;
   background-color: transparent;
 }
