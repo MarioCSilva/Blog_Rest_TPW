@@ -65,6 +65,7 @@ def create_blog(sender, instance=None, created=False, **kwargs):
         blog.save()
 
 
+
 # Automaticante gerar um token ao ser criado um USER
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):

@@ -1,4 +1,5 @@
 import json
+import datetime
 
 from django.shortcuts import render, redirect, HttpResponse, HttpResponseRedirect
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
@@ -19,6 +20,7 @@ from django.db.models import Count
 from django.contrib import messages
 from rest_framework import status
 from django.core.serializers import serialize
+
 
 from app.serializers import UserSerializer, ClientSerializer, TopicSerializer, BlogSerializer, PostSerializer, \
     CommentSerializer
@@ -84,6 +86,12 @@ class Profile(APIView):
             data['profile_pic'] = request.data.get('file')
         else:
             del data['profile_pic']
+
+        # birthdate is a Date 'yyyy-mm-dd' but angular sends the same with other stuff
+        # remove them so that django can validate the given date
+        if data['birthdate']:
+            data['birthdate'] = data['birthdate'].split('T')[0]
+
         client_serializer = ClientSerializer(client, data=data, partial=True)
 
         if client_serializer.is_valid():
@@ -390,11 +398,15 @@ def new_post(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def new_blog(request):
-    data = request.data
+    data = json.loads(request.data['data'])
+    print(request.data)
     client = get_object_or_404(Client, user=request.user).id
     data['client'] = client
     data['owner'] = [client]
     data['subs'] = [client]
+
+    if request.data['file']:
+        data['blog_pic'] = request.data['file']
 
     blog_serializer = BlogSerializer(data=data)
 
