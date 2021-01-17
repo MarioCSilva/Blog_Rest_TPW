@@ -293,7 +293,7 @@ class BlogPage(APIView):
         data['owner'] = [client]
         data['subs'] = [client]
 
-        if request.data['file']:
+        if request.data.get('file'):
             data['blog_pic'] = request.data['file']
 
         blog_serializer = BlogSerializer(data=data)
