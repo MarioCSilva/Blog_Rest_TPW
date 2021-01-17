@@ -19,6 +19,7 @@ export class CreatePostComponent implements OnInit {
 
   title: string;
   content: string;
+  pic_file: File;
 
   @Input()
   blog: Blog = null;
@@ -45,7 +46,7 @@ export class CreatePostComponent implements OnInit {
   }
 
   createPost(): void{
-    this.postService.createPost(this.title, this.content, this.blog).subscribe(
+    this.postService.createPost(this.title, this.content, this.blog, this.pic_file).subscribe(
       data => {
             if (this.blog != null) {
               this.blog.posts.push(data['post']);
@@ -63,4 +64,10 @@ export class CreatePostComponent implements OnInit {
     this.title = "";
     this.content = "";
   }
+
+  file(event){
+    const files = event.target.files;
+    this.pic_file = files[0];
+  }
+
 }

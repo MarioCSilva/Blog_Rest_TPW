@@ -29,7 +29,7 @@ export class PostService {
     return this.http.post(url, {'post': id}, httpOptions);
   }
 
-  createPost(title: string, text: string, blog: Blog): Observable<any> {
+  createPost(title: string, text: string, blog: Blog, pic_file: File): Observable<any> {
     let data = {
       'title': title,
       'text': text,
@@ -37,7 +37,10 @@ export class PostService {
     if (blog != null) {
       data['blog'] = blog.id;
     }
+    const payload = new FormData();
+    payload.append('data', JSON.stringify(data));
+    payload.append('file', pic_file);
     const url = BaseURL.baseURL + 'new_post';
-    return this.http.post<Post[]>(url, data);
+    return this.http.post<Post[]>(url, payload);
   }
 }

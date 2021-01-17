@@ -376,8 +376,12 @@ def topics(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def new_post(request):
-    data = request.data
+    # data is passed as a string and needs to be converted to a dict
+    data = json.loads(request.data['data'])
     client = get_object_or_404(Client, user=request.user)
+
+    if request.data['file']:
+        data['image'] = request.data['file']
 
     if 'blog' in data:
         blog = get_object_or_404(Blog, id=data['blog'])
@@ -385,6 +389,7 @@ def new_post(request):
         topic = Topic.objects.get(name="Personal")
         blog = Blog.objects.get(topic=topic, owner__in=[client])
         data.update({'blog': blog.id})
+
 
     # check permissions to create new post on this blog
     if not blog.isPublic and client not in blog.subs.all():
