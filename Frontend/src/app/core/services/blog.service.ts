@@ -93,7 +93,7 @@ export class BlogService {
     const payload = new FormData();
     payload.append('data', JSON.stringify(data));
     payload.append('file', blog_pic);
-    let url = BaseURL.baseURL + 'new_blog';
+    let url = BaseURL.baseURL + 'blog';
     return this.http.post<any>(url, payload);
 
   }

@@ -286,11 +286,15 @@ class BlogPage(APIView):
         return Response(blog_data)
 
     def post(self, request):
-        data = request.data
+        data = json.loads(request.data['data'])
+        print(request.data)
         client = get_object_or_404(Client, user=request.user).id
         data['client'] = client
         data['owner'] = [client]
         data['subs'] = [client]
+
+        if request.data['file']:
+            data['blog_pic'] = request.data['file']
 
         blog_serializer = BlogSerializer(data=data)
 
@@ -398,31 +402,6 @@ def new_post(request):
     return Response(data)
 
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def new_blog(request):
-    data = json.loads(request.data['data'])
-    print(request.data)
-    client = get_object_or_404(Client, user=request.user).id
-    data['client'] = client
-    data['owner'] = [client]
-    data['subs'] = [client]
-
-    if request.data['file']:
-        data['blog_pic'] = request.data['file']
-
-    blog_serializer = BlogSerializer(data=data)
-
-    if blog_serializer.is_valid():
-        blog_serializer.save()
-        data = {
-            'success': 'successfully created a new blog',
-            'blog': blog_serializer.data
-        }
-    else:
-        data = blog_serializer.errors
-
-    return Response(data)
 
 
 @api_view(['POST'])
