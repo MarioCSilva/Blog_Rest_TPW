@@ -5,8 +5,7 @@ export class Client{
     name: string;
     user: User;
     description: string;
-    profile_pic: string;
+    profile_pic: any;
     birthdate: Date;
     sex: string;
-    filePic?: File;
 }

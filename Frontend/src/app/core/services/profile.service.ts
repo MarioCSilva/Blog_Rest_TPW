@@ -28,9 +28,12 @@ export class ProfileService {
     return this.http.get<[Client, boolean]>(url);
   }
 
-  updateProfile(client: Client): Observable<any> {
+  updateProfile(client: Client, profile_pic: File): Observable<any> {
     const url = this.baseURL + 'profile';
-    return this.http.put(url, client, httpOptions);
+    let payload = new FormData();
+    payload.append('client', JSON.stringify(client));
+    payload.append('file', profile_pic);
+    return this.http.put(url, payload);
   }
 
   getAccount(): Observable<any> {

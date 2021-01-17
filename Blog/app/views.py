@@ -66,24 +66,31 @@ class Profile(APIView):
 
         client_serializer = ClientSerializer(cclient)
 
-        data = {"client": client_serializer.data, "owner": request.user.username == name}
+        data = {"client": client_serializer.data, "owner": request.user.username == cclient.user.username}
 
         return Response(data)
 
     def put(self, request):
         # TODO: see if the gender value is valid
-        client = get_object_or_404(Client, user__id=request.user.id)
 
+        print(request.data)
+        client = get_object_or_404(Client, user__id=request.user.id)
 
         if client.user.id != request.user.id:
             return Response({"error": "not enough permissions"}, status=HTTP_401_UNAUTHORIZED)
 
-        client_serializer = ClientSerializer(client, data=request.data, partial=True)
+        data = json.loads(request.data['client'])
+        if request.data.get('file'):
+            data['profile_pic'] = request.data.get('file')
+        else:
+            del data['profile_pic']
+        client_serializer = ClientSerializer(client, data=data, partial=True)
 
         if client_serializer.is_valid():
             client_serializer.save()
             data = {"client": client_serializer.data}
         else:
+            print(client_serializer.errors)
             return Response(client_serializer.errors, status=HTTP_400_BAD_REQUEST)
 
         return Response(data)
