@@ -32,7 +32,8 @@ export class ProfileService {
     const url = this.baseURL + 'profile';
     let payload = new FormData();
     payload.append('client', JSON.stringify(client));
-    payload.append('file', profile_pic);
+    if(profile_pic)
+      payload.append('file', profile_pic);
     return this.http.put(url, payload);
   }
 

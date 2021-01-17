@@ -32,21 +32,21 @@ export class ProfileComponent implements OnInit {
     });
 
     this.profileService.getProfile(this.name).subscribe(data => {
-      console.log(data);
       this.client = data['client'];
       this.owner = data['owner'];
-      console.log(this.owner);
+      if (this.client.name === ''){
+        this.client.name = this.client.user.username;
+      }
       this.client.profile_pic = this.client.profile_pic == null ? '' : this.client.profile_pic  ;
       this.updateClient = this.client;
     });
   }
 
   updateProfile(): void {
-    // TODO: change date format to work with the rest
-    
+
     this.profileService.updateProfile(this.updateClient, this.pic_file).subscribe(data => {
         this.client = this.updateClient;
-        this.alertService.success("Successfully updated your account.", this.options);
+        this.alertService.success('Successfully updated your account.', this.options);
       },
       error => {
         this.alertService.error(error.error ? this.alertService.handleError(error.error) : error.message, this.options);
@@ -59,7 +59,7 @@ export class ProfileComponent implements OnInit {
   }
 
   file(event){
-    let files = event.target.files;
+    const files = event.target.files;
     this.pic_file = files[0];
   }
 

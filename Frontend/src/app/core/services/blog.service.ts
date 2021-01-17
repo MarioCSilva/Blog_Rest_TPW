@@ -85,7 +85,7 @@ export class BlogService {
     return this.http.delete<any>(url);
   }
 
-  newBlog(data: { topic: any[]; name: string; description: string; isPublic: boolean }) {
+  newBlog(data: { topic: any[]; name: string; description: string; isPublic: boolean}, blog_pic: File ) {
     let topics: number[] = [];
 
     for(let i=0; i< data.topic.length; i++){
@@ -93,8 +93,10 @@ export class BlogService {
     }
 
     data.topic = topics;
-
+    const payload = new FormData();
+    payload.append('data', JSON.stringify(data));
+    payload.append('file', blog_pic);
     let url = this.baseURL + 'new_blog';
-    return this.http.post<any>(url, data);
+    return this.http.post<any>(url, payload);
   }
 }

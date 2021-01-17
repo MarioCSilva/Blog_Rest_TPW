@@ -24,6 +24,7 @@ export class CreateBlogComponent implements OnInit {
   init_topics: Topic[] = [];
   topics: Topic[] = [];
   isPublic: boolean = true;
+  pic_file: File;
 
   options = [
     { value: true, text: 'Public' },
@@ -78,6 +79,7 @@ export class CreateBlogComponent implements OnInit {
       description: this.description,
       topic: this.topics,
       isPublic: this.isPublic,
+      blog_pic: this.pic_file
     }
     this.blogService.newBlog(data).subscribe(
       data => {
@@ -102,6 +104,11 @@ export class CreateBlogComponent implements OnInit {
       size: 'md',
       centered: true
     });
+  }
+
+  file(event){
+    const files = event.target.files;
+    this.pic_file = files[0];
   }
 
 
