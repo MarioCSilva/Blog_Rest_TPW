@@ -23,12 +23,6 @@ from django.core.serializers import serialize
 from app.serializers import UserSerializer, ClientSerializer, TopicSerializer, BlogSerializer, PostSerializer, \
     CommentSerializer
 
-
-# Create your views here.
-## PARA TESTAR:
-## REGISTER: curl -d '{"email":"qqlcoisa40@gmail.com", "username":"olasounovoaqui40", "password": "randomquerty", "password2": "randomquerty", "name":"joaozinho"}' -H "Content-Type: application/json" -X POST http://localhost:8000/ws/register
-## LOGIN: curl -d '{"username":"olasounovoaqui40", "password": "randomquerty"}' -H "Content-Type: application/json" -X POST http://localhost:8000/ws/login
-## Token f4114c4538d869943f5369efa4b7b6c941097186
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register(request):
@@ -50,9 +44,6 @@ def register(request):
     return Response(data)
 
 
-# token: e26f7aca6dd0661469c62016562949106c822b66
-# get: curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186"  http://localhost:8000/ws/profile/olasounovoaqui40
-# post: curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186" -d '{}' -H "Content-Type: application/json" http://localhost:8000/ws/profile/olasounovoaqui40
 @permission_classes([IsAuthenticated])
 class Profile(APIView):
     def get(self, request):
