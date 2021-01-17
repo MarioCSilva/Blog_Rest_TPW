@@ -90,16 +90,11 @@ export class BlogService {
     }
 
     data.topic = topics;
-<<<<<<< HEAD
     const payload = new FormData();
     payload.append('data', JSON.stringify(data));
     payload.append('file', blog_pic);
-    let url = this.baseURL + 'new_blog';
+    let url = BaseURL.baseURL + 'new_blog';
     return this.http.post<any>(url, payload);
-=======
 
-    let url = BaseURL.baseURL + 'blog';
-    return this.http.post<any>(url, data);
->>>>>>> 4db7a2099e2e962d9711bd66f433257a1bbc6710
   }
 }

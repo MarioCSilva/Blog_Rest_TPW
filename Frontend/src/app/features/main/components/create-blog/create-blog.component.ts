@@ -81,7 +81,7 @@ export class CreateBlogComponent implements OnInit {
       isPublic: this.isPublic,
       blog_pic: this.pic_file
     }
-    this.blogService.newBlog(data).subscribe(
+    this.blogService.newBlog(data, this.pic_file).subscribe(
       data => {
         let blog = Blog;
         blog = data.blog
