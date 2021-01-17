@@ -3,6 +3,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {Comment} from '../../../core/models/Comment';
 import {Post} from '../../../core/models/Post';
 import {CommentService} from '../../../core/services/comment.service';
+import {AlertService} from "../../../_alert";
 
 @Component({
   selector: 'app-comments-modal',
@@ -11,11 +12,19 @@ import {CommentService} from '../../../core/services/comment.service';
   styleUrls: ['./comments-modal.component.css']
 })
 export class CommentsModalComponent implements OnInit {
+  options = {
+    autoClose: true,
+    keepAfterRouteChange: false
+  };
+
   @Input()
   post: Post;
   newcomment: string;
 
-  constructor(private modalService: NgbModal, private commentService: CommentService) { }
+  constructor(private modalService: NgbModal,
+              private commentService: CommentService,
+              protected alertService: AlertService,
+  ) { }
 
   @ViewChild('template', { static: true }) template: ElementRef;
 
@@ -35,8 +44,10 @@ export class CommentsModalComponent implements OnInit {
   addComment(): void{
     this.commentService.postComment(this.post.id, this.newcomment).subscribe(
       data => {
-        console.log(data);
+        this.alertService.success("Successfully commented the post.", this.options);
         this.post.comments.push(data['comment']);
+      }, error => {
+        this.alertService.error(error.error ? this.alertService.handleError(error.error) : error.message, this.options);
       }
     );
   }

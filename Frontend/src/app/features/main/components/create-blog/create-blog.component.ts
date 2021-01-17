@@ -5,6 +5,7 @@ import {BlogService} from "../../../../core/services/blog.service";
 import {Blog} from "../../../../core/models/Blog";
 import {Topic} from "../../../../core/models/Topic";
 import {ActivatedRoute, Router} from "@angular/router";
+import {AlertService} from "../../../../_alert";
 
 @Component({
   selector: 'app-create-blog',
@@ -13,6 +14,10 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./create-blog.component.css']
 })
 export class CreateBlogComponent implements OnInit {
+  optionsAlert = {
+    autoClose: true,
+    keepAfterRouteChange: false
+  };
 
   name: string = "";
   description: string = "";
@@ -33,6 +38,7 @@ export class CreateBlogComponent implements OnInit {
     private blogService: BlogService,
     private router: Router,
     private route: ActivatedRoute,
+    protected alertService: AlertService,
   ) { }
 
   ngOnInit(): void {
@@ -41,8 +47,7 @@ export class CreateBlogComponent implements OnInit {
 
   getTopics(): void {
     this.blogService.getTopics().subscribe(
-      data => {this.init_topics = data;},
-      error => {console.log(error); }
+      data => {this.init_topics = data;}
     );
   }
 
@@ -80,10 +85,13 @@ export class CreateBlogComponent implements OnInit {
         blog = data.blog
         this.modalService.dismissAll(this.template);
         this.clearData();
+        this.alertService.success("Successfully created a new blog.", this.optionsAlert);
         if (blog != undefined)
           this.router.navigate(['/blog/' + blog['id']]);
       },
-      error => {console.log(error); }
+      error => {
+        this.alertService.error(error.error ? this.alertService.handleError(error.error) : error.message, this.optionsAlert);
+      }
     );
     this.clearData();
   }

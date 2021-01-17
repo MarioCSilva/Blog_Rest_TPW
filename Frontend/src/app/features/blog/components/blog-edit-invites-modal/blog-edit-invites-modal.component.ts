@@ -3,6 +3,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Client} from "../../../../core/models/Client";
 import {Blog} from "../../../../core/models/Blog";
 import {BlogService} from "../../../../core/services/blog.service";
+import {AlertService} from "../../../../_alert";
 
 @Component({
   selector: 'app-blog-edit-invites-modal',
@@ -11,7 +12,10 @@ import {BlogService} from "../../../../core/services/blog.service";
   styleUrls: ['./blog-edit-invites-modal.component.css']
 })
 export class BlogEditInvitesModalComponent implements OnInit {
-
+  options = {
+    autoClose: true,
+    keepAfterRouteChange: false
+  };
   invites: Client[] = [];
 
   @Input()
@@ -20,6 +24,7 @@ export class BlogEditInvitesModalComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private blogService: BlogService,
+    protected alertService: AlertService,
   ) { }
 
   @ViewChild('template', { static: true }) template: ElementRef;
@@ -39,11 +44,11 @@ export class BlogEditInvitesModalComponent implements OnInit {
     this.blog.invites = this.invites.slice();
     this.blogService.updateBlog(this.blog).subscribe(
       data => {
-        console.log(data);
+        this.alertService.success("Successfully updated the invites.", this.options);
         this.modalService.dismissAll(this.template);
       },
       error => {
-        console.log(error);
+        this.alertService.error(error.error ? this.alertService.handleError(error.error) : error.message, this.options);
       }
     );
     this.blogService.getBlog(this.blog.id).subscribe(data => {
