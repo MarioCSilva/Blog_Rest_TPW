@@ -380,7 +380,8 @@ def new_post(request):
     data = json.loads(request.data['data'])
     client = get_object_or_404(Client, user=request.user)
 
-    if request.data['file']:
+    print(request.data)
+    if request.data.get('file'):
         data['image'] = request.data['file']
 
     if 'blog' in data:

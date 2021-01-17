@@ -39,7 +39,9 @@ export class PostService {
     }
     const payload = new FormData();
     payload.append('data', JSON.stringify(data));
-    payload.append('file', pic_file);
+    if(pic_file){
+      payload.append('file', pic_file);
+    }
     const url = BaseURL.baseURL + 'new_post';
     return this.http.post<Post[]>(url, payload);
   }
