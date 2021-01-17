@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {PostService} from "../../../core/services/post.service";
 import {BlogService} from "../../../core/services/blog.service";
 import {Blog} from "../../../core/models/Blog";
+import {AlertService} from "../../../_alert";
 
 @Component({
   selector: 'app-create-post',
@@ -11,6 +12,10 @@ import {Blog} from "../../../core/models/Blog";
   styleUrls: ['./create-post.component.css']
 })
 export class CreatePostComponent implements OnInit {
+  options = {
+    autoClose: true,
+    keepAfterRouteChange: false
+  };
 
   title: string;
   content: string;
@@ -22,7 +27,8 @@ export class CreatePostComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    private postService: PostService
+    private postService: PostService,
+    protected alertService: AlertService,
   ) { }
 
 
@@ -44,8 +50,12 @@ export class CreatePostComponent implements OnInit {
             if (this.blog != null) {
               this.blog.posts.push(data['post']);
             }
-            this.modalService.dismissAll(this.template);
-      }, error => {console.log(error)});
+        this.alertService.success("Successfully added a post", this.options);
+
+        this.modalService.dismissAll(this.template);
+      }, error => {
+        this.alertService.error(error.error ? this.alertService.handleError(error.error) : error.message, this.options);
+      });
     this.clearData();
   }
 

@@ -3,6 +3,7 @@ import {Blog} from "../../../../core/models/Blog";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {BlogService} from "../../../../core/services/blog.service";
 import {Client} from "../../../../core/models/Client";
+import {AlertService} from "../../../../_alert";
 
 @Component({
   selector: 'app-blog-edit-subs-modal',
@@ -10,7 +11,10 @@ import {Client} from "../../../../core/models/Client";
   styleUrls: ['./blog-edit-subs-modal.component.css']
 })
 export class BlogEditSubsModalComponent implements OnInit {
-
+  options = {
+    autoClose: true,
+    keepAfterRouteChange: false
+  };
   subs: Client[];
 
   @Input()
@@ -21,6 +25,8 @@ export class BlogEditSubsModalComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private blogService: BlogService,
+    protected alertService: AlertService,
+
   ) { }
 
   ngOnInit(): void {
@@ -59,10 +65,13 @@ export class BlogEditSubsModalComponent implements OnInit {
   updateBlog(): void{
     this.blog.subs = this.subs.slice();
     this.blogService.updateBlog(this.blog).subscribe(
-      data => {console.log(data);
+      data => {
+        this.alertService.success("Successfully edited subscribers.", this.options);
         this.modalService.dismissAll(this.template);
       },
-      error => {console.log(error); }
+      error => {
+        this.alertService.error(error.error ? this.alertService.handleError(error.error) : error.message, this.options);
+      }
     );
     this.blogService.getBlog().subscribe(data => { this.blog = data; });
   }

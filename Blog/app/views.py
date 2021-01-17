@@ -126,17 +126,6 @@ class Settings(APIView):
         return Response({"success": "successfully deleted account"})
 
 
-# curl -H "Authorization:Token f4114c4538d869943f5369efa4b7b6c941097186"  http://localhost:8000/ws/my_blog
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def my_blog(request):
-    client = get_object_or_404(Client, user=request.user).id
-    topic = Topic.objects.get(name="Personal")
-    blog = Blog.objects.get(owner__in=[client], topic=topic.id)
-    data = BlogSerializer(blog).data
-    return Response(data)
-
-
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def post_comment(request):
@@ -155,7 +144,7 @@ def post_comment(request):
 
         if com_serializer.is_valid():
             com_serializer.save()
-            data = {'success': 'successfully added a comment to post','comment':com_serializer.data}
+            data = {'success': 'successfully added a comment to post', 'comment': com_serializer.data}
         else:
             data = com_serializer.errors
 
@@ -169,11 +158,6 @@ def main_blog(request):
     choice = request.GET.get("order")
     order = request.GET.get("orderBy")
 
-    print("REQUESTS...........................")
-    print(search)
-    print(topics)
-    print(choice)
-    print(order)
     if not search:
         search = ""
     # searches for pages with that name or owner name
@@ -183,9 +167,6 @@ def main_blog(request):
         # TODO: change this to use django filters or split the string
         blogs = blogs & (Blog.objects.filter(topic__id__in=topics).distinct())
 
-
-
-    print(blogs)
     if order == "asc":
         order = ""
     elif order == "desc":
@@ -199,7 +180,6 @@ def main_blog(request):
         blogs = blogs.annotate(count=Count("post")).order_by(order + "count")
     blogs_serializer = BlogSerializer(blogs, many=True)
 
-    print(blogs_serializer.data)
     return Response(blogs_serializer.data)
 
 

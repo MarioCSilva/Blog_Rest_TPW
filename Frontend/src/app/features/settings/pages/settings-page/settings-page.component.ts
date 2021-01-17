@@ -18,8 +18,8 @@ export class SettingsPageComponent implements OnInit {
   deleteAccount(): void{
     // TODO: test this
     this.profileService.deleteAccount().subscribe(data => {
-      this.router.navigate(['/login']);
       this.authService.logout();
+      this.router.navigate(['/login']);
     });
   }
 }

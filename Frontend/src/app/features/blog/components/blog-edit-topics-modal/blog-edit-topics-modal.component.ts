@@ -3,6 +3,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Blog} from "../../../../core/models/Blog";
 import {BlogService} from "../../../../core/services/blog.service";
 import {Topic} from "../../../../core/models/Topic";
+import {AlertService} from "../../../../_alert";
 
 @Component({
   selector: 'app-blog-edit-topics-modal',
@@ -11,7 +12,10 @@ import {Topic} from "../../../../core/models/Topic";
   styleUrls: ['./blog-edit-topics-modal.component.css']
 })
 export class BlogEditTopicsModalComponent implements OnInit {
-
+  options = {
+    autoClose: true,
+    keepAfterRouteChange: false
+  };
   @Input()
   blog: Blog;
   init_topics: Topic[];
@@ -22,6 +26,8 @@ export class BlogEditTopicsModalComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private blogService: BlogService,
+    protected alertService: AlertService,
+
   ) { }
 
   ngOnInit(): void {
@@ -41,16 +47,21 @@ export class BlogEditTopicsModalComponent implements OnInit {
     this.blog.topic = this.topics.slice();
     this.blogService.updateBlog(this.blog).subscribe(
       data => {
+        this.alertService.success("Successfully edited topics.", this.options);
         this.modalService.dismissAll(this.template);
         },
-      error => {console.log(error); }
+      error => {
+        this.alertService.error(error.error ? this.alertService.handleError(error.error) : error.message, this.options);
+      }
     );
   }
 
   getTopics(): void {
     this.blogService.getTopics().subscribe(
       data => {this.init_topics = data;},
-      error => {console.log(error); }
+      error => {
+        this.alertService.error(error.error ? this.alertService.handleError(error.error) : error.message, this.options);
+      }
     );
   }
 

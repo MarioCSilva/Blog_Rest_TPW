@@ -3,6 +3,7 @@ import {Blog} from "../../../../core/models/Blog";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {BlogService} from "../../../../core/services/blog.service";
 import {Router} from "@angular/router";
+import {AlertService} from "../../../../_alert";
 
 @Component({
   selector: 'app-blog-delete-modal',
@@ -10,6 +11,10 @@ import {Router} from "@angular/router";
   styleUrls: ['./blog-delete-modal.component.css']
 })
 export class BlogDeleteModalComponent implements OnInit {
+  options = {
+    autoClose: true,
+    keepAfterRouteChange: false
+  };
 
   @Input()
   blog: Blog;
@@ -18,6 +23,7 @@ export class BlogDeleteModalComponent implements OnInit {
     private modalService: NgbModal,
     private blogService: BlogService,
     private router: Router,
+    protected alertService: AlertService,
   ) { }
 
   @ViewChild('template', { static: true }) template: ElementRef;
@@ -36,9 +42,12 @@ export class BlogDeleteModalComponent implements OnInit {
   deleteBlog(): void {
     this.blogService.deleteBlog(this.blog.id).subscribe(
       data => {
+        this.alertService.success("Successfully deleted the blog " + this.blog.name, this.options);
         this.router.navigate(['/home']);
       },
-      error => {console.log(error); }
+      error => {
+        this.alertService.error(error.error ? this.alertService.handleError(error.error) : error.message, this.options);
+      }
     );
   }
 }

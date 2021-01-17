@@ -3,6 +3,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Blog} from "../../../../core/models/Blog";
 import {BlogService} from "../../../../core/services/blog.service";
 import {Client} from "../../../../core/models/Client";
+import {AlertService} from "../../../../_alert";
 
 @Component({
   selector: 'app-blog-edit-owners-modal',
@@ -11,7 +12,10 @@ import {Client} from "../../../../core/models/Client";
   styleUrls: ['./blog-edit-owners-modal.component.css']
 })
 export class BlogEditOwnersModalComponent implements OnInit {
-
+  options = {
+    autoClose: true,
+    keepAfterRouteChange: false
+  };
   @Input()
   blog: Blog;
   owners: string[] = [];
@@ -20,6 +24,7 @@ export class BlogEditOwnersModalComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private blogService: BlogService,
+    protected alertService: AlertService,
   ) { }
 
   @ViewChild('template', { static: true }) template: ElementRef;
@@ -47,9 +52,12 @@ export class BlogEditOwnersModalComponent implements OnInit {
           this.owners = [];
           this.clearData()
         });
+        this.alertService.success("Successfully updated the owners.", this.options);
         this.modalService.dismissAll(this.template);
       },
-      error => { console.log(error)});
+      error => {
+        this.alertService.error(error.error ? this.alertService.handleError(error.error) : error.message, this.options);
+      });
     this.clearData()
   }
 

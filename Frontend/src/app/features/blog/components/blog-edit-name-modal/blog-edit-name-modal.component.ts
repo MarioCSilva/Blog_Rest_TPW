@@ -2,6 +2,7 @@ import {Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation} from
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Blog} from "../../../../core/models/Blog";
 import {BlogService} from "../../../../core/services/blog.service";
+import {AlertService} from "../../../../_alert";
 
 @Component({
   selector: 'app-blog-edit-name-modal',
@@ -10,9 +11,14 @@ import {BlogService} from "../../../../core/services/blog.service";
   styleUrls: ['./blog-edit-name-modal.component.css']
 })
 export class BlogEditNameModalComponent implements OnInit {
-
+  options = {
+    autoClose: true,
+    keepAfterRouteChange: false
+  };
   constructor(private modalService: NgbModal,
-              private blogService: BlogService) { }
+              private blogService: BlogService,
+              protected alertService: AlertService,
+  ) { }
 
   @ViewChild('template', { static: true }) template: ElementRef;
 
@@ -34,15 +40,17 @@ export class BlogEditNameModalComponent implements OnInit {
     });
   }
 
-  // TODO: handle errors and show them on html
   updateBlog(): void{
     this.blog.name = this.name;
     this.blog.description = this.description;
     this.blogService.updateBlog(this.blog).subscribe(
-      data => {console.log(data);this.modalService.dismissAll(this.template);},
+      data => {
+        this.alertService.success("Successfully updated the blog.", this.options);
+        this.modalService.dismissAll(this.template);},
     error => {
-        console.log(error);
-        this.blogService.getBlog(this.blog.id).subscribe(data => {
+      this.alertService.error(error.error ? this.alertService.handleError(error.error) : error.message, this.options);
+
+      this.blogService.getBlog(this.blog.id).subscribe(data => {
         this.blog.description = data.description;
         this.blog.name = data.name;
         this.clearData()});

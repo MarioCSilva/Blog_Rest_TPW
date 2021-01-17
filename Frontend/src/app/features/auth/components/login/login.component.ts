@@ -12,7 +12,7 @@ import {AlertService} from "../../../../_alert";
 })
 export class LoginComponent implements OnInit {
   options = {
-    autoClose: true,
+    autoClose: false,
     keepAfterRouteChange: false
   };
 
@@ -29,12 +29,13 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
   login(): void {
     this.authService.login(this.username, this.password).subscribe(token => {
       StorageService.setAuthToken(token.token);
       this.router.navigate(['/home']);
     }, error => {
-      this.alertService.error('Username and password do not match.', this.options);
+      this.alertService.error(error.error ? this.alertService.handleError(error.error) : error.message, this.options);
     });
   }
 }

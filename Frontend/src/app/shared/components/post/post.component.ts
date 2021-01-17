@@ -3,6 +3,7 @@ import {Post} from '../../../core/models/Post';
 import {User} from '../../../core/models/User';
 import {Comment} from '../../../core/models/Comment';
 import {PostService} from '../../../core/services/post.service';
+import {AlertService} from "../../../_alert";
 
 /*
   See tutorial
@@ -16,21 +17,27 @@ import {PostService} from '../../../core/services/post.service';
   styleUrls: ['./post.component.css']
 })
 export class PostComponent implements OnInit {
+  options = {
+    autoClose: true,
+    keepAfterRouteChange: false
+  };
 
   @Input()
   post: Post;
   user: User;
-  constructor(private postService: PostService) { }
+  constructor(private postService: PostService,
+              protected alertService: AlertService,
+  ) { }
 
   ngOnInit(): void {
   }
 
   likePost(): void{
-    // TODO: Handle Possible Errors
     this.postService.likePost(this.post.id).subscribe(data => {
       this.post.liked = !this.post.liked;
       this.post.likes = data.post.likes;
-      console.log(this.post.likes);
+    }, error => {
+      this.alertService.error(error.error ? this.alertService.handleError(error.error) : error.message, this.options);
     });
   }
 }

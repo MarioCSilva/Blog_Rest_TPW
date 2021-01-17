@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import {Blog} from "../../../../core/models/Blog";
 import {BlogService} from "../../../../core/services/blog.service";
 import {ActivatedRoute} from "@angular/router";
+import {AlertService} from "../../../../_alert";
 
 @Component({
   selector: 'app-blog-page',
@@ -11,7 +12,10 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./blog-page.component.css']
 })
 export class BlogPageComponent implements OnInit {
-
+  options = {
+    autoClose: true,
+    keepAfterRouteChange: false
+  };
   blog: Blog;
   blog_id: number;
 
@@ -20,6 +24,7 @@ export class BlogPageComponent implements OnInit {
     private modalService: NgbModal,
     private blogService: BlogService,
     private route: ActivatedRoute,
+    protected alertService: AlertService,
   ) { }
 
   ngOnInit(): void {
@@ -32,7 +37,9 @@ export class BlogPageComponent implements OnInit {
   }
 
   blog_follow() {
-    this.blogService.blog_follow(this.blog.id).subscribe(data => { console.log(data);
+    this.blogService.blog_follow(this.blog.id).subscribe(data => {
+      this.alertService.success(this.blog.subbed ? "Successfully unfollowed the blog " + this.blog.name : "Successfully followed the blog " + this.blog.name, this.options);
+
       this.blogService.getBlog(this.blog.id).subscribe(data => { this.blog = data; });
     });
   }

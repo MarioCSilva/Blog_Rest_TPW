@@ -2,6 +2,7 @@ import {Component, ElementRef, HostListener, Input, OnInit, ViewChild, ViewEncap
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Blog} from "../../../../core/models/Blog";
 import {BlogService} from "../../../../core/services/blog.service";
+import {AlertService} from "../../../../_alert";
 
 @Component({
   selector: 'app-blog-edit-visibility-modal',
@@ -10,7 +11,10 @@ import {BlogService} from "../../../../core/services/blog.service";
   styleUrls: ['./blog-edit-visibility-modal.component.css']
 })
 export class BlogEditVisibilityModalComponent implements OnInit {
-
+  optionsAlert = {
+    autoClose: true,
+    keepAfterRouteChange: false
+  };
   @Input()
   blog: Blog;
   isPublic: boolean;
@@ -23,6 +27,7 @@ export class BlogEditVisibilityModalComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private blogService: BlogService,
+    protected alertService: AlertService,
   ) { }
 
   @ViewChild('template', { static: true }) template: ElementRef;
@@ -39,12 +44,15 @@ export class BlogEditVisibilityModalComponent implements OnInit {
     });
   }
 
-  // TODO: handle errors and show them on html
   updateBlog(): void{
     this.blog.isPublic = this.isPublic;
     this.blogService.updateBlog(this.blog).subscribe(
-      data => {this.modalService.dismissAll(this.template);},
-      error => {console.log(error); }
+      data => {
+        this.alertService.success("Successfully edited visibility.", this.optionsAlert);
+        this.modalService.dismissAll(this.template);},
+      error => {
+        this.alertService.error(error.error ? this.alertService.handleError(error.error) : error.message, this.optionsAlert);
+      }
     );
     this.blogService.getBlog().subscribe(data => { this.blog = data; });
   }
