@@ -1,0 +1,11 @@
+input {
+  color: rgba(29,161,242,1.00);
+}
+
+mat-label {
+  color: white;
+}
+
+:host /deep/ .mat-select-value-text {
+  color: rgba(29,161,242,1.00) !important;
+}
