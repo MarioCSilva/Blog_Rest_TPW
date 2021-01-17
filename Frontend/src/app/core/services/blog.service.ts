@@ -94,7 +94,7 @@ export class BlogService {
 
     data.topic = topics;
 
-    let url = this.baseURL + 'new_blog';
+    let url = this.baseURL + 'blog';
     return this.http.post<any>(url, data);
   }
 }
