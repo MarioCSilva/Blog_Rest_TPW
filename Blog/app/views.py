@@ -313,7 +313,7 @@ class BlogPage(APIView):
         if 'owner' in request.data:
             owners = set()
             for owner in request.data['owner']:
-                owners.add(get_object_or_404(Client, user__username__contains=owner).id)
+                owners.add(get_object_or_404(Client, user__username__exact=owner).id)
             if req_client.id not in owners:
                 return Response({"error": "Can't remove yourself from blog"}, status=HTTP_400_BAD_REQUEST)
             request.data['owner'] = owners

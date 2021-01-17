@@ -16,7 +16,6 @@ export class SettingsPageComponent implements OnInit {
   }
 
   deleteAccount(): void{
-    // TODO: test this
     this.profileService.deleteAccount().subscribe(data => {
       this.authService.logout();
       this.router.navigate(['/login']);

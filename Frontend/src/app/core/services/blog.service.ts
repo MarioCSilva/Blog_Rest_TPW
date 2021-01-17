@@ -1,22 +1,19 @@
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
 import {Blog} from '../models/Blog';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Topic} from "../models/Topic";
-import {Client} from "../models/Client";
-
+import {BaseURL} from '../utils/base_url';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BlogService {
 
-  private baseURL = 'http://localhost:8000/ws/';
-
   constructor(private http: HttpClient) { }
 
   getBlog(blog_id?: number): Observable<Blog> {
-    let url = this.baseURL + 'blog';
+    let url = BaseURL.baseURL + 'blog';
     if (blog_id!=null) {
       url += '?id=' + blog_id;
     }
@@ -46,7 +43,7 @@ export class BlogService {
       'accepted_invites': final_invites,
       'subs': final_subs,
     }
-    const url = this.baseURL + 'blog?id=' + blog.id;
+    const url = BaseURL.baseURL + 'blog?id=' + blog.id;
     return this.http.put<Blog>(url, data);
   }
 
@@ -71,17 +68,17 @@ export class BlogService {
   }
 
   getTopics(): Observable<Topic[]> {
-    const url = this.baseURL + 'topics';
+    const url = BaseURL.baseURL + 'topics';
     return this.http.get<Topic[]>(url);
   }
 
   blog_follow(blog_id): Observable<any> {
-    const url = this.baseURL + 'blog_follow';
+    const url = BaseURL.baseURL + 'blog_follow';
     return this.http.post<any>(url, {'blog': blog_id});
   }
 
   deleteBlog(blog_id: number) {
-    let url = this.baseURL + 'blog' + '?id=' + blog_id;
+    let url = BaseURL.baseURL + 'blog' + '?id=' + blog_id;
     return this.http.delete<any>(url);
   }
 
@@ -94,7 +91,7 @@ export class BlogService {
 
     data.topic = topics;
 
-    let url = this.baseURL + 'blog';
+    let url = BaseURL.baseURL + 'blog';
     return this.http.post<any>(url, data);
   }
 }

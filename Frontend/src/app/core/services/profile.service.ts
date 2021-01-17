@@ -3,6 +3,7 @@ import {Observable} from 'rxjs';
 import {Client} from '../models/Client';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from '../models/User';
+import {BaseURL} from '../utils/base_url';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -14,22 +15,21 @@ const httpOptions = {
 export class ProfileService {
 
 
-  private baseURL = 'http://localhost:8000/ws/';
   constructor(private http: HttpClient) { }
 
   getProfile(name: string): Observable<[Client, boolean]> {
     let url: string;
     console.log(name);
     if (name){
-      url = this.baseURL + 'profile?name=' + name;
+      url = BaseURL.baseURL + 'profile?name=' + name;
     }else{
-      url = this.baseURL + 'profile';
+      url = BaseURL.baseURL + 'profile';
     }
     return this.http.get<[Client, boolean]>(url);
   }
 
   updateProfile(client: Client, profile_pic: File): Observable<any> {
-    const url = this.baseURL + 'profile';
+    const url = BaseURL.baseURL + 'profile';
     let payload = new FormData();
     payload.append('client', JSON.stringify(client));
     payload.append('file', profile_pic);
@@ -37,16 +37,16 @@ export class ProfileService {
   }
 
   getAccount(): Observable<any> {
-    const url = this.baseURL + 'settings';
+    const url = BaseURL.baseURL + 'settings';
     return this.http.get<any>(url);
   }
 
   updateAccount(user: User): Observable<any> {
-    const url = this.baseURL + 'settings' ;
+    const url = BaseURL.baseURL + 'settings' ;
     return this.http.put(url, user, httpOptions);
   }
   deleteAccount(): Observable<any> {
-    const url = this.baseURL + 'settings';
+    const url = BaseURL.baseURL + 'settings';
     return this.http.delete(url);
   }
 }
