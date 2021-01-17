@@ -1,31 +1,29 @@
-<div class="container">
-  <div class="row">
-    <div class="col-4">
-      <app-blog-filters [(blogs)]="blogs"></app-blog-filters>
+<div class="row"  [style]="hasPage ? 'padding-left: 7% ;padding-right: 7%' : ''">
+  <div class="col-2">
+    <app-blog-filters [(blogs)]="blogs"></app-blog-filters>
+  </div>
+  <div class="col-10">
+    <div class="create_blog">
+      <app-create-blog #blogCreateBlogModal></app-create-blog>
+      <button (click)="blogCreateBlogModal.showModal()" mat-raised-button id="create_blog">Create Blog</button>
     </div>
-    <div class="col-8">
-      <div class="create_blog" [style]="hasPage ? 'padding-left: 300px ;padding-right: 300px' : ''">
-        <app-create-blog #blogCreateBlogModal></app-create-blog>
-        <button (click)="blogCreateBlogModal.showModal()" mat-raised-button id="create_blog">Create Blog</button>
-      </div>
+    <div >
+      <mat-grid-list [cols]="cols" rowHeight="1.1:1.25" >
+
+
+        <mat-grid-tile *ngFor="let blog of blogs | slice: lowValue : highValue" >
+          <app-blog-card [blog]="blog"></app-blog-card>
+        </mat-grid-tile>
+
+      </mat-grid-list>
+
+
+      <mat-paginator style="color: white; background-color: transparent; font-size: 20px;"
+                     [length]="blogs.length"
+                     [pageSize]="pageSize"
+                     (page)="pageEvent = getPaginatorData($event)">
+      </mat-paginator>
     </div>
   </div>
-
-  <div style="height: 100vh" [style]="hasPage ? 'padding-left: 300px ;padding-right: 300px' : ''">
-    <mat-grid-list [cols]="cols" rowHeight="1:1.25" >
-
-
-      <mat-grid-tile *ngFor="let blog of blogs | slice: lowValue : highValue" >
-        <app-blog-card [blog]="blog"></app-blog-card>
-      </mat-grid-tile>
-
-    </mat-grid-list>
-
-
-  <mat-paginator style="color: white; background-color: transparent; font-size: 20px;"
-                 [length]="blogs.length"
-                 [pageSize]="pageSize"
-                 (page)="pageEvent = getPaginatorData($event)">
-  </mat-paginator>
-
 </div>
+
