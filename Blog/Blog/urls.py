@@ -18,7 +18,6 @@ from django.urls import path
 from rest_framework import permissions
 
 from app import views
-from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.authtoken.views import obtain_auth_token
@@ -36,31 +35,8 @@ schema_view = get_schema_view(
 )
 
 
-
-
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', views.main_page2, name="home"),
-    path('profile/<str:name>', views.profile_page2, name="profile"),
-    path('my_profile', views.my_profile2),
-    path('login/', views.entry_page2, name='login'),
-    path('blog/<int:num>', views.blog_page2, name='blog'),
-    path('logout', auth_views.LogoutView.as_view(next_page='login/'), name='logout'),
-    path('my_blog/', views.my_blog2),
-    path('blog_owners/', views.blog_owners2),
-    path('blog_topics/', views.blog_topics2),
-    path('blog_edit/', views.blog_edit2),
-    path('blog_subs/', views.blog_subs2),
-    path('blog_follow/', views.blog_follow2),
-    path('blog_delete/', views.blog_delete2),
-    path('blog_visibility/', views.blog_visibility2),
-    path('blog_invites/', views.blog_invites2),
-    path('blog_post/', views.blog_post2),
-    path('settings/', views.settings2, name="settings"),
-    path('post_comment/', views.post_comment2),
-    path('post_like/', views.post_like2),
-    path('blog_pic/', views.blog_pic2),
-
+    path('admin', admin.site.urls),
 
     path('ws/register', views.register, name='register'),
     path('ws/login', obtain_auth_token, name='login'),
@@ -68,12 +44,12 @@ urlpatterns = [
     path('ws/main/posts', views.main_posts, name="home_posts"),
     path('ws/profile', views.Profile.as_view(), name='profile'),
     path('ws/new_post', views.new_post, name='new_post'),
-    path('ws/new_blog', views.new_blog, name='new_blog'),
-    path('ws/post_comment', views.post_comment),
-    path('ws/blog_follow', views.blog_follow),
+    path('ws/post_comment', views.post_comment, name="post_comment"),
+    path('ws/blog_follow', views.blog_follow, name="follow_blog"),
     path('ws/blog', views.BlogPage.as_view(), name='blog_page'),
     path('ws/topics', views.topics, name='topics'),
-    path('ws/like_post', views.like_post),
+    path('ws/like_post', views.like_post, name="like_post"),
+    path('ws/settings', views.Settings.as_view(), name="settings"),
 
     path('ws/schema/swagger', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('ws/schema/redoc', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),

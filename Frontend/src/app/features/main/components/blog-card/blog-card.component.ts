@@ -13,6 +13,7 @@ export class BlogCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log(this.blog.blog_pic)
   }
 
 }

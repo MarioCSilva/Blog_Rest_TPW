@@ -31,7 +31,6 @@ export class NavbarComponent implements OnInit {
   @HostListener('window:scroll', ['$event'])
   onWindowScroll(e) {
     let element = document.querySelector('.navbar');
-    console.log(element)
     if (window.pageYOffset > element.clientHeight) {
       element.classList.remove('navbar-normal');
       element.classList.add('navbar-inverse');
