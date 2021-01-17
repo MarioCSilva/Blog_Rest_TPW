@@ -54,7 +54,10 @@ class ClientSerializer(serializers.ModelSerializer):
         ret = super().to_representation(instance)
 
         ret['user'] = UserSerializer(instance.user).data
-        ret['profile_pic'] = 'http://www.localhost:8000'+ret['profile_pic']
+        if instance.profile_pic:
+            ret['profile_pic'] = 'http://www.localhost:8000'+ret['profile_pic']
+        else:
+            ret['blog_pic'] = 'http://www.localhost:8000/media/default/default_profile.jpg'
         return ret
 
 
@@ -76,6 +79,11 @@ class BlogSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
+
+        if instance.blog_pic:
+            ret['blog_pic'] = 'http://www.localhost:8000' + ret['blog_pic']
+        else:
+            ret['blog_pic'] = 'http://www.localhost:8000/media/default/default_blog.png'
 
         ret['owner'] = ClientSerializer(instance.owner.all(), many=True).data
         ret['subs'] = ClientSerializer(instance.subs.all(), many=True).data
@@ -128,10 +136,15 @@ class BlogSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ['id','title', 'client', 'date', 'image', 'text', 'blog', 'likes']
+        fields = ['id', 'title', 'client', 'date', 'image', 'text', 'blog', 'likes']
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
+        if instance.image:
+            ret['image'] = 'http://www.localhost:8000' + ret['image']
+
+        # serialize nested client data
+        ret['client'] = ClientSerializer(Client.objects.get(id=instance.client.id)).data
         # add all comments to the post
         ret['comments'] = CommentSerializer(Comment.objects.filter(post=instance.id), many=True).data
         return ret

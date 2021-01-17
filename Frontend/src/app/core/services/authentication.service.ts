@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {User} from '../models/User';
 import {StorageService} from './storage.service';
+import {BaseURL} from '../utils/base_url';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -12,12 +13,10 @@ const httpOptions = {
 })
 export class AuthenticationService {
 
-  private baseURL = 'http://localhost:8000/ws/';
-
   constructor(private http: HttpClient) { }
 
   login(username: string, password: string): Observable<any> {
-    const url = this.baseURL + 'login';
+    const url = BaseURL.baseURL + 'login';
     return this.http.post<string>(
       url,
       '{"username":"' + username + '", "password": "' + password + '" }',
@@ -26,7 +25,7 @@ export class AuthenticationService {
   }
 
   register(user: User): Observable<any> {
-    const url = this.baseURL + 'register';
+    const url = BaseURL.baseURL + 'register';
     return this.http.post<string>(url, user, httpOptions);
   }
 

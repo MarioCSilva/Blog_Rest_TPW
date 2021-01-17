@@ -3,6 +3,7 @@ import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Post} from '../models/Post';
 import {Blog} from "../models/Blog";
+import {BaseURL} from '../utils/base_url';
 
 
 const httpOptions = {
@@ -14,17 +15,16 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class PostService {
-  private baseURL = 'http://localhost:8000/ws/';
 
   constructor(private http: HttpClient) { }
 
   getPost(id: number): Observable<Post> {
-    const url = this.baseURL + 'post?id=' + id;
+    const url = BaseURL.baseURL + 'post?id=' + id;
     return this.http.get<Post>(url);
   }
 
   likePost(id: number): Observable<any> {
-    const url = this.baseURL + 'like_post';
+    const url = BaseURL.baseURL + 'like_post';
     console.log(id);
     return this.http.post(url, {'post': id}, httpOptions);
   }
@@ -37,7 +37,7 @@ export class PostService {
     if (blog != null) {
       data['blog'] = blog.id;
     }
-    const url = this.baseURL + 'new_post';
+    const url = BaseURL.baseURL + 'new_post';
     return this.http.post<Post[]>(url, data);
   }
 }

@@ -8,12 +8,18 @@ body {
 }
 
 .navbar {
-  z-index: 9999999;
+  height: 110px;
+  transition: all 0.5s;
+  z-index: 997;
+  transition: all 0.5s;
+  padding: 20px 0;
   position: fixed;
+  left: 0;
   top: 0;
-  width: 100%;
-  padding: 0px;
-
+  right: 0;
+  transition: all 0.5s;
+  z-index: 997;
+  color:white;
 }
 
 .dropdown-toggle::after {
