@@ -10,6 +10,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import {HeaderInterceptor} from "./core/interceptor/HeaderInterceptor";
 import {BlogModule} from "./features/blog/blog.module";
 import {MainModule} from './features/main/main.module';
+import { AlertModule } from './_alert';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,6 +19,7 @@ import {MainModule} from './features/main/main.module';
     SharedModule,
     AppRoutingModule,
     AuthModule,
+    AlertModule,
     SettingsModule,
     MainModule,
     MatNativeDateModule
