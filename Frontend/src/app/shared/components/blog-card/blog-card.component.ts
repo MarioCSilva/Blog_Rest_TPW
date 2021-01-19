@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Blog} from '../../../../core/models/Blog';
+import {Blog} from '../../../core/models/Blog';
 
 @Component({
   selector: 'app-blog-card',

@@ -49,9 +49,15 @@ class Profile(APIView):
         else:
             cclient = get_object_or_404(Client, user__id=request.user.id)
 
+        subscriptions = Blog.objects.filter(subs__in=[cclient.id])
+
+        print(subscriptions)
         client_serializer = ClientSerializer(cclient)
 
-        data = {"client": client_serializer.data, "owner": request.user.username == cclient.user.username}
+        data = {"client": client_serializer.data,
+                "owner": request.user.username == cclient.user.username,
+                "subscriptions": BlogSerializer(subscriptions, many=True).data
+                }
 
         return Response(data)
 
@@ -161,7 +167,6 @@ def main_blog(request):
         name__contains=search).distinct())  # | Blog.objects.filter(owner__user__name__in=search))
     if topics and topics[0] != '':
         topics = topics[0].split(',')
-        # TODO: change this to use django filters or split the string
         blogs = blogs & (Blog.objects.filter(topic__id__in=topics).distinct())
 
     if order == "asc":

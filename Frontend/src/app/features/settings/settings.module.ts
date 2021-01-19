@@ -9,7 +9,7 @@ import { SettingsPageComponent } from './pages/settings-page/settings-page.compo
 
 
 @NgModule({
-  declarations: [ProfileComponent, ProfilePageComponent, SettingsCardComponent, SettingsPageComponent],
+  declarations: [ProfileComponent, ProfilePageComponent, SettingsCardComponent, SettingsPageComponent, ],
     imports: [
         SharedModule,
     ]

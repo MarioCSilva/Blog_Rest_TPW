@@ -26,11 +26,14 @@ import {MatListModule} from "@angular/material/list";
 import {RouterModule} from "@angular/router";
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {BlogCardComponent} from './components/blog-card/blog-card.component';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [NavbarComponent, CommentComponent, CreatePostComponent, CommentsModalComponent,
     PostComponent,
-    PageNotFoundComponent],
+    PageNotFoundComponent,
+    BlogCardComponent],
   imports: [
     MatTabsModule,
     BrowserModule,
@@ -51,8 +54,8 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatDividerModule,
     MatGridListModule,
     MatButtonModule,
+    MatCardModule,
     RouterModule,
-
   ],
   exports: [
     BrowserModule,
@@ -81,6 +84,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     CreatePostComponent,
     CommentsModalComponent,
     PostComponent,
+    BlogCardComponent
   ]
 })
 export class SharedModule { }
