@@ -6,12 +6,20 @@
       Blog Subscriptions
     </h1>
   </div>
-  <div>
-    <mat-grid-list [cols]="3" rowHeight="1.1:1.25" >
-      <mat-grid-tile *ngFor="let blog of blogs " >
-        <app-blog-card [blog]="blog"></app-blog-card>
-      </mat-grid-tile>
+  <div class="row">
+    <div class="col-2"></div>
+    <div >
+      <mat-grid-list [cols]="cols" rowHeight="1:1" >
+        <mat-grid-tile *ngFor="let blog of blogs  | slice: lowValue : highValue" >
+          <app-blog-card [blog]="blog"></app-blog-card>
+        </mat-grid-tile>
 
-    </mat-grid-list>
+      </mat-grid-list>
+      <mat-paginator *ngIf="blogs" style="color: white; background-color: transparent; font-size: 20px;"
+                     [length]="blogs.length"
+                     [pageSize]="pageSize"
+                     (page)="pageEvent = getPaginatorData($event)">
+      </mat-paginator>
+    </div>
   </div>
 </div>
