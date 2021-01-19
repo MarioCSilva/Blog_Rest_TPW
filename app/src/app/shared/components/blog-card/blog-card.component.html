@@ -1,0 +1,19 @@
+<div class="example-card box">
+  <div class="row">
+      <div mat-card-avatar class="example-header-image"></div>
+      <a routerLink="/blog/{{ blog.id }}"><mat-card-title >{{ blog.name }}</mat-card-title></a>
+  </div>
+  <img class="img" mat-card-image [src]="blog.blog_pic">
+  <mat-card-content>
+    <p>{{ blog.description }}</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <p>
+      <span *ngFor="let topic of blog.topic"> {{topic.name}} </span>
+    </p>
+    <span style="padding-right: 20px">Subs: {{ blog.subs.length }}</span>
+    <span>Posts: {{ blog.posts.length }}</span>
+  </mat-card-actions>
+</div>
+
+

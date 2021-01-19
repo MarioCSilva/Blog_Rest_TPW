@@ -1,0 +1,31 @@
+.box{
+  width: 100%;
+  display: table;
+  color: black;
+  background-color: white;
+  text-align: center;
+  min-width: 300px;
+  margin: 0 10px 40px 10px;
+  box-shadow: 0 2px 5px 0 #007bff;
+}
+
+.img {
+  width: 200px;
+  height: 200px;
+  padding-top: 10px;
+  border-radius: 50%;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
+
+/* TODO: change url */
+.blog_icon{
+  /*background-image: url('../media/default/default_blog.png');*/
+  border-radius:50%;
+  background-color: white;
+  background-size: cover;
+  background-repeat: no-repeat;
+}

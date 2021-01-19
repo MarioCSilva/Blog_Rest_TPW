@@ -1,0 +1,52 @@
+<app-create-post #blogCreatePostModal></app-create-post>
+
+<main class="row navbar navbar-normal">
+    <div class="col-sm-2" style="width: 100%"></div>
+      <div class="col-sm-8 covernav">
+        <div class="row col-sm-12">
+
+          <div class="col-sm-4">
+            <ul class="twitter" role="navigation">
+              <li routerLink="/home">
+                <h1 style="font-size: 35px; padding-top: 8px;color: rgba(29,161,242,1.00)"><span>BLOGWHERE</span></h1>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-sm-4" style="padding-left: 25px">
+            <ul class="twitter" role="navigation">
+              <li class="twitter__bird" routerLink="/home/blogs">
+                <img id="image" src="../../../../assets/images/BlogWhere.png"/>
+              </li>
+            </ul>
+          </div>
+
+
+          <div class="col-sm-4" *ngIf="loggedIn">
+            <ul class="twitter" role="navigation" style="float: right">
+              <li style="float: right" routerLink="/blogs">
+                <h1 style="color: rgba(29,161,242,1.00);font-size: 20px; padding-top: 15px; padding-right: 10px"><span>blogs</span></h1>
+              </li>
+
+              <li style="float: right; padding-right: 10px" routerLink="/posts">
+                <button (click)="blogCreatePostModal.showModal()" mat-raised-button id="nav_btn">post</button>
+              </li>
+
+              <li>
+                <div ngbDropdown class="d-inline-block">
+                  <i class="fa fa-user-circle-o" ngbDropdownToggle></i>
+                  <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                    <button ngbDropdownItem routerLink="/blog">My Blog</button>
+                    <button ngbDropdownItem routerLink="/profile">Profile</button>
+                    <button ngbDropdownItem routerLink="/settings">Settings</button>
+                    <button ngbDropdownItem (click)="logout()">Logout</button>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    <div class="col-sm-2" style="width: 100%"></div>
+</main>

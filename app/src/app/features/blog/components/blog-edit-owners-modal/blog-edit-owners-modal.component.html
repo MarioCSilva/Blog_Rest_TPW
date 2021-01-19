@@ -1,0 +1,50 @@
+<ng-template #template let-modal>
+  <form (ngSubmit)="updateBlog()">
+    <div class="modal-header">
+      <h1 class="modal-title">Owners</h1>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click');clearData()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <div class="form-group">
+
+        <div *ngFor="let owner of owners">
+          <mat-checkbox class="example-margin"
+                        [checked]="checkClient(owner)"
+                        [color]="'#007bff'"
+                        (change)="changeOwners(owner, $event.checked)">
+            {{owner}}
+          </mat-checkbox>
+        </div>
+
+
+      </div>
+
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Add new owner (Username)</mat-label>
+
+          <input matInput type="text" name="Username" [(ngModel)]="new_owner" (keydown.enter)="addOwner($event, new_owner)">
+
+          <button mat-button *ngIf="new_owner" matSuffix mat-icon-button aria-label="Clear" (click)="new_owner=''">
+            <mat-icon>close</mat-icon>
+          </button>
+
+
+        </mat-form-field>
+        <button style="background-color: #007bff; color: white" mat-raised-button (click)="addOwner($event, new_owner)">Add Owner</button>
+
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button (submit)="updateBlog()" class="btn rounded-pill btn-block btn-primary" name="updateBlog" value="updateBlog">
+        Save Changes
+      </button>
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click');clearData()">Close</button>
+    </div>
+  </form>
+
+</ng-template>

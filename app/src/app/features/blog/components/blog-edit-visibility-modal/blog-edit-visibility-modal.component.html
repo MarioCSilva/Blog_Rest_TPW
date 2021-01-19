@@ -1,0 +1,37 @@
+<ng-template #template let-modal>
+
+  <form (ngSubmit)="updateBlog()">
+
+    <div class="modal-header">
+      <h1 class="modal-title">Visibility</h1>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click');clearData()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <div class="form-group">
+
+        <mat-form-field>
+          <mat-label>Visibility</mat-label>
+          <mat-select [(value)]="isPublic">
+
+            <mat-option *ngFor="let option of options" [value]="option.value">
+              {{option.text}}
+            </mat-option>
+
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button (submit)="updateBlog()" class="btn rounded-pill btn-block btn-primary" name="updateBlog" value="updateBlog">
+        Save Changes
+      </button>
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click');clearData()">Close</button>
+    </div>
+  </form>
+
+</ng-template>

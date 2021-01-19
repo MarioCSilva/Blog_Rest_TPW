@@ -1,0 +1,27 @@
+<div class="login">
+  <h2>Login</h2>
+  <p>Already registered? Login here.</p>
+  <form (ngSubmit)="login()">
+
+    <div id="username_div"  class="form-group">
+      <mat-form-field  appearance="fill" color="primary">
+        <mat-label>Username</mat-label>
+        <input matInput type="text" name="username" [(ngModel)]="username">
+        <button mat-button *ngIf="username" matSuffix mat-icon-button aria-label="Clear" (click)="username=''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    <div id="password_div" class="form-group">
+      <mat-form-field appearance="fill" color="primary">
+        <mat-label>Password</mat-label>
+        <input matInput (keydown.enter)="login()" type="password" onkey name="password" [(ngModel)]="password">
+        <button mat-button *ngIf="password" matSuffix mat-icon-button aria-label="Clear" (click)="password=''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+    <button (submit)="login()" class="btn rounded-pill btn-block btn-primary"  name="login" value="Login" >Login</button>
+  </form>
+</div>

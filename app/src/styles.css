@@ -1,0 +1,14 @@
+/* You can add global styles to this file, and also import other style files. */
+
+body {
+  background-color: rgb(21, 32, 43);
+}
+
+.mat-body, .mat-body-1, .mat-typography {
+  font: 400 16px/21px Roboto,  "Montserrat", sans-serif;
+  letter-spacing: normal;
+}
+
+.modal-content {
+  background-color: white;
+}
