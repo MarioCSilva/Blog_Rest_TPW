@@ -328,15 +328,24 @@ class BlogPage(APIView):
                 return Response({"error": "Can't remove yourself from blog"}, status=HTTP_400_BAD_REQUEST)
             request.data['owner'] = owners
 
-        if 'accepted_invites' in request.data:
-            accepted_clients = Client.objects.filter(id__in=request.data['accepted_invites'])
-            request.data.update({'accepted_invites': accepted_clients})
-
-        request.data.update({'req_client_id': req_client})
         blog_serializer = BlogSerializer(blog, data=request.data, partial=True)
 
         if blog_serializer.is_valid():
             blog_serializer.save()
+
+            #accept invites
+            if 'accepted_invites' in request.data:
+                for client_id in request.data['accepted_invites']:
+                    client = get_object_or_404(Client, id=client_id)
+                    blog.subs.add(client.id)
+                    blog.invites.remove(client.id)
+                blog.save()
+            # do not let a owner unsubscribe from his blog
+            if 'subs' in request.data:
+                if req_client.id not in request.data['subs']:
+                    blog.subs.add(req_client)
+                    blog.save()
+
             data = {"client": blog_serializer.data}
         else:
             return Response(blog_serializer.errors, status=HTTP_400_BAD_REQUEST)

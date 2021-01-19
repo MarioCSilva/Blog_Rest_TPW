@@ -51,11 +51,13 @@ export class BlogEditInvitesModalComponent implements OnInit {
         this.alertService.error(error.error ? this.alertService.handleError(error.error) : error.message, this.options);
       }
     );
+
     this.blogService.getBlog(this.blog.id).subscribe(data => {
       this.blog.invites = data.invites;
       this.blog.subs = data.subs;
       this.clearData();
     });
+
   }
 
 

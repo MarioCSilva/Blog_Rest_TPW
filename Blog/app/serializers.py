@@ -44,7 +44,6 @@ class ClientSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
     user_id = serializers.IntegerField()
 
-    # PROFILE PIC
     class Meta:
         model = Client
         fields = ['id', 'name', 'user_id', 'description', 'birthdate', 'sex', 'profile_pic']
@@ -68,14 +67,11 @@ class TopicSerializer(serializers.ModelSerializer):
 
 
 class BlogSerializer(serializers.ModelSerializer):
-    accepted_invites = ClientSerializer(many=True, read_only=True, required=False)
-    req_client_id = ClientSerializer(read_only=True, required=False)
 
     class Meta:
         model = Blog
         fields = ['id', 'name', 'owner', 'subs', 'blog_pic',
-                  'isPublic', 'invites', 'description', 'topic',
-                  'accepted_invites', 'req_client_id']
+                  'isPublic', 'invites', 'description', 'topic']
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
@@ -89,7 +85,6 @@ class BlogSerializer(serializers.ModelSerializer):
         ret['subs'] = ClientSerializer(instance.subs.all(), many=True).data
         ret['invites'] = ClientSerializer(instance.invites.all(), many=True).data
         ret['topic'] = TopicSerializer(instance.topic.all(), many=True).data
-
         # add all posts to the blog
         ret['posts'] = PostSerializer(Post.objects.filter(blog=instance.id), many=True).data
 
@@ -109,25 +104,12 @@ class BlogSerializer(serializers.ModelSerializer):
         if 'topic' in validated_data:
             instance.topic.set(validated_data['topic'])
 
-        # accept invites
-        if 'accepted_invites' in validated_data:
-            for client_id in validated_data['accepted_invites']:
-                client = get_object_or_404(Client, id=client_id)
-                instance.subs.add(client.id)
-                instance.invites.remove(client.id)
-
         # accept all invites when changing to blog to public
         if 'isPublic' in validated_data:
             if validated_data['isPublic']:
                 for client in instance.invites.all():
                     instance.subs.add(client.id)
                 instance.invites.set([])
-
-        # do not let a owner unsubscribe from his blog
-        if 'subs' in validated_data:
-            if 'req_client_id' in validated_data:
-                if validated_data['req_client_id'] not in validated_data['subs']:
-                    instance.subs.add(validated_data['req_client_id'])
 
         instance.save()
         return instance

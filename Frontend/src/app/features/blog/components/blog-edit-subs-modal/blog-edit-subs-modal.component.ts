@@ -73,7 +73,11 @@ export class BlogEditSubsModalComponent implements OnInit {
         this.alertService.error(error.error ? this.alertService.handleError(error.error) : error.message, this.options);
       }
     );
-    this.blogService.getBlog().subscribe(data => { this.blog = data; });
+    this.blogService.getBlog(this.blog.id).subscribe(data => {
+      this.blog.invites = data.invites;
+      this.blog.subs = data.subs;
+      this.subs = data.invites;
+    });
   }
 
   clearData() {

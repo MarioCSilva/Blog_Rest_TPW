@@ -18,9 +18,9 @@
         <div class="my-5">
         <img [src]="blog.blog_pic" style="height: 150px; width: 150px;"/>
         </div>
-        <h3>{{blog.owner[0].user.username}}</h3>
+        <p><span class="px-2" style="color: white " *ngFor="let client of blog.owner"> &emsp;{{client.user.username}} </span></p>
 
-        <p><span *ngFor="let topic of blog.topic"> &emsp;{{topic.name}} </span></p>
+        <p><span class="px-2" *ngFor="let topic of blog.topic"> &emsp;{{topic.name}} </span></p>
 
         <div class="row">
           <div class="col-sm-2"></div>

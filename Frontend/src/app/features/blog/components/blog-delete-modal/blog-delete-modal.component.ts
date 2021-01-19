@@ -43,6 +43,7 @@ export class BlogDeleteModalComponent implements OnInit {
     this.blogService.deleteBlog(this.blog.id).subscribe(
       data => {
         this.alertService.success("Successfully deleted the blog " + this.blog.name, this.options);
+        this.modalService.dismissAll(this.template);
         this.router.navigate(['/home']);
       },
       error => {
