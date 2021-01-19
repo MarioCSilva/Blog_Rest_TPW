@@ -56,15 +56,9 @@
   height: 60px;
 }
 
-.icon i {
-  font-size: 36px;
-  line-height: 1;
-}
-
 .title {
-  font-weight: 700;
   margin-bottom: 15px;
-  font-size: 18px;
+  font-size: 25px;
 }
 
 .title a {
@@ -76,7 +70,7 @@
 }
 
 .description {
-  font-size: 14px;
+  font-size: 20px;
   line-height: 28px;
   margin-bottom: 0;
   text-align: left;

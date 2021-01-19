@@ -126,6 +126,9 @@ class PostSerializer(serializers.ModelSerializer):
             ret['image'] = 'http://www.localhost:8000' + ret['image']
 
         # serialize nested client data
+        blog = Blog.objects.get(id=instance.blog.id)
+        ret['blog'] = {'id': blog.id, 'name': blog.name}
+        # serialize nested client data
         ret['client'] = ClientSerializer(Client.objects.get(id=instance.client.id)).data
         # add all comments to the post
         ret['comments'] = CommentSerializer(Comment.objects.filter(post=instance.id), many=True).data

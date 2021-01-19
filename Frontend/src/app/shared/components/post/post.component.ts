@@ -4,7 +4,7 @@ import {User} from '../../../core/models/User';
 import {Comment} from '../../../core/models/Comment';
 import {PostService} from '../../../core/services/post.service';
 import {AlertService} from "../../../_alert";
-
+import {ActivatedRoute, Router, RouterModule} from "@angular/router";
 /*
   See tutorial
   https://ng-bootstrap.github.io/#/components/modal/examples
@@ -25,8 +25,11 @@ export class PostComponent implements OnInit {
   @Input()
   post: Post;
   user: User;
+  routerLinkClientVariable = "/blog/";
   constructor(private postService: PostService,
               protected alertService: AlertService,
+              private router: Router,
+              private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {

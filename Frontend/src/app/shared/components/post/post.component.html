@@ -4,17 +4,18 @@
     <div class="box" style="padding-bottom: 0px;border:1px solid gray;background-color:transparent">
       <div style="height: 10px;" class="row">
         <div style="text-align: left;" class="col-sm-6 row">
+            <span style="padding-right: 3px"></span><a [routerLink]="'/blog/'+post.blog.id"><h3><i class="fa fa-share"></i> {{ post.blog.name }}</h3></a>
         </div>
         <div  class="col-sm-6" style="text-align: right;">
-          <h6>{{ post.date |date:"HH:mm dd/MM/yyyy" }}</h6>
+          <h4>{{ post.date |date:"HH:mm dd/MM/yyyy" }}</h4>
         </div>
       </div>
 
-      <a href="/blog"> <!-- /blog/{client.personal} -->
-        <img id="profile_pic" class="profile_img" [src]="post.client.profile_pic" style="width: 60px;height: 60px" />
-        <p> {{ post.client.name }} </p>
+      <a [routerLink]="'/blog/'+post.client.id">
+        <img class="icon" class="profile_img" [src]="post.client.profile_pic" style="width: 60px;height: 60px" />
+        <p style="color: #007bff"> {{ post.client.user.username }} </p>
       </a>
-      <h4 class="title">{{ post.title }}</h4>
+      <h4 class="title" style="font-size: 25px">{{ post.title }}</h4>
       <p class="description">{{ post.text }}  </p>
 
       <img style="max-width: 800px;max-height: 350px" id="myImg" class="profile_img" [src]="post.image" />
