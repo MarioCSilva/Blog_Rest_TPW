@@ -15,7 +15,7 @@
     <div id="password_div" class="form-group">
       <mat-form-field appearance="fill" color="primary">
         <mat-label>Password</mat-label>
-        <input matInput type="password" name="password" [(ngModel)]="password">
+        <input matInput (keydown.enter)="login()" type="password" onkey name="password" [(ngModel)]="password">
         <button mat-button *ngIf="password" matSuffix mat-icon-button aria-label="Clear" (click)="password=''">
           <mat-icon>close</mat-icon>
         </button>

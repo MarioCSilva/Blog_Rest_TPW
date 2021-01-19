@@ -4,6 +4,7 @@ import {PostService} from "../../../core/services/post.service";
 import {BlogService} from "../../../core/services/blog.service";
 import {Blog} from "../../../core/models/Blog";
 import {AlertService} from "../../../_alert";
+import {Post} from "../../../core/models/Post";
 
 @Component({
   selector: 'app-create-post',
@@ -23,6 +24,9 @@ export class CreatePostComponent implements OnInit {
 
   @Input()
   blog: Blog = null;
+
+  @Input()
+  posts: Post[] = null;
 
   @ViewChild('template', { static: true }) template: ElementRef;
 
@@ -48,9 +52,11 @@ export class CreatePostComponent implements OnInit {
   createPost(): void{
     this.postService.createPost(this.title, this.content, this.blog, this.pic_file).subscribe(
       data => {
-            if (this.blog != null) {
-              this.blog.posts.push(data['post']);
-            }
+          if (this.blog != null) {
+            this.blog.posts.unshift(data['post']);
+          } else {
+            this.posts.unshift(data['post']);
+          }
         this.alertService.success("Successfully added a post", this.options);
 
         this.modalService.dismissAll(this.template);

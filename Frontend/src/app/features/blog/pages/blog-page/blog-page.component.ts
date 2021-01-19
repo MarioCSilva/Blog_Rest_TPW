@@ -38,7 +38,7 @@ export class BlogPageComponent implements OnInit {
 
   blog_follow() {
     this.blogService.blog_follow(this.blog.id).subscribe(data => {
-      this.alertService.success(this.blog.subbed ? "Successfully unfollowed the blog " + this.blog.name : "Successfully followed the blog " + this.blog.name, this.options);
+      this.alertService.success(data['success'], this.options);
 
       this.blogService.getBlog(this.blog.id).subscribe(data => { this.blog = data; });
     });

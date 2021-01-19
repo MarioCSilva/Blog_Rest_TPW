@@ -24,8 +24,8 @@
         <div class="col-sm-6" style="text-align: left; padding-left: 30px; font-size: 20px;">
           <input name="post_id" type="text" value="{{ post.id }}" style="display: none" required>
           <input name="post_id" type="text" value="{{ post.id }}" style="display: none" required>
-            <button id="like{{ post.id }}" [ngClass]="post.liked ? 'liked' : 'disliked' " value="like"  style="background: transparent; border: 0px" (click)="likePost()">
-              <mat-icon>thumb_up</mat-icon> <span class="likeNumber"  id="number{{ post.id }}">{{ post.likes.length }}</span>
+            <button [ngClass]="post.liked ? 'liked' : 'disliked' " value="like"  style="background: transparent; border: 0px" (click)="likePost()">
+              <mat-icon>thumb_up</mat-icon> <span class="likeNumber">{{ post.likes.length }}</span>
             </button>
         </div>
 

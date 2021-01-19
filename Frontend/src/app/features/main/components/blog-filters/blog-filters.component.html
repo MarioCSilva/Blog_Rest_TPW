@@ -25,7 +25,7 @@
         </mat-select>
       </mat-form-field>
       <mat-form-field appearance="outline">
-        <mat-label>Toppings</mat-label>
+        <mat-label>Topics</mat-label>
         <mat-select name="topics" [(ngModel)]="selected_topics" multiple>
           <mat-option *ngFor="let topic of topics " [value]="topic">{{topic.name}}</mat-option>
         </mat-select>

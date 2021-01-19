@@ -58,7 +58,6 @@ class Profile(APIView):
     def put(self, request):
         # TODO: see if the gender value is valid
 
-        print(request.data)
         client = get_object_or_404(Client, user__id=request.user.id)
 
         if client.user.id != request.user.id:
@@ -81,7 +80,6 @@ class Profile(APIView):
             client_serializer.save()
             data = {"client": client_serializer.data}
         else:
-            print(client_serializer.errors)
             return Response(client_serializer.errors, status=HTTP_400_BAD_REQUEST)
 
         return Response(data)
@@ -162,6 +160,7 @@ def main_blog(request):
     blogs = (Blog.objects.filter(
         name__contains=search).distinct())  # | Blog.objects.filter(owner__user__name__in=search))
     if topics and topics[0] != '':
+        topics = topics[0].split(',')
         # TODO: change this to use django filters or split the string
         blogs = blogs & (Blog.objects.filter(topic__id__in=topics).distinct())
 
@@ -287,7 +286,6 @@ class BlogPage(APIView):
 
     def post(self, request):
         data = json.loads(request.data['data'])
-        print(request.data)
         client = get_object_or_404(Client, user=request.user).id
         data['client'] = client
         data['owner'] = [client]
@@ -341,7 +339,6 @@ class BlogPage(APIView):
             blog_serializer.save()
             data = {"client": blog_serializer.data}
         else:
-            print(blog_serializer.errors)
             return Response(blog_serializer.errors, status=HTTP_400_BAD_REQUEST)
 
         return Response(data)
@@ -380,7 +377,6 @@ def new_post(request):
     data = json.loads(request.data['data'])
     client = get_object_or_404(Client, user=request.user)
 
-    print(request.data)
     if request.data.get('file'):
         data['image'] = request.data['file']
 
