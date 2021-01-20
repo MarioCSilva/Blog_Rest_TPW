@@ -132,8 +132,8 @@ class Settings(APIView):
 @permission_classes([IsAuthenticated])
 def post_comment(request):
     data = request.data
-    client = get_object_or_404(Client, user=request.user).id
-    data['client'] = client
+    client = get_object_or_404(Client, user=request.user)
+    data['client'] = client.id
 
     # check permissions to create a comment on this post
     post = get_object_or_404(Post, id=data['post'])
