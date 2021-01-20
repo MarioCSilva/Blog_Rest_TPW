@@ -12,12 +12,12 @@ import {AlertService} from "../../../../_alert";
 })
 export class LoginComponent implements OnInit {
   options = {
-    autoClose: false,
+    autoClose: true,
     keepAfterRouteChange: false
   };
 
-  username: string;
-  password: string;
+  username = '';
+  password = '';
 
   constructor(
     private authService: AuthenticationService,
@@ -31,11 +31,15 @@ export class LoginComponent implements OnInit {
 
 
   login(): void {
-    this.authService.login(this.username, this.password).subscribe(token => {
-      StorageService.setAuthToken(token.token);
-      this.router.navigate(['/home']);
-    }, error => {
-      this.alertService.error(error.error ? this.alertService.handleError(error.error) : error.message, this.options);
-    });
+    if (this.username !== "" || this.password !== ""){
+    	this.authService.login(this.username, this.password).subscribe(token => {
+      	StorageService.setAuthToken(token.token);
+      	this.router.navigate(['/home']);
+    	}, error => {
+      	this.alertService.error(error.error ? this.alertService.handleError(error.error) : error.message, this.options);
+    	});
+    } else {
+	this.alertService.error("Must fill all form parameters.", this.options);
+	}
   }
 }
