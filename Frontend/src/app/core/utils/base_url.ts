@@ -1,3 +1,3 @@
 export class BaseURL {
-  public static baseURL='http://localhost:8000/ws/';
+  public static baseURL='https://localhost:8000/ws/';
 }
