@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '../../../../core/services/authentication.service';
 import {StorageService} from '../../../../core/services/storage.service';
-import {NavbarComponent} from "../../../../shared/components/navbar/navbar.component";
-import {ActivatedRoute, Router} from "@angular/router";
-import {AlertService} from "../../../../_alert";
+import {NavbarComponent} from '../../../../shared/components/navbar/navbar.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AlertService} from '../../../../_alert';
 
 @Component({
   selector: 'app-login',
@@ -16,8 +16,8 @@ export class LoginComponent implements OnInit {
     keepAfterRouteChange: false
   };
 
-  username: string;
-  password: string;
+  username = '';
+  password = '';
 
   constructor(
     private authService: AuthenticationService,
@@ -31,11 +31,15 @@ export class LoginComponent implements OnInit {
 
 
   login(): void {
-    this.authService.login(this.username, this.password).subscribe(token => {
-      StorageService.setAuthToken(token.token);
-      this.router.navigate(['/home']);
-    }, error => {
-      this.alertService.error(error.error ? this.alertService.handleError(error.error) : error.message, this.options);
-    });
+    if (this.username !== '' || this.password !== '') {
+      this.authService.login(this.username, this.password).subscribe(token => {
+        StorageService.setAuthToken(token.token);
+        this.router.navigate(['/home']);
+      }, error => {
+        this.alertService.error(error.error ? this.alertService.handleError(error.error) : error.message, this.options);
+      });
+    } else {
+      this.alertService.error('Must fill all form parameters.', this.options);
+    }
   }
 }
