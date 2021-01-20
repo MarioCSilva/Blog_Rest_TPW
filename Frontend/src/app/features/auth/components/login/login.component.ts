@@ -12,7 +12,7 @@ import {AlertService} from "../../../../_alert";
 })
 export class LoginComponent implements OnInit {
   options = {
-    autoClose: false,
+    autoClose: true,
     keepAfterRouteChange: false
   };
 
